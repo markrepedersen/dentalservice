@@ -178,6 +178,21 @@ insert into Employee values (0000349, 'Ray', 'Palmer', 192000, 40, 'm', '1980-02
 insert into Employee values (0000350, 'Carter', 'Hall', 202000, 32, 'm', '1988-08-17', 7789651211);
 insert into Employee values (0000351, 'Laurel', 'Lance', 201000, 38, 'f', '1982-03-23', 7786572299);
 insert into Employee values (0000352, 'John', 'Smith', 210000, 50, 'm', '1970-10-06', 7785432714);
+	--
+	-- now add in Dentist
+	--
+	insert into Dentist values (0000331, 'Diana', 'Prince', 184000, 44, 'f', '1972-09-23', 6045556758);
+	insert into Dentist values (0000332, 'Barry', 'Allen', 199000, 31, 'm', '1985-05-22', 7781148167);
+	insert into Dentist values (0000333, 'Arthur', 'Curry', 180000, 35, 'm', '1981-09-07', 7786232323);
+	insert into Dentist values (0000334, 'Bruce', 'Wayne', 200000, 48, 'm', '1968-01-01', 6048695531);
+	insert into Dentist values (0000345, 'John', 'Jones', 177000, 37, 'm', '1983-03-26', 6048145867);
+	insert into Dentist values (0000346, 'Clark', 'Kent', 189000, 41, 'm', '1979-11-18', 6047431222);
+	insert into Dentist values (0000347, 'Hal', 'Jordan', 184000, 34, 'm', '1986-09-14', 6043428888);
+	insert into Dentist values (0000348, 'Oliver', 'Queen', 199000, 39, 'm', '1981-04-12', 7785472323);
+	insert into Dentist values (0000349, 'Ray', 'Palmer', 192000, 40, 'm', '1980-02-01', 7785465757);
+	insert into Dentist values (0000350, 'Carter', 'Hall', 202000, 32, 'm', '1988-08-17', 7789651211);
+	insert into Dentist values (0000351, 'Laurel', 'Lance', 201000, 38, 'f', '1982-03-23', 7786572299);
+	insert into Dentist values (0000352, 'John', 'Smith', 210000, 50, 'm', '1970-10-06', 7785432714);
 --
 -- now add in Receptionist
 --
@@ -208,21 +223,6 @@ insert into Hygienist values (0000123, 'James', 'Howlett', 109000, 31, 'm', '198
 insert into Hygienist values (0000124, 'Piotr', 'Rasputin', 109000, 30, 'm', '1986-10-20', 6041118354);
 insert into Hygienist values (0000125, 'Anna', 'Marie', 118000, 34, 'f', '1982-12-19', 6044538911);
 insert into Hygienist values (0000126, 'Jean', 'Grey', 118000, 30, 'f', '1986-11-09', 7782345612);
---
--- now add in Dentist
---
-insert into Dentist values (0000331, 'Diana', 'Prince', 184000, 44, 'f', '1972-09-23', 6045556758);
-insert into Dentist values (0000332, 'Barry', 'Allen', 199000, 31, 'm', '1985-05-22', 7781148167);
-insert into Dentist values (0000333, 'Arthur', 'Curry', 180000, 35, 'm', '1981-09-07', 7786232323);
-insert into Dentist values (0000334, 'Bruce', 'Wayne', 200000, 48, 'm', '1968-01-01', 6048695531);
-insert into Dentist values (0000345, 'John', 'Jones', 177000, 37, 'm', '1983-03-26', 6048145867);
-insert into Dentist values (0000346, 'Clark', 'Kent', 189000, 41, 'm', '1979-11-18', 6047431222);
-insert into Dentist values (0000347, 'Hal', 'Jordan', 184000, 34, 'm', '1986-09-14', 6043428888);
-insert into Dentist values (0000348, 'Oliver', 'Queen', 199000, 39, 'm', '1981-04-12', 7785472323);
-insert into Dentist values (0000349, 'Ray', 'Palmer', 192000, 40, 'm', '1980-02-01', 7785465757);
-insert into Dentist values (0000350, 'Carter', 'Hall', 202000, 32, 'm', '1988-08-17', 7789651211);
-insert into Dentist values (0000351, 'Laurel', 'Lance', 201000, 38, 'f', '1982-03-23', 7786572299);
-insert into Dentist values (0000352, 'John', 'Smith', 210000, 50, 'm', '1970-10-06', 7785432714);
 --
 -- now add in the WorksFor
 --
@@ -283,6 +283,18 @@ insert into Customer values (111542, 'Irma', 'Snowden', 4033801429, '1995-12-31'
 insert into Customer values (111682, 'Issac', 'Shropshire', 2504154651, '1995-12-31', 'shropshire99@me.com', '2311 Burdett Avenue, Victoria, BC V8W 1B2');
 insert into Customer values (111659, 'Dorie', 'Setzer', 6043135348, '1995-12-31', 'setzerdorie@me.com', '804 James Street, Vancouver, BC V5W 3C3');
 insert into Customer values (111986, 'Ranae', 'Leung', 2504965085, '1995-12-31', 'ranae4879@gmail.com', '3354 Calgary Avenue, Penticton, BC V2A 2T6');
+--
+-- now add in the Treats
+--
+insert into Attends values (0000331, 111542);
+insert into Attends values (0000347, 111801);
+insert into Attends values (0000348, 111801);
+insert into Attends values (0000331, 111993);
+insert into Attends values (0000331, 111801);
+insert into Attends values (0000346, 111993);
+insert into Attends values (0000331, 111921);
+insert into Attends values (0000350, 111801);
+insert into Attends values (0000352, 111921);
 --
 -- now add in the Treats
 --
@@ -353,3 +365,5 @@ insert into Uses values (0000351, 558234);
 -- End of inserts
 -- End of Data
 --
+
+commit;

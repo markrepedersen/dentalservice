@@ -74,22 +74,21 @@ public class DBHandler {
     // The default view that an employee will have
     // Creates a list of customer objects that user must iterate through to handle
     public List<Customer> customerViewDefaultTable() throws SQLException {
+        String query = "select * from Customer c, Dentist d, Attends a where c.cid = a.cid and a.did = d.did";
         List<Customer> list = new ArrayList<>();
         Connection conn = getConnection();
         Statement stmt = conn.createStatement();
-        stmt.execute("select cid, fname, lname, phone_Num, birthday, email, address, d.fname as dname, d.lname as dlname " +
-                     "from Customer, Dentist d");
-        ResultSet rs = stmt.getResultSet();
+        ResultSet rs = stmt.executeQuery(query);
         while (rs.next()) {
             Customer c = new Customer(
-                    rs.getInt("cid"),
-                    rs.getString("fname"),
-                    rs.getString("lname"),
-                    rs.getInt("phone_Num"),
-                    rs.getDate("birthday"),
-                    rs.getString("email"),
-                    rs.getString("address"));
-            c.setDentist(rs.getString("dname") + rs.getString("dlname"));
+                    rs.getInt(1),
+                    rs.getString(2),
+                    rs.getString(3),
+                    rs.getInt(4),
+                    rs.getDate(5),
+                    rs.getString(6),
+                    rs.getString(7));
+            c.setDentist(rs.getString(9) + rs.getString(10));
             list.add(c);
         }
         return list;
@@ -98,12 +97,16 @@ public class DBHandler {
     // Filters customers by cid
     // Shows only those with cid = parameter cid
     // Creates a list of customer objects that user must iterate through to handle
-    public List<Customer> customerSearchByCID(int cid) throws SQLException {
-        List<Customer> list = new ArrayList<>();
+    public ArrayList<Customer> customerSearchByCID(int cid) throws SQLException {
+        String query = "select c.cid, c.fname, c.lname, c.phone_Num, c.dob, c.email, " +
+                "c.address, d.fname, d.lname from Customer c, Attends a, Dentist d " +
+                "where c.cid = ? and a.cid = ? and a.did = d.did";
+        ArrayList<Customer> list = new ArrayList<>();
         Connection conn = getConnection();
-        Statement stmt = conn.createStatement();
-        stmt.execute(CUSTOMER_WITH_DENTIST + "cid = \'" + cid + "\'");
-        ResultSet rs = stmt.getResultSet();
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setInt(1, cid);
+        ps.setInt(2, cid);
+        ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             Customer c = new Customer(
                     rs.getInt(0),

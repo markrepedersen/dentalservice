@@ -32,7 +32,6 @@ public class Bill {
         this.cname = name;
         this.surname = surname;
         this.type = type;
-
         this.dueDate = dueDate;
         this.amountPaid = payment;
         this.balance = balance;

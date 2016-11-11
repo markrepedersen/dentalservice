@@ -211,8 +211,16 @@ public class DBHandler {
 
     public void addCustomer(int cid, String fname, String lname, long phoneNum, Date dob, String email, String address) throws SQLException {
         Connection conn = getConnection();
-        Statement stmt = conn.createStatement();
-        stmt.executeUpdate("INSERT INTO customer VALUES (" + cid + ", \'" + fname + "\', \'" + lname + "\', " + phoneNum + ", \'" + dob + "\', \'" + email + ", \'" + address + "\')");
+        String query = "insert into customer(cid, fname, lname, phone_Num, dob, email, address) values(?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setInt(1, cid);
+        ps.setString(2, fname);
+        ps.setString(3, lname);
+        ps.setLong(4, phoneNum);
+        ps.setDate(5, dob);
+        ps.setString(6, email);
+        ps.setString(7, address);
+        ps.executeUpdate();
     }
 
     public void removeCustomer(int eid) throws SQLException {
@@ -284,16 +292,19 @@ public class DBHandler {
     // cid is customer's cid
     // we do not use first or last name since results must be unique to one customer only
     public List<Bill> getCustomerYearlyPayments(int cid) throws SQLException {
-        String query = "select c.fname as Name, c.lname as Surname, b.type as type, b.dueDate as Due, " +
-                       "SUM(b.amountPaid) as Payment " +
-                       "from Customer c, Bill b, Appointment a where a.cid = \'" + cid + " and b.cid = \'" + cid + "\' " +
-                       "and c.cid = \'" + cid + "\' " +
-                       "group by cid";
+        String query = "select c.cid, c.fname as Name, " +
+                    "c.lname as Surname, " +
+                    "b.type as type, " +
+                    "b.dueDate as Due, " +
+                    "SUM(b.amountPaid) as Payment " +
+                    "from Customer c, Bill b where b.cid = ? " +
+                    "and c.cid = ? " +
+                    "group by c.cid, c.fname, c.lname, b.type, b.dueDate";
         List<Bill> list = new ArrayList<>();
-        Connection conn = getConnection();
-        Statement stmt = conn.createStatement();
-        stmt.execute(query);
-        ResultSet rs = stmt.getResultSet();
+        PreparedStatement ps = getConnection().prepareStatement(query);
+        ps.setInt(1, cid);
+        ps.setInt(2, cid);
+        ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             Bill b = new Bill(
                     rs.getString("Name"),
@@ -358,10 +369,16 @@ public class DBHandler {
     public void addBill(int bid, String type, BigDecimal amountPaid, BigDecimal amountOwes,
                         Date dueDate, int isPaid, int cid) throws SQLException {
         Connection conn = getConnection();
-        Statement stmt = conn.createStatement();
-        stmt.executeUpdate("INSERT INTO bill VALUES (\'" + bid + "\', \'" + type +
-                           "\', \'" + amountPaid + "\', \'" + amountOwes + "\', \'" + dueDate + "\', \'" + isPaid + "\', \'" +
-                           cid + "\')");
+        String query = "insert into bill(bid, type, amountPaid, amountOwes, dueDate, isPaid, cid) values(?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setInt(1, bid);
+        ps.setString(2, type);
+        ps.setBigDecimal(3, amountPaid);
+        ps.setBigDecimal(4, amountOwes);
+        ps.setDate(5, dueDate);
+        ps.setInt(6, isPaid);
+        ps.setInt(7, cid);
+        ps.executeUpdate();
     }
 
 

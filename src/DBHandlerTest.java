@@ -57,18 +57,19 @@ public class DBHandlerTest {
         db.addBill(90002, "yo", new BigDecimal(30000.00), new BigDecimal(45000.00), new Date(System.currentTimeMillis() + 100000),
                 0, 123456);
         db.addBill(90003, "yo", new BigDecimal(40000.00), new BigDecimal(1.00), new Date(System.currentTimeMillis() + 100000),
-                0, 123456);
+                0, 234567);
         db.addBill(90004, "yo", new BigDecimal(50000.00), new BigDecimal(2.00), new Date(System.currentTimeMillis() + 100000),
-                0, 123456);
+                0, 234567);
         db.addBill(90005, "yo", new BigDecimal(60000.00), new BigDecimal(3.00), new Date(System.currentTimeMillis() + 100000),
-                0, 123456);
+                0, 234567);
         db.addBill(90006, "yo", new BigDecimal(70000.00), new BigDecimal(4.5), new Date(System.currentTimeMillis() + 100000),
-                0, 123456);
+                0, 345678);
         db.addBill(90007, "yo", new BigDecimal(80000.00), new BigDecimal(4.5), new Date(System.currentTimeMillis() + 100000),
-                0, 123456);
+                0, 345678);
         db.addBill(90008, "yo", new BigDecimal(90000.00), new BigDecimal(4.5), new Date(System.currentTimeMillis() + 100000),
-                0, 123456);
-        assertEquals(db.getCustomerYearlyPayments(123456), new BigDecimal(135000.00));
+                0, 345678);
+        assertEquals(db.getCustomerYearlyPayments(123456).size(), 1);
+        assertEquals(db.getCustomerYearlyPayments(123456).get(0).getAmountPaid(), new BigDecimal(60000.00));
 
 
     }

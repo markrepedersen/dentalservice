@@ -269,7 +269,7 @@ insert into Medicine values (511111, 101.29, 'Saliva substitute');
 insert into Medicine values (586662, 40.00, 'Antifungal');
 insert into Medicine values (542321, 43.74, 'Fluoride');
 --
--- now add in Customer
+-- now add in
 --
 insert into Customer values (111801, 'Mark', 'Pedersen', 6042347333, '1995-12-31', 'pedersen.mark@hotmail.com', '1326 Davie St, Vancouver, BC V6E 1N6');
 insert into Customer values (111861, 'Liam', 'Adams', 7789215656, '1995-12-31', 'liamadams@yahoo.com', '1932 West 1st Avenue, Vancouver, BC V6J 1G6');
@@ -317,7 +317,7 @@ insert into Appointment values (4274, 'FILL', '2017-01-10 10:00:00', '2016-01-10
 -- now add in Bill
 --
 insert into Bill values (48232, 'BANK', 10.00, 87.61, '2017-12-31', 0, 111801);
-insert into Bill values (48251, 'INST', 10.00, 7.99, '2017-12-31', 0,  0,  111811);
+insert into Bill values (48251, 'INST', 10.00, 7.99, '2017-12-31',  0,  111811);
 insert into Bill values (48233, 'INST', 10.00, 51.23, '2017-12-31', 0,  111993);
 insert into Bill values (48248, 'CHEQ', 10.00, 134.45, '2017-12-31', 0,  111861);
 insert into Bill values (48291, 'ONLI', 10.00, 21.49, '2017-12-31', 1,  111659);

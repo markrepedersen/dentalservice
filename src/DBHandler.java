@@ -99,7 +99,7 @@ public class DBHandler {
     // Creates a list of customer objects that user must iterate through to handle
     public ArrayList<Customer> customerSearchByCID(int cid) throws SQLException {
         String query = "select c.cid, c.fname, c.lname, c.phone_Num, c.dob, c.email, " +
-                "c.address from Customer c where c.cid = ?";
+                "c.address from Customer c where c.cid = \'" + cid + "\'";
         ArrayList<Customer> list = new ArrayList<>();
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
@@ -123,9 +123,9 @@ public class DBHandler {
     // Filters customers by fname
     // Shows only those with fname = parameter fname
     // Creates a list of customer objects that user must iterate through to handle
-    public List<Customer> customerSearchByName(String fname) throws SQLException {
-        String query = "select c.cid, c.fname, c.lname, c.phone_Num, c.dob, c.email, " +
-                "c.address from Customer c where c.fname = ?";
+    public List<Customer> customerSearchByFirstName(String fname) throws SQLException {
+        String query = "select c.cid AS CustomerID, c.fname AS FirstName, c.lname AS LastName, c.phone_Num AS PhoneNumber, c.dob AS DateOfBirth, c.email AS Email, " +
+                "c.address AS Address from Customer c WHERE c.fname LIKE \'%" + fname + "%\'";
         ArrayList<Customer> list = new ArrayList<>();
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
@@ -133,13 +133,13 @@ public class DBHandler {
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             Customer c = new Customer(
-                    rs.getInt(1),
-                    rs.getString(2),
-                    rs.getString(3),
-                    rs.getLong(4),
-                    rs.getDate(5),
-                    rs.getString(6),
-                    rs.getString(7));
+                    rs.getInt("CustomerID"),
+                    rs.getString("FirstName"),
+                    rs.getString("LastName"),
+                    rs.getLong("PhoneNumber"),
+                    rs.getDate("DateOfBirth"),
+                    rs.getString("Email"),
+                    rs.getString("Address"));
             list.add(c);
         }
         conn.close();
@@ -150,8 +150,8 @@ public class DBHandler {
     // Shows only those with lname = parameter lname
     // Creates a list of customer objects that user must iterate through to handle
     public List<Customer> customerSearchByLastName(String lname) throws SQLException {
-        String query = "select c.cid, c.fname, c.lname, c.phone_Num, c.dob, c.email, " +
-                "c.address from Customer c where c.lname = ?";
+        String query = "select c.cid AS CustomerID, c.fname AS FirstName, c.lname AS LastName, c.phone_Num AS PhoneNumber, c.dob AS DateOfBirth, c.email AS Email, " +
+                "c.address AS Address from Customer c WHERE c.fname LIKE \'%" + lname + "%\'";
         ArrayList<Customer> list = new ArrayList<>();
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
@@ -159,13 +159,13 @@ public class DBHandler {
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             Customer c = new Customer(
-                    rs.getInt(1),
-                    rs.getString(2),
-                    rs.getString(3),
-                    rs.getLong(4),
-                    rs.getDate(5),
-                    rs.getString(6),
-                    rs.getString(7));
+                    rs.getInt("CustomerID"),
+                    rs.getString("FirstName"),
+                    rs.getString("LastName"),
+                    rs.getLong("PhoneNumber"),
+                    rs.getDate("DateOfBirth"),
+                    rs.getString("Email"),
+                    rs.getString("Address"));
             list.add(c);
         }
         conn.close();
@@ -278,11 +278,17 @@ public class DBHandler {
         conn.close();
     }
 
-    public void addEmployee(int eid, String fname, String lname, int salary, int age, String sex, String dob, String phoneNum) throws SQLException {
+    public void addEmployee(int eid, String fname, String lname, int salary, int age, String sex, String dob, long phoneNum) throws SQLException {
         Connection conn = getConnection();
         Statement stmt = conn.createStatement();
         stmt.executeUpdate("INSERT INTO EMPLOYEE VALUES (\'" + eid + "\', \'" + salary + "\', \'" + age + "\', \'" + sex + "\', \'" + dob + "\', \'" + phoneNum + "\')");
         conn.close();
+    }
+
+    public void updateEmployee(int eid, String fname, String lname, int salary, int age, String sex, String dob, long phoneNum) throws SQLException {
+        Connection conn = getConnection();
+        Statement stmt = conn.createStatement();
+        stmt.executeUpdate("UPDATE appointment SET fname = \'" + fname + "\', lname = \'" + lname + "\', salary = \'" + salary + "\', age = \'" + age + "\', sex = \'" + sex + "\', dob = \'" + dob + "\', phoneNum = \'" + phoneNum + "\' WHERE eid = \'" + eid + "\'");
     }
 
     public void removeEmployee(int eid) throws SQLException {
@@ -290,6 +296,54 @@ public class DBHandler {
         Statement stmt = conn.createStatement();
         stmt.executeUpdate("DELETE FROM EMPLOYEE WHERE eid = \'" + eid + "\')");
         conn.close();
+    }
+
+    public List<Employee> employeeSearchByFirstName(String fname) throws SQLException {
+        String query = "select e.eid AS EmployeeID, e.fname AS FirstName, e.lname AS LastName, e.salary AS Salary, e.age AS Age, e.sex AS Sex, " +
+                "e.dob AS DateOfBirth, phoneNum AS PhoneNumber from Employee e WHERE e.fname LIKE \'%" + fname + "%\'";
+        ArrayList<Employee> list = new ArrayList<>();
+        Connection conn = getConnection();
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setString(1, fname);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Employee e = new Employee(
+                    rs.getInt("EmployeeID"),
+                    rs.getInt("Salary"),
+                    rs.getInt("Age"),
+                    rs.getString("Sex"),
+                    rs.getString("DateOfBirth"),
+                    rs.getLong("PhoneNumber"),
+                    rs.getString("FirstName"),
+                    rs.getString("LastName"));
+            list.add(e);
+        }
+        conn.close();
+        return list;
+    }
+
+    public List<Employee> employeeSearchByLastName(String lname) throws SQLException {
+        String query = "select e.eid AS EmployeeID, e.fname AS FirstName, e.lname AS LastName, e.salary AS Salary, e.age AS Age, e.sex AS Sex, " +
+                "e.dob AS DateOfBirth, phoneNum AS PhoneNumber from Employee e WHERE e.fname LIKE \'%" + lname + "%\'";
+        ArrayList<Employee> list = new ArrayList<>();
+        Connection conn = getConnection();
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setString(1, lname);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Employee e = new Employee(
+                    rs.getInt("EmployeeID"),
+                    rs.getInt("Salary"),
+                    rs.getInt("Age"),
+                    rs.getString("Sex"),
+                    rs.getString("DateOfBirth"),
+                    rs.getLong("PhoneNumber"),
+                    rs.getString("FirstName"),
+                    rs.getString("LastName"));
+            list.add(e);
+        }
+        conn.close();
+        return list;
     }
 
     /* ------------------------------------------------------------------------------------------------------------------------------- //

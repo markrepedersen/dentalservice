@@ -11,7 +11,7 @@ public class Dentist extends Employee {
     private String fname;
     private String lname;
 
-    public Dentist(int did, int salary, int age, String sex, String dob, String phoneNum, String fname, String lname) {
+    public Dentist(int did, int salary, int age, String sex, String dob, long phoneNum, String fname, String lname) {
         super(did, salary, age, sex, dob, phoneNum, fname, lname);
     }
 }

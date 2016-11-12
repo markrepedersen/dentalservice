@@ -15,4 +15,36 @@ public class Appointment {
         this.toTime = toTime;
         this.type = type;
     }
+
+    public void setNum(int num) {
+        this.num = num;
+    }
+
+    public void setFromTime(Timestamp fromTime) {
+        this.fromTime = fromTime;
+    }
+
+    public void setToTime(Timestamp toTime) {
+        this.toTime = toTime;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public int getNum() {
+        return num;
+    }
+
+    public Timestamp getFromTime() {
+        return fromTime;
+    }
+
+    public Timestamp getToTime() {
+        return toTime;
+    }
+
+    public String getType() {
+        return type;
+    }
 }

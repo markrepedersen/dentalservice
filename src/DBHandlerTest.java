@@ -92,11 +92,11 @@ public class DBHandlerTest {
             System.out.println();
         }
     }
-/*
+
     @Test
     public void customerViewDefaultTable() throws Exception {
         List<Customer> custs = db.customerViewDefaultTable();
-        assertEquals(custs.size(), 9);
+        assertEquals(custs.size(), 17);
         for (Customer c : custs) {
             System.out.println("name of customer: " + c.getFname() + c.getLname());
             System.out.println("cid: " + c.getCID());
@@ -104,11 +104,10 @@ public class DBHandlerTest {
             System.out.println();
         }
     }
-    */
 
     @Test
     public void customerSearchByCID() throws Exception {
-        ArrayList<Customer> custs = db.customerSearchByCID(123456);
+        List<Customer> custs = db.customerSearchByCID(111801);
         assertEquals(custs.size(), 1);
         for (Customer c : custs) {
             System.out.println("name of customer: " + c.getFname() + c.getLname());
@@ -120,52 +119,55 @@ public class DBHandlerTest {
 
     @Test
     public void customerSearchByName() throws Exception {
-
+        List<Customer> custs = db.customerSearchByName("Mark");
+        assertEquals(custs.size(), 3);
+        for (Customer c : custs) {
+            System.out.println("name of customer: " + c.getFname() + c.getLname());
+            System.out.println("cid: " + c.getCID());
+            System.out.println();
+            System.out.println();
+        }
     }
 
     @Test
     public void customerSearchByLastName() throws Exception {
-
+        List<Customer> custs = db.customerSearchByLastName("Pedersen");
+        assertEquals(custs.size(), 3);
+        for (Customer c : custs) {
+            System.out.println("name of customer: " + c.getFname() + c.getLname());
+            System.out.println("cid: " + c.getCID());
+            System.out.println();
+            System.out.println();
+        }
     }
-
+/*
     @Test
     public void getUpcomingCustomerAppointments() throws Exception {
-
+        List<Appointment> custs = db.getUpcomingCustomerAppointments(111801);
+        assertEquals(custs.size(), 2);
+        for (Appointment c : custs) {
+            System.out.println("num: " + c.getNum());
+            System.out.println("from: " + c.getFromTime());
+            System.out.println("til: " + c.getToTime());
+            System.out.println();
+            System.out.println();
+        }
     }
-
+    */
+/*
     @Test
     public void getPastCustomerAppointments() throws Exception {
-
+        List<Appointment> custs = db.getPastCustomerAppointments(111801);
+        assertEquals(custs.size(), 2);
+        for (Appointment c : custs) {
+            System.out.println("num: " + c.getNum());
+            System.out.println("from: " + c.getFromTime());
+            System.out.println("til: " + c.getToTime());
+            System.out.println();
+            System.out.println();
+        }
     }
+    */
 
-    @Test
-    public void addCustomer() throws Exception {
-
-    }
-
-    @Test
-    public void removeCustomer() throws Exception {
-
-    }
-
-    @Test
-    public void addEmployee() throws Exception {
-
-    }
-
-    @Test
-    public void removeEmployee() throws Exception {
-
-    }
-
-    @Test
-    public void addAppointment() throws Exception {
-
-    }
-
-    @Test
-    public void removeAppointment() throws Exception {
-
-    }
 
 }

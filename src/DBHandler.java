@@ -74,7 +74,7 @@ public class DBHandler {
     // The default view that an employee will have
     // Creates a list of customer objects that user must iterate through to handle
     public List<Customer> customerViewDefaultTable() throws SQLException {
-        String query = "select * from Customer c, Dentist d, Attends a where c.cid = a.cid and a.did = d.did";
+        String query = "select * from Customer";
         List<Customer> list = new ArrayList<>();
         Connection conn = getConnection();
         Statement stmt = conn.createStatement();
@@ -84,11 +84,10 @@ public class DBHandler {
                     rs.getInt(1),
                     rs.getString(2),
                     rs.getString(3),
-                    rs.getInt(4),
+                    rs.getLong(4),
                     rs.getDate(5),
                     rs.getString(6),
                     rs.getString(7));
-            c.setDentist(rs.getString(9) + rs.getString(10));
             list.add(c);
         }
         return list;
@@ -99,24 +98,21 @@ public class DBHandler {
     // Creates a list of customer objects that user must iterate through to handle
     public ArrayList<Customer> customerSearchByCID(int cid) throws SQLException {
         String query = "select c.cid, c.fname, c.lname, c.phone_Num, c.dob, c.email, " +
-                "c.address, d.fname, d.lname from Customer c, Attends a, Dentist d " +
-                "where c.cid = ? and a.cid = ? and a.did = d.did";
+                "c.address from Customer c where c.cid = ?";
         ArrayList<Customer> list = new ArrayList<>();
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
         ps.setInt(1, cid);
-        ps.setInt(2, cid);
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             Customer c = new Customer(
-                    rs.getInt(0),
-                    rs.getString(1),
+                    rs.getInt(1),
                     rs.getString(2),
-                    rs.getInt(3),
-                    rs.getDate(4),
-                    rs.getString(5),
-                    rs.getString(6));
-            c.setDentist(rs.getString(7) + rs.getString(8));
+                    rs.getString(3),
+                    rs.getLong(4),
+                    rs.getDate(5),
+                    rs.getString(6),
+                    rs.getString(7));
             list.add(c);
         }
         return list;
@@ -125,22 +121,23 @@ public class DBHandler {
     // Filters customers by fname
     // Shows only those with fname = parameter fname
     // Creates a list of customer objects that user must iterate through to handle
-    public List<Customer> customerSearchByName(int fname) throws SQLException {
-        List<Customer> list = new ArrayList<>();
+    public List<Customer> customerSearchByName(String fname) throws SQLException {
+        String query = "select c.cid, c.fname, c.lname, c.phone_Num, c.dob, c.email, " +
+                "c.address from Customer c where c.fname = ?";
+        ArrayList<Customer> list = new ArrayList<>();
         Connection conn = getConnection();
-        Statement stmt = conn.createStatement();
-        stmt.execute(CUSTOMER_WITH_DENTIST + "fname = \'" + fname + "\'");
-        ResultSet rs = stmt.getResultSet();
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setString(1, fname);
+        ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             Customer c = new Customer(
-                    rs.getInt(0),
-                    rs.getString(1),
+                    rs.getInt(1),
                     rs.getString(2),
-                    rs.getInt(3),
-                    rs.getDate(4),
-                    rs.getString(5),
-                    rs.getString(6));
-            c.setDentist(rs.getString(7) + rs.getString(8));
+                    rs.getString(3),
+                    rs.getLong(4),
+                    rs.getDate(5),
+                    rs.getString(6),
+                    rs.getString(7));
             list.add(c);
         }
         return list;
@@ -149,22 +146,23 @@ public class DBHandler {
     // Filters customers by lname
     // Shows only those with lname = parameter lname
     // Creates a list of customer objects that user must iterate through to handle
-    public List<Customer> customerSearchByLastName(int lname) throws SQLException {
-        List<Customer> list = new ArrayList<>();
+    public List<Customer> customerSearchByLastName(String lname) throws SQLException {
+        String query = "select c.cid, c.fname, c.lname, c.phone_Num, c.dob, c.email, " +
+                "c.address from Customer c where c.lname = ?";
+        ArrayList<Customer> list = new ArrayList<>();
         Connection conn = getConnection();
-        Statement stmt = conn.createStatement();
-        stmt.execute(CUSTOMER_WITH_DENTIST + "lname = \'" + lname + "\'");
-        ResultSet rs = stmt.getResultSet();
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setString(1, lname);
+        ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             Customer c = new Customer(
-                    rs.getInt(0),
-                    rs.getString(1),
+                    rs.getInt(1),
                     rs.getString(2),
-                    rs.getInt(3),
-                    rs.getDate(4),
-                    rs.getString(5),
-                    rs.getString(6));
-            c.setDentist(rs.getString(7) + rs.getString(8));
+                    rs.getString(3),
+                    rs.getLong(4),
+                    rs.getDate(5),
+                    rs.getString(6),
+                    rs.getString(7));
             list.add(c);
         }
         return list;
@@ -174,12 +172,12 @@ public class DBHandler {
     public List<Appointment> getUpcomingCustomerAppointments(int cid) throws SQLException {
         String query = "select a.num as num, a.type as type, a.fromTime as fromTime, a.toTime as toTime " +
                        "from Customer c, Appointment a where " +
-                       "c.cid = \'" + cid + "\' and a.cid = \'" + cid + "\' and CURRENT_TIMESTAMP <= a.fromTime";
+                       "c.cid = ? and a.cid = c.cid and CURRENT_TIMESTAMP <= a.fromTime";
         List<Appointment> list = new ArrayList<>();
         Connection conn = getConnection();
-        Statement stmt = conn.createStatement();
-        stmt.execute(query);
-        ResultSet rs = stmt.getResultSet();
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setInt(1, cid);
+        ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             Appointment a = new Appointment(
                     rs.getInt("num"),
@@ -193,20 +191,20 @@ public class DBHandler {
 
     // Finds past appointment records for a customer
     public List<Appointment> getPastCustomerAppointments(int cid) throws SQLException {
-        String query = "select a.num as num, a.type as type, a.fromTime as fromTime, a.toTime as toTime" +
+        String query = "select a.num as num, a.type as type, a.fromTime as from, a.toTime as until" +
                        " from Customer c, Appointment a where " +
-                       "c.cid = \'" + cid + "\' and a.cid = \'" + cid + "\' and CURRENT_TIMESTAMP > a.fromTime";
+                       "c.cid = ? and a.cid = c.cid and CURRENT_TIMESTAMP > a.fromTime";
         List<Appointment> list = new ArrayList<>();
         Connection conn = getConnection();
-        Statement stmt = conn.createStatement();
-        stmt.execute(query);
-        ResultSet rs = stmt.getResultSet();
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setInt(1, cid);
+        ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             Appointment a = new Appointment(
                     rs.getInt("num"),
                     rs.getString("type"),
-                    rs.getTimestamp("fromTime"),
-                    rs.getTimestamp("toTime"));
+                    rs.getTimestamp("from"),
+                    rs.getTimestamp("until"));
             list.add(a);
         }
         return list;

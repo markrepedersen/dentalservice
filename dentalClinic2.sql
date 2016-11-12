@@ -272,6 +272,8 @@ insert into Medicine values (542321, 43.74, 'Fluoride');
 -- now add in
 --
 insert into Customer values (111801, 'Mark', 'Pedersen', 6042347333, '1995-12-31', 'pedersen.mark@hotmail.com', '1326 Davie St, Vancouver, BC V6E 1N6');
+insert into Customer values (111888, 'Mark', 'Pedersen', 6042347333, '1994-12-31', 'pedersen.mark@gmail.com', '1326 Davie St, Vancouver, BC V6E 1N6');
+insert into Customer values (111999, 'Mark', 'Pedersen', 6042347333, '1993-12-31', 'pedersen.mark@live.com', '1326 Davie St, Vancouver, BC V6E 1N6');
 insert into Customer values (111861, 'Liam', 'Adams', 7789215656, '1995-12-31', 'liamadams@yahoo.com', '1932 West 1st Avenue, Vancouver, BC V6J 1G6');
 insert into Customer values (111993, 'Theodore', 'Lau', 6049691124, '1995-12-31', 'theodorel@gmail.com', '4551 Northey Road, Richmond, BC V6X 2G4');
 insert into Customer values (111657, 'Abhinav', 'Behera', 6045479898, '1995-12-31', 'beabhinav22@me.com', '3812 Eton Street, Burnaby, BC V5C 1J4');
@@ -313,10 +315,10 @@ insert into Treats values (555129, 111986);
 --
 -- now add in Appointment
 --
-insert into Appointment values (4210, 'CHEK', '2016-10-30 16:00:00', '2016-10-30 16:20:00', 0000001, 111811);
-insert into Appointment values (4228, 'CLEN', '2016-10-21 10:30:00', '2016-10-21 11:10:00', 0000001, 111657);
-insert into Appointment values (4233, 'CAVT', '2016-11-19 12:10:00', '2016-11-19 12:50:00', 0000003, 111801);
-insert into Appointment values (4277, 'DRIL', '2016-11-19 14:00:00', '2016-11-19 15:20:00', 0000004, 111801);
+insert into Appointment values (4210, 'CHEK', '2017-10-30 16:00:00', '2016-10-30 16:20:00', 0000001, 111801);
+insert into Appointment values (4228, 'CLEN', '2017-10-21 10:30:00', '2016-10-21 11:10:00', 0000001, 111801);
+insert into Appointment values (4233, 'CAVT', '2016-1-19 12:10:00', '2016-11-19 12:50:00', 0000003, 111801);
+insert into Appointment values (4277, 'DRIL', '2016-1-19 14:00:00', '2016-11-19 15:20:00', 0000004, 111801);
 insert into Appointment values (4296, 'DRIL', '2016-11-24 15:00:00', '2016-11-24 16:20:00', 0000005, 111921);
 insert into Appointment values (4242, 'CAVT', '2016-11-30 09:00:00', '2016-11-30 10:00:00', 0000006, 111542);
 insert into Appointment values (4263, 'CHEK', '2016-12-01 09:00:00', '2016-12-01 10:20:00', 0000007, 111682);

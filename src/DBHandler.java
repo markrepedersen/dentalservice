@@ -90,6 +90,7 @@ public class DBHandler {
                     rs.getString(7));
             list.add(c);
         }
+        conn.close();
         return list;
     }
 
@@ -115,6 +116,7 @@ public class DBHandler {
                     rs.getString(7));
             list.add(c);
         }
+        conn.close();
         return list;
     }
 
@@ -140,6 +142,7 @@ public class DBHandler {
                     rs.getString(7));
             list.add(c);
         }
+        conn.close();
         return list;
     }
 
@@ -165,35 +168,15 @@ public class DBHandler {
                     rs.getString(7));
             list.add(c);
         }
+        conn.close();
         return list;
     }
 
     // Finds specific appointment records for a customer
     public List<Appointment> getUpcomingCustomerAppointments(int cid) throws SQLException {
-        String query = "select a.num as num, a.type as type, a.fromTime as fromTime, a.toTime as toTime " +
-                       "from Customer c, Appointment a where " +
-                       "c.cid = ? and a.cid = c.cid and CURRENT_TIMESTAMP <= a.fromTime";
-        List<Appointment> list = new ArrayList<>();
-        Connection conn = getConnection();
-        PreparedStatement ps = conn.prepareStatement(query);
-        ps.setInt(1, cid);
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            Appointment a = new Appointment(
-                    rs.getInt("num"),
-                    rs.getString("type"),
-                    rs.getTimestamp("fromTime"),
-                    rs.getTimestamp("toTime"));
-            list.add(a);
-        }
-        return list;
-    }
-
-    // Finds past appointment records for a customer
-    public List<Appointment> getPastCustomerAppointments(int cid) throws SQLException {
-        String query = "select a.num as num, a.type as type, a.fromTime as from, a.toTime as until" +
-                       " from Customer c, Appointment a where " +
-                       "c.cid = ? and a.cid = c.cid and CURRENT_TIMESTAMP > a.fromTime";
+        String query = "select app.num as \"num\", app.type as \"type\", app.from_Time as \"from\", app.to_Time as \"until\"" +
+                " from Customer cus, Appointment app where " +
+                "cus.cid = app.cid and app.cid = ? and CURRENT_TIMESTAMP <= app.from_Time";
         List<Appointment> list = new ArrayList<>();
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
@@ -207,6 +190,52 @@ public class DBHandler {
                     rs.getTimestamp("until"));
             list.add(a);
         }
+        conn.close();
+        return list;
+    }
+
+    // Finds specific appointment records for all customers
+    public List<Appointment> getUpcomingCustomerAppointments() throws SQLException {
+        String query = "select * from customer c, appointment a where a.cid = c.cid and CURRENT_TIMESTAMP <= a.from_Time";
+        List<Appointment> list = new ArrayList<>();
+        Connection conn = getConnection();
+        PreparedStatement ps = conn.prepareStatement(query);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Appointment a = new Appointment(
+                    rs.getInt("num"),
+                    rs.getTimestamp("from_Time"),
+                    rs.getTimestamp("to_Time"),
+                    rs.getString("type"),
+                    rs.getInt("cid"),
+                    rs.getString("fname"),
+                    rs.getString("lname")
+                    );
+            list.add(a);
+        }
+        conn.close();
+        return list;
+    }
+
+    // Finds past appointment records for a customer
+    public List<Appointment> getPastCustomerAppointments(int cid) throws SQLException {
+        String query = "select app.num as \"num\", app.type as \"type\", app.from_Time as \"from\", app.to_Time as \"until\"" +
+                       " from Customer cus, Appointment app where " +
+                       "cus.cid = app.cid and app.cid = ? and CURRENT_TIMESTAMP > app.from_Time";
+        List<Appointment> list = new ArrayList<>();
+        Connection conn = getConnection();
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setInt(1, cid);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Appointment a = new Appointment(
+                    rs.getInt("num"),
+                    rs.getString("type"),
+                    rs.getTimestamp("from"),
+                    rs.getTimestamp("until"));
+            list.add(a);
+        }
+        conn.close();
         return list;
     }
 
@@ -228,6 +257,7 @@ public class DBHandler {
         Connection conn = getConnection();
         Statement stmt = conn.createStatement();
         stmt.executeUpdate("DELETE FROM CUSTOMER WHERE eid = \'" + eid + "\'");
+        conn.close();
     }
 
 
@@ -245,18 +275,21 @@ public class DBHandler {
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
         ps.executeUpdate();
+        conn.close();
     }
 
     public void addEmployee(int eid, String fname, String lname, int salary, int age, String sex, String dob, String phoneNum) throws SQLException {
         Connection conn = getConnection();
         Statement stmt = conn.createStatement();
         stmt.executeUpdate("INSERT INTO EMPLOYEE VALUES (\'" + eid + "\', \'" + salary + "\', \'" + age + "\', \'" + sex + "\', \'" + dob + "\', \'" + phoneNum + "\')");
+        conn.close();
     }
 
     public void removeEmployee(int eid) throws SQLException {
         Connection conn = getConnection();
         Statement stmt = conn.createStatement();
         stmt.executeUpdate("DELETE FROM EMPLOYEE WHERE eid = \'" + eid + "\')");
+        conn.close();
     }
 
     /* ------------------------------------------------------------------------------------------------------------------------------- //
@@ -286,6 +319,7 @@ public class DBHandler {
                     );
             list.add(b);
         }
+        conn.close();
         return list;
     }
 
@@ -302,7 +336,8 @@ public class DBHandler {
                     "and c.cid = ? " +
                     "group by c.cid, c.fname, c.lname, b.type, b.dueDate";
         List<Bill> list = new ArrayList<>();
-        PreparedStatement ps = getConnection().prepareStatement(query);
+        Connection conn = getConnection();
+        PreparedStatement ps = conn.prepareStatement(query);
         ps.setInt(1, cid);
         ps.setInt(2, cid);
         ResultSet rs = ps.executeQuery();
@@ -316,6 +351,7 @@ public class DBHandler {
             );
             list.add(b);
         }
+        conn.close();
         return list;
     }
 
@@ -342,6 +378,7 @@ public class DBHandler {
             );
             list.add(b);
         }
+        conn.close();
         return list;
     }
 
@@ -354,12 +391,14 @@ public class DBHandler {
         Connection conn = getConnection();
         Statement stmt = conn.createStatement();
         stmt.executeUpdate("INSERT INTO appointment VALUES (\'" + num + "\', \'" + type + "\', \'" + fromTime + "\', \'" + toTime + "\', \'" + rid + "\', \'" + cid + "\')");
+        conn.close();
     }
 
     public void removeAppointment(int num) throws SQLException {
         Connection conn = getConnection();
         Statement stmt = conn.createStatement();
         stmt.executeUpdate("DELETE FROM APPOINTMENT WHERE num = \'" + num + "\'");
+        conn.close();
     }
 
 
@@ -380,6 +419,7 @@ public class DBHandler {
         ps.setInt(6, isPaid);
         ps.setInt(7, cid);
         ps.executeUpdate();
+        conn.close();
     }
 
 

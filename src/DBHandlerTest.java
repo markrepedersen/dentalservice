@@ -140,7 +140,7 @@ public class DBHandlerTest {
             System.out.println();
         }
     }
-/*
+
     @Test
     public void getUpcomingCustomerAppointments() throws Exception {
         List<Appointment> custs = db.getUpcomingCustomerAppointments(111801);
@@ -153,8 +153,30 @@ public class DBHandlerTest {
             System.out.println();
         }
     }
-    */
-/*
+
+    @Test
+    public void getCustomerUnpaidBills() throws Exception {
+        assertEquals(db.getCustomerBills(123456).size(), 1);
+        assertEquals(db.getCustomerYearlyPayments(123456).get(0).getAmountPaid(), new BigDecimal(60000.00));
+    }
+
+
+    @Test
+    public void getUpcomingCustomerAppointments2() throws Exception {
+        List<Appointment> custs = db.getUpcomingCustomerAppointments();
+        assertEquals(custs.size(), 10);
+        for (Appointment c : custs) {
+            System.out.println("cid: " + c.getCid());
+            System.out.println("fname: " + c.getCname());
+            System.out.println("lname: " + c.getCsurname());
+            System.out.println("num: " + c.getNum());
+            System.out.println("from: " + c.getFromTime());
+            System.out.println("til: " + c.getToTime());
+            System.out.println();
+            System.out.println();
+        }
+    }
+
     @Test
     public void getPastCustomerAppointments() throws Exception {
         List<Appointment> custs = db.getPastCustomerAppointments(111801);
@@ -167,7 +189,6 @@ public class DBHandlerTest {
             System.out.println();
         }
     }
-    */
 
 
 }

@@ -1,7 +1,3 @@
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-
 /**
  * Created by mark on 2016-11-07.
  */
@@ -11,11 +7,11 @@ public class Employee {
     private int age;
     private String sex;
     private String dob;
-    private String phoneNum;
+    private long phoneNum;
     private String lname;
     private String fname;
 
-    public Employee(int eid, int salary, int age, String sex, String dob, String phoneNum, String lname, String fname) {
+    public Employee(int eid, int salary, int age, String sex, String dob, long phoneNum, String lname, String fname) {
         this.eid = eid;
         this.salary = salary;
         this.age = age;
@@ -66,7 +62,7 @@ public class Employee {
         this.dob = dob;
     }
 
-    public void setPhoneNum(String phoneNum) {
+    public void setPhoneNum(long phoneNum) {
         this.phoneNum = phoneNum;
     }
 
@@ -78,7 +74,7 @@ public class Employee {
         this.fname = fname;
     }
 
-    public String getPhoneNum() {
+    public long getPhoneNum() {
         return phoneNum;
     }
 

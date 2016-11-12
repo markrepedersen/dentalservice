@@ -139,7 +139,7 @@ public class DBHandlerTest {
 
     @Test
     public void customerSearchByName() throws Exception {
-        List<Customer> custs = db.customerSearchByName("Mark");
+        List<Customer> custs = db.customerSearchByFirstName("Mark");
         assertEquals(custs.size(), 3);
         for (Customer c : custs) {
             System.out.println("name of customer: " + c.getFname() + c.getLname());

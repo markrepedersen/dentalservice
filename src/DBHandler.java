@@ -394,6 +394,12 @@ public class DBHandler {
         conn.close();
     }
 
+    public void updateAppointment(int num, String type, Timestamp fromTime, Timestamp toTime) throws SQLException {
+        Connection conn = getConnection();
+        Statement stmt = conn.createStatement();
+        stmt.executeUpdate("UPDATE appointment SET type = \'" + type + "\', fromTime = \'" + fromTime + "\', toTime = \'" + toTime + "\' WHERE num = \'" + num + "\'");
+    }
+
     public void removeAppointment(int num) throws SQLException {
         Connection conn = getConnection();
         Statement stmt = conn.createStatement();
@@ -409,7 +415,7 @@ public class DBHandler {
     public void addBill(int bid, String type, BigDecimal amountPaid, BigDecimal amountOwes,
                         Date dueDate, int isPaid, int cid) throws SQLException {
         Connection conn = getConnection();
-        String query = "insert into bill(bid, type, amountPaid, amountOwes, dueDate, isPaid, cid) values(?, ?, ?, ?, ?, ?, ?)";
+        String query = "insert into bill VALUES (\'" + bid + "\', \'" + type + "\', \'" + amountPaid + "\', \'" + amountOwes + "\', \'" + dueDate + "\', \'" + isPaid + "\', \'" + cid + "\')";
         PreparedStatement ps = conn.prepareStatement(query);
         ps.setInt(1, bid);
         ps.setString(2, type);
@@ -422,11 +428,70 @@ public class DBHandler {
         conn.close();
     }
 
+    public void updateBill(int code, String type, BigDecimal amountPaid, BigDecimal amountOwes,
+                           Date dueDate, int isPaid) throws SQLException {
+        Connection conn = getConnection();
+        Statement stmt = conn.createStatement();
+        stmt.executeUpdate("UPDATE bill SET type = \'" + type + "\', amountPaid = \'" + amountPaid + "\', amountOwes = \'" + amountOwes + "\', dueDate = \'" + dueDate + "\', isPaid = \'" + isPaid + "\' WHERE code = \'" + code + "\'");
+    }
 
+    public void removeBill(int bid) throws SQLException {
+        Connection conn = getConnection();
+        Statement stmt = conn.createStatement();
+        stmt.executeUpdate("DELETE FROM bill WHERE bid = \'" + bid + "\'");
+    }
 
     /* ------------------------------------------------------------------------------------------------------------------------------- //
     ----------------------------------------------- Medicine Methods -----------------------------------------------------------------
     */
+
+    public void addMedicine(int code, double cost, String description) throws SQLException {
+        Connection conn = getConnection();
+        Statement stmt = conn.createStatement();
+        stmt.executeUpdate("INSERT INTO medicine VALUES (\'" + code + "\', \'" + cost + "\', \'" + description + "\')");
+    }
+
+    public void updateMedicine(int code, double cost, String description) throws SQLException {
+        Connection conn = getConnection();
+        Statement stmt = conn.createStatement();
+        stmt.executeUpdate("UPDATE medicine SET cost = \'" + cost + "\', description = \'" + description + "\' WHERE code = \'" + code + "\'");
+    }
+
+    public void removeMedicine(int code) throws SQLException {
+        Connection conn = getConnection();
+        Statement stmt = conn.createStatement();
+        stmt.executeUpdate("DELETE FROM medicine WHERE code = \'" + code + "\'");
+    }
+
+    public void addTreats(int code, int cid) throws SQLException {
+        Connection conn = getConnection();
+        Statement stmt = conn.createStatement();
+        stmt.executeUpdate("INSERT INTO treats VALUES (\'" + code + "\', \'" + cid + "\')");
+    }
+
+    public void removeTreats(int code, int cid) throws SQLException {
+        Connection conn = getConnection();
+        Statement stmt = conn.createStatement();
+        stmt.executeUpdate("DELETE FROM medicine WHERE code = \'" + code + "\' AND cid = \'" + cid + "\'");
+    }
+
+    // Finds  medicines for customer
+    public List<Medicine> getCustomerMedicines(int cid) throws SQLException {
+        String query = "SELECT m.code AS CODE, m.cost AS COST, m.description AS Description from Treats t, Medicine m where " +
+                "t.cid = \'" + cid + "\'";
+        List<Medicine> list = new ArrayList<>();
+        Connection conn = getConnection();
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.getResultSet();
+        while (rs.next()) {
+            Medicine m = new Medicine(
+                    rs.getInt("CODE"),
+                    rs.getDouble("COST"),
+                    rs.getString("DESCRIPTION"));
+            list.add(m);
+        }
+        return list;
+    }
 
 
 }

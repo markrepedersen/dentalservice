@@ -75,9 +75,29 @@ public class DBHandlerTest {
     }
 
     @Test
-    public void getCustomerYearlyPayments() throws SQLException {
-        assertEquals(db.getCustomerYearlyPayments(123456).size(), 1);
-        assertEquals(db.getCustomerYearlyPayments(123456).get(0).getAmountPaid(), new BigDecimal(60000.00));
+    public void getCustomerPastPayments() throws SQLException {
+        List<Bill> list = db.getCustomerPastPayments(111801);
+        //assertEquals(list.size(), 1);
+        for (int i = 0; i < list.size();i++) {
+            System.out.println(list.get(i).getAmountPaid());
+        }
+        //assertEquals(list.get(0).getAmountPaid(), new BigDecimal(100.00));
+        for (Bill b : list) {
+            System.out.println("name: " + b.getCname() + b.getSurname());
+            System.out.println("payments: " + b.getAmountPaid());
+            System.out.println();
+            System.out.println();
+        }
+    }
+
+    @Test
+    public void getCustomerWith2Payments() throws SQLException {
+        List<Customer> list = db.getCustomerWith2Payments();
+        //assertEquals(list.size(), 1);
+        for (int i = 0; i < list.size();i++) {
+            System.out.println(list.get(i).getCID());
+        }
+        //assertEquals(list.get(0).getAmountPaid(), new BigDecimal(100.00));
     }
 
     @Test
@@ -153,13 +173,13 @@ public class DBHandlerTest {
             System.out.println();
         }
     }
-
+/*
     @Test
     public void getCustomerUnpaidBills() throws Exception {
         assertEquals(db.getCustomerBills(123456).size(), 1);
         assertEquals(db.getCustomerYearlyPayments(123456).get(0).getAmountPaid(), new BigDecimal(60000.00));
     }
-
+*/
 
     @Test
     public void getUpcomingCustomerAppointments2() throws Exception {

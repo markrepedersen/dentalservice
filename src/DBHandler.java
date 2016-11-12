@@ -326,15 +326,13 @@ public class DBHandler {
     // Get a customer's yearly payments
     // cid is customer's cid
     // we do not use first or last name since results must be unique to one customer only
-    public List<Bill> getCustomerYearlyPayments(int cid) throws SQLException {
+    public List<Bill> getCustomerPastPayments(int cid) throws SQLException {
         String query = "select c.cid, c.fname as Name, " +
                     "c.lname as Surname, " +
-                    "b.type as type, " +
-                    "b.dueDate as Due, " +
                     "SUM(b.amountPaid) as Payment " +
                     "from Customer c, Bill b where b.cid = ? " +
-                    "and c.cid = ? " +
-                    "group by c.cid, c.fname, c.lname, b.type, b.dueDate";
+                    "and c.cid = ? and b.cid = c.cid and CURRENT_DATE > dueDate and isPaid = 1" +
+                    "group by c.cid, c.fname, c.lname";
         List<Bill> list = new ArrayList<>();
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
@@ -345,9 +343,33 @@ public class DBHandler {
             Bill b = new Bill(
                     rs.getString("Name"),
                     rs.getString("Surname"),
-                    rs.getString("type"),
-                    rs.getDate("Due"),
                     rs.getBigDecimal("Payment")
+            );
+            list.add(b);
+        }
+        conn.close();
+        return list;
+    }
+
+    // Get a customer's yearly payments
+    // cid is customer's cid
+    // we do not use first or last name since results must be unique to one customer only
+    public List<Customer> getCustomerWith2Payments() throws SQLException {
+        String query = "select * from customer where cid in (" +
+                       "select cid from bill group by cid having COUNT(*) = 2)";
+        List<Customer> list = new ArrayList<>();
+        Connection conn = getConnection();
+        PreparedStatement ps = conn.prepareStatement(query);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Customer b = new Customer(
+                    rs.getInt("cid"),
+                    rs.getString("fname"),
+                    rs.getString("lname"),
+                    rs.getLong("phone_Num"),
+                    rs.getDate("dob"),
+                    rs.getString("email"),
+                    rs.getString("address")
             );
             list.add(b);
         }

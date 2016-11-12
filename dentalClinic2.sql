@@ -330,18 +330,18 @@ insert into Appointment values (4274, 'FILL', '2017-01-10 10:00:00', '2016-01-10
 --
 -- now add in Bill
 --
-insert into Bill values (48232, 'BANK', 10.00, 87.61, '2017-12-31', 0, 111801);
-insert into Bill values (48251, 'INST', 10.00, 7.99, '2017-12-31',  0,  111811);
-insert into Bill values (48233, 'INST', 10.00, 51.23, '2017-12-31', 0,  111993);
-insert into Bill values (48248, 'CHEQ', 10.00, 134.45, '2017-12-31', 0,  111861);
+insert into Bill values (48232, 'BANK', 10.00, 87.61, '2015-12-31', 1, 111801);
+insert into Bill values (48251, 'INST', 20.00, 7.99, '2015-12-31',  1,  111801);
+insert into Bill values (48233, 'INST', 30.00, 51.23, '2015-12-31', 0,  111801);
+insert into Bill values (48248, 'CHEQ', 40.00, 134.45, '2017-12-31', 0,  111801);
 insert into Bill values (48291, 'ONLI', 10.00, 21.49, '2017-12-31', 1,  111659);
 insert into Bill values (48304, 'INST', 10.00, 91.89, '2017-12-31', 1,  111682);
 insert into Bill values (48322, 'BANK', 10.00, 78.69, '2017-12-31', 1,  111967);
 insert into Bill values (48339, 'ONLI', 10.00, 43.59, '2017-12-31', 1,  111993);
 insert into Bill values (48340, 'ONLI', 10.00, 21.49, '2017-12-31', 1,  111921);
 insert into Bill values (48351, 'CHEQ', 10.00, 7.99, '2017-12-31', 1,  111921);
-insert into Bill values (48357, 'CHEQ', 10.00, 62.05, '2017-12-31', 0,  111659);
-insert into Bill values (48359, 'ONLI', 10.00, 79.82, '2017-12-31', 0,  111657);
+insert into Bill values (48357, 'CHEQ', 100.00, 62.05, '2017-12-31', 0,  111659);
+insert into Bill values (48359, 'ONLI', 100.00, 79.82, '2017-12-31', 0,  111657);
 --
 -- now add in the Uses
 --

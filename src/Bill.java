@@ -13,6 +13,19 @@ public class Bill {
     private BigDecimal amountOwes;
     private BigDecimal balance;
     private Date       dueDate;
+
+    public int getBid() {
+        return bid;
+    }
+
+    public int getIsPaid() {
+        return isPaid;
+    }
+
+    public int getCid() {
+        return cid;
+    }
+
     private int        isPaid;
     private int        cid;
 
@@ -37,12 +50,23 @@ public class Bill {
         this.balance = balance;
     }
 
+    public Bill(int cid, BigDecimal paid) {
+        this.cid = cid;
+        this.amountPaid = paid;
+    }
+
     // constructor for getCustomerYearlyPayments method
-    public Bill(String name, String surname, String type, Date dueDate, BigDecimal payment) {
+    public Bill(String name, String surname, BigDecimal payment) {
         this.cname = name;
         this.surname = surname;
-        this.type = type;
-        this.dueDate = dueDate;
+        this.amountPaid = payment;
+    }
+
+    // constructor for getCustomerYearlyPayments method
+    public Bill(int cid, String name, String surname, BigDecimal payment) {
+        this.cid = cid;
+        this.cname = name;
+        this.surname = surname;
         this.amountPaid = payment;
     }
 

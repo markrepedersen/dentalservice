@@ -1,3 +1,5 @@
+import org.junit.Test;
+
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
@@ -330,6 +332,22 @@ public class DBHandler {
         stmt.executeUpdate("DELETE FROM EMPLOYEE WHERE eid = \'" + eid + "\')");
         conn.close();
     }
+    @Test
+
+    // Get highest Customer ID
+    public int getHighestCustomerID() throws Exception {
+        String query = "select max(cid) from customer";
+        Connection conn = getConnection();
+        Statement stmt = conn.createStatement();
+        stmt.execute(query);
+        ResultSet rs = stmt.getResultSet();
+        int result = 0;
+        while (rs.next()) {
+            result = rs.getInt(1);
+        }
+        conn.close();
+        return result;
+    }
 
     public List<Employee> employeeSearchByFirstName(String fname) throws SQLException {
         String query = "select e.eid AS EmployeeID, e.fname AS FirstName, e.lname AS LastName, e.salary AS Salary, e.age AS Age, e.sex AS Sex, " +
@@ -356,9 +374,65 @@ public class DBHandler {
         return list;
     }
 
-    public List<Employee> employeeSearchByLastName(String lname) throws SQLException {
-        String query = "select e.eid AS EmployeeID, e.fname AS FirstName, e.lname AS LastName, e.salary AS Salary, e.age AS Age, e.sex AS Sex, " +
-                "e.dob AS DateOfBirth, phoneNum AS PhoneNumber from Employee e WHERE e.fname LIKE \'%?%\'";
+    // The default view that an employee will have
+    // Creates a list of customer objects that user must iterate through to handle
+    public List<Employee> employeeViewDefaultTable() throws SQLException {
+        String query = "select * from Employee";
+
+        List<Employee> list = new ArrayList<>();
+        Connection conn = getConnection();
+
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery(query);
+        while (rs.next()) {
+            Employee e = new Employee(
+                    rs.getInt(1),
+                    rs.getString(2),
+                    rs.getString(3),
+                    rs.getInt(4),
+                    rs.getInt(5),
+                    rs.getString(6),
+                    rs.getDate(7),
+                    rs.getLong(8));
+            list.add(e);
+        }
+
+        return list;
+    }
+
+
+    // Filters employees by eid
+    // Shows only those with eid = parameter eid
+    // Creates a list of Employee objects that user must iterate through to handle
+    public ArrayList<Employee> empSearchByEID(int eid) throws SQLException {
+        String query = "select c.cid, c.fname, c.lname, c.phone_Num, c.dob, c.email, " +
+                "c.address from Customer c where c.cid = ?";
+        ArrayList<Employee> list = new ArrayList<>();
+        Connection conn = getConnection();
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setInt(1, eid);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Employee e = new Employee(
+                    rs.getInt(1),
+                    rs.getString(2),
+                    rs.getString(3),
+                    rs.getInt(4),
+                    rs.getInt(5),
+                    rs.getString(6),
+                    rs.getDate(7),
+                    rs.getLong(8));
+            list.add(e);
+        }
+        return list;
+    }
+
+    // Filters customers by lname
+    // Shows only those with lname = parameter lname
+    // Creates a list of customer objects that user must iterate through to handle
+    public List<Employee> empSearchByLastName(String lname) throws SQLException {
+        String query = "select c.eid, c.fname, c.lname, c.phone_Num, c.dob, c.email, " +
+                "c.address from Customer c where c.lname = ?";
         ArrayList<Employee> list = new ArrayList<>();
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
@@ -366,18 +440,16 @@ public class DBHandler {
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             Employee e = new Employee(
-                    rs.getInt("EmployeeID"),
-                    rs.getString("FirstName"),
-                    rs.getString("LastName"),
-                    rs.getInt("Salary"),
-                    rs.getInt("Age"),
-                    rs.getString("Sex"),
-                    rs.getDate("DateOfBirth"),
-                    rs.getLong("PhoneNumber")
-            );
+                    rs.getInt(1),
+                    rs.getString(2),
+                    rs.getString(3),
+                    rs.getInt(4),
+                    rs.getInt(5),
+                    rs.getString(6),
+                    rs.getDate(7),
+                    rs.getLong(8));
             list.add(e);
         }
-        conn.close();
         return list;
     }
 
@@ -592,9 +664,75 @@ public class DBHandler {
     }
 
 
+    // Finds specific appointment records for all customers by Last Name
+    public List<Appointment> searchCustomerAppointmentByLName(String key) throws SQLException {
+        String query = "select * from customer c, appointment a where a.cid = c.cid and CURRENT_TIMESTAMP <= a.from_Time and lname = ?";
+        List<Appointment> list = new ArrayList<>();
+        Connection conn = getConnection();
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setString(1, key);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Appointment a = new Appointment(
+                    rs.getInt("num"),
+                    rs.getTimestamp("from_Time"),
+                    rs.getTimestamp("to_Time"),
+                    rs.getString("type"),
+                    rs.getInt("cid"),
+                    rs.getString("fname"),
+                    rs.getString("lname")
+            );
+            list.add(a);
+        }
+        conn.close();
+        return list;
+    }
+
+    // Finds specific appointment records for all customers by Last Name
+    public List<Appointment> searchCustomerAppointmentByCid(String key) throws SQLException {
+        String query = "select * from customer c, appointment a where a.cid = c.cid and CURRENT_TIMESTAMP <= a.from_Time and c.cid = ?";
+        List<Appointment> list = new ArrayList<>();
+        Connection conn = getConnection();
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setString(1, key);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Appointment a = new Appointment(
+                    rs.getInt("num"),
+                    rs.getTimestamp("from_Time"),
+                    rs.getTimestamp("to_Time"),
+                    rs.getString("type"),
+                    rs.getInt("cid"),
+                    rs.getString("fname"),
+                    rs.getString("lname")
+            );
+            list.add(a);
+        }
+        conn.close();
+        return list;
+    }
+
     /* ------------------------------------------------------------------------------------------------------------------------------- //
     ----------------------------------------------- Appointment Methods -----------------------------------------------------------------
     */
+
+    // Find out if a cid is valid or not
+    // Returns true if cid is in use
+    // False otherwise
+    public boolean isValidAppNum(int appID) throws SQLException {
+        String query = "select * from Appointment where num = ?";
+        //  List<Customer> list = new ArrayList<>();
+        Connection conn = getConnection();
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setInt(1, appID);
+        ResultSet rs = ps.executeQuery();
+        boolean valid = false;
+        if (rs.next()) {
+            valid = true;
+        }
+        conn.close();
+        return valid;
+    }
 
     public void addAppointment(int num, String type, Timestamp fromTime, Timestamp toTime, int rid, int cid) throws SQLException {
         Connection conn = getConnection();

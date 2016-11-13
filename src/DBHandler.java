@@ -41,20 +41,13 @@ public class DBHandler {
     //         3 if user is receptionist
     //        -1 if user's information is not found
     // login type can only be one of: d, r, or h
-    public int queryLoginInfo(String username, String pw) throws SQLException {
+    public int queryLoginInfo(String username, String password) throws SQLException {
         Connection conn = getConnection();
         Statement stmt = conn.createStatement();
-        stmt.execute("select * from login_details where username = " + "\'" + username + "\'");
+        stmt.execute("SELECT * FROM login_details WHERE username = " + "\'" + username + "\' AND password = \'" + password + "\'");
         ResultSet rs = stmt.getResultSet();
-        //result set has tuples
         if (rs.next()) {
-            LoginInformation login = new LoginInformation(rs.getString("username"), rs.getString("hashpass"), rs.getString("salt"), rs.getString("type"));
-            // Checks if hashpass = hash(pw + salt)
-            if (!login.getHashPass()
-                    .equals(BCrypt.hashpw(pw, login.getSalt()))) {
-                return -1; // password does not match
-            }
-            switch (login.getType()) {
+            switch (rs.getType()) {
                 case "d":
                     return 1;
                 case "h":

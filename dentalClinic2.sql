@@ -132,8 +132,7 @@ create table Uses(
 
 	create table login_details(
 		username Varchar2(255),
-		hashpass Varchar2(255),
-		salt Varchar2(255),
+		password Varchar2(255),
 		type Varchar2(10),
 		primary key(username)
 	);

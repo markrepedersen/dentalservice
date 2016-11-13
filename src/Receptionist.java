@@ -1,3 +1,5 @@
+import java.sql.Date;
+
 /**
  * Created by mark on 2016-11-07.
  */
@@ -6,12 +8,12 @@ public class Receptionist extends Employee {
     private int salary;
     private int age;
     private String sex;
-    private String dob;
+    private Date dob;
     private String phoneNum;
     private String fname;
     private String lname;
 
-    public Receptionist(int did, int salary, int age, String sex, String dob, long phoneNum, String fname, String lname) {
-        super(did, salary, age, sex, dob, phoneNum, fname, lname);
+    public Receptionist(int did, String fname, String lname, int salary, int age, String sex, Date dob, long phoneNum) {
+        super(did, fname, lname, salary, age, sex, dob, phoneNum);
     }
 }

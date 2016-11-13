@@ -10,7 +10,8 @@ import java.util.Properties;
 public class DBHandler {
 
     // Query for customer search table
-    private static final String CUSTOMER_WITH_DENTIST = "select c.cid, c.fname, c.lname, c.phone_Num, c.birthday, c.email, " +
+    private static final String CUSTOMER_WITH_DENTIST =
+            "select c.cid, c.fname, c.lname, c.phone_Num, c.birthday, c.email, " +
             "c.address, d.fname, d.lname from Customer c, Attends a, Dentist d " +
             "where c.cid = \'a.cid\' and a.did = \'d.did\' and ";
 
@@ -62,7 +63,24 @@ public class DBHandler {
 
     /* ------------------------------------------------------------------------------------------------------------------------------- //
     ----------------------------------------------- Customer Methods -----------------------------------------------------------------
-     */
+    */
+
+    // Find out if a cid is valid or not
+    // Returns true if cid is in use
+    // False otherwise
+    public boolean isValidCustomerID(int cid) throws SQLException {
+        String query = "select * from Customer where cid = ?";
+        List<Customer> list = new ArrayList<>();
+        Connection conn = getConnection();
+        PreparedStatement ps = conn.prepareStatement(query);
+        ResultSet rs = ps.executeQuery(query);
+        boolean valid = false;
+        if (rs.next()) {
+            valid = true;
+        }
+        conn.close();
+        return valid;
+    }
 
     // The default view that an employee will have
     // Creates a list of customer objects that user must iterate through to handle
@@ -162,10 +180,10 @@ public class DBHandler {
     }
 
     // Finds specific appointment records for a customer
-    public List<Appointment> getUpcomingCustomerAppointments(int cid) throws SQLException {
+    public List<Appointment> getUpcomingCustomerAppointmentsByCID(int cid) throws SQLException {
         String query = "select app.num as \"num\", app.type as \"type\", app.from_Time as \"from\", app.to_Time as \"until\"" +
-                " from Customer cus, Appointment app where " +
-                "cus.cid = app.cid and app.cid = ? and CURRENT_TIMESTAMP <= app.from_Time";
+                       " from Customer cus, Appointment app where " +
+                       "cus.cid = app.cid and app.cid = ? and CURRENT_TIMESTAMP <= app.from_Time";
         List<Appointment> list = new ArrayList<>();
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
@@ -249,10 +267,55 @@ public class DBHandler {
         conn.close();
     }
 
+    // Finds all customers who have attended all dentists
+    public List<Customer> getCustomersAttendedAllDentists() throws SQLException {
+        String query = "select ";
+        ArrayList<Customer> list = new ArrayList<>();
+        Connection conn = getConnection();
+        PreparedStatement ps = conn.prepareStatement(query);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Customer e = new Customer(
+                    rs.getInt("cid"),
+                    rs.getString("fname"),
+                    rs.getString("lname"),
+                    rs.getInt("phone_Num"),
+                    rs.getDate("dob"),
+                    rs.getString("email"),
+                    rs.getString("address")
+            );
+            list.add(e);
+        }
+        conn.close();
+        return list;
+    }
+
 
     /* ------------------------------------------------------------------------------------------------------------------------------- //
    ----------------------------------------------- Employee Methods -----------------------------------------------------------------
     */
+
+    // Selecting all dentists who have attended all customers
+    public List<Dentist> getAllDentistsAttended() throws SQLException {
+        String query = "select d.fname, d.lname, d.did from dentist d where not exists (" +
+                       "select * from customer where not exists (" +
+                       "select c.cid from customer c, attends a where c.cid = a.cid" +
+                       " and a.did = d.did))";
+        ArrayList<Dentist> list = new ArrayList<>();
+        Connection conn = getConnection();
+        PreparedStatement ps = conn.prepareStatement(query);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Dentist e = new Dentist(
+                    rs.getInt("did"),
+                    rs.getString("fname"),
+                    rs.getString("lname")
+            );
+            list.add(e);
+        }
+        conn.close();
+        return list;
+    }
 
     // Registers an employee into the system, letting them have access to the application
     // Employee credentials are username, pw
@@ -298,13 +361,14 @@ public class DBHandler {
         while (rs.next()) {
             Employee e = new Employee(
                     rs.getInt("EmployeeID"),
+                    rs.getString("FirstName"),
+                    rs.getString("LastName"),
                     rs.getInt("Salary"),
                     rs.getInt("Age"),
                     rs.getString("Sex"),
-                    rs.getString("DateOfBirth"),
-                    rs.getLong("PhoneNumber"),
-                    rs.getString("FirstName"),
-                    rs.getString("LastName"));
+                    rs.getDate("DateOfBirth"),
+                    rs.getLong("PhoneNumber")
+                    );
             list.add(e);
         }
         conn.close();
@@ -322,14 +386,39 @@ public class DBHandler {
         while (rs.next()) {
             Employee e = new Employee(
                     rs.getInt("EmployeeID"),
+                    rs.getString("FirstName"),
+                    rs.getString("LastName"),
                     rs.getInt("Salary"),
                     rs.getInt("Age"),
                     rs.getString("Sex"),
-                    rs.getString("DateOfBirth"),
-                    rs.getLong("PhoneNumber"),
-                    rs.getString("FirstName"),
-                    rs.getString("LastName"));
+                    rs.getDate("DateOfBirth"),
+                    rs.getLong("PhoneNumber")
+            );
             list.add(e);
+        }
+        conn.close();
+        return list;
+    }
+
+
+    public List<Customer> getEmployeesAboveAverageSalary() throws SQLException {
+        String query = "select * from employee e where salary > (" +
+                "select AVG(salary) from employee group by cid having COUNT(*) = 2)";
+        List<Customer> list = new ArrayList<>();
+        Connection conn = getConnection();
+        PreparedStatement ps = conn.prepareStatement(query);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Customer b = new Customer(
+                    rs.getInt("cid"),
+                    rs.getString("fname"),
+                    rs.getString("lname"),
+                    rs.getLong("phone_Num"),
+                    rs.getDate("dob"),
+                    rs.getString("email"),
+                    rs.getString("address")
+            );
+            list.add(b);
         }
         conn.close();
         return list;
@@ -338,6 +427,103 @@ public class DBHandler {
     /* ------------------------------------------------------------------------------------------------------------------------------- //
     ----------------------------------------------- Supervisor Methods -----------------------------------------------------------------
     */
+
+    // Finds all supervisors who are dentists
+    public List<Dentist> getDentistsWhoAreSupervisors() throws SQLException {
+        String query = "select * from employee where isSupervisor = 1";
+        List<Dentist> list = new ArrayList<>();
+        Connection conn = getConnection();
+        Statement stmt = conn.createStatement();
+        stmt.execute(query);
+        ResultSet rs = stmt.getResultSet();
+        while (rs.next()) {
+            Dentist b = new Dentist(
+                    rs.getInt("eid"),
+                    rs.getString("fname"),
+                    rs.getString("lname")
+            );
+            list.add(b);
+        }
+        conn.close();
+        return list;
+    }
+
+    // Finds all supervisors who are dentists
+    public List<Hygienist> getHygienistsWhoAreSupervisors() throws SQLException {
+        String query = "select * from employee where isSupervisor = 1";
+        List<Hygienist> list = new ArrayList<>();
+        Connection conn = getConnection();
+        Statement stmt = conn.createStatement();
+        stmt.execute(query);
+        ResultSet rs = stmt.getResultSet();
+        while (rs.next()) {
+            Hygienist b = new Hygienist(
+                    rs.getInt("eid"),
+                    rs.getString("fname"),
+                    rs.getString("lname"),
+                    rs.getInt("salary"),
+                    rs.getInt("age"),
+                    rs.getString("sex"),
+                    rs.getDate("dob"),
+                    rs.getLong("phone_Num")
+            );
+            list.add(b);
+        }
+        conn.close();
+        return list;
+    }
+
+    // Finds all supervisors who are dentists
+    public List<Receptionist> getReceptionistsWhoAreSupervisors() throws SQLException {
+        String query = "select * from employee where isSupervisor = 1";
+        List<Receptionist> list = new ArrayList<>();
+        Connection conn = getConnection();
+        Statement stmt = conn.createStatement();
+        stmt.execute(query);
+        ResultSet rs = stmt.getResultSet();
+        while (rs.next()) {
+            Receptionist b = new Receptionist(
+                    rs.getInt("eid"),
+                    rs.getString("fname"),
+                    rs.getString("lname"),
+                    rs.getInt("salary"),
+                    rs.getInt("age"),
+                    rs.getString("sex"),
+                    rs.getDate("dob"),
+                    rs.getLong("phone_Num")
+            );
+            list.add(b);
+        }
+        conn.close();
+        return list;
+    }
+
+    // Find all employees who work for this supervisor
+    public List<Employee> getEmployeesUnderSupervisor(int eid) throws SQLException {
+        String query = "select e.eid, e.fname, e.lname, e.salary, e.age, e.sex, e.dob, e.phone_Num" +
+                       " from Employee e, WorksFor w" +
+                       " where w.sid = ? and w.eid = e.eid";
+        List<Employee> list = new ArrayList<>();
+        Connection conn = getConnection();
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setInt(1, eid);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Employee b = new Employee(
+                    rs.getInt("eid"),
+                    rs.getString("fname"),
+                    rs.getString("lname"),
+                    rs.getInt("salary"),
+                    rs.getInt("age"),
+                    rs.getString("sex"),
+                    rs.getDate("dob"),
+                    rs.getLong("phone_Num")
+            );
+            list.add(b);
+        }
+        conn.close();
+        return list;
+    }
 
     // Get what a customer owes
     // cid is customer's cid
@@ -420,13 +606,14 @@ public class DBHandler {
         return list;
     }
 
+
     // Get a customer's unpaid bills
     // cid is customer's cid
     // we do not use first or last name since results must be unique to one customer only
     public List<Bill> getCustomerUnpaidBills(int cid) throws SQLException {
         String query = "select c.fname as Name, c.lname as Surname, b.type as type, b.dueDate as Due, " +
-                "b.amountPaid as Payment, (b.amountOwes - b.amountPaid) as Balance" +
-                " from Customer c, Bill b where b.cid = \'" + cid + "\' and c.cid = \'" + cid + "\' and b.isPaid = 0";
+                       "b.amountPaid as Payment, (b.amountOwes - b.amountPaid) as Balance" +
+                       " from Customer c, Bill b where b.cid = \'" + cid + "\' and c.cid = \'" + cid + "\' and b.isPaid = 0";
         List<Bill> list = new ArrayList<>();
         Connection conn = getConnection();
         Statement stmt = conn.createStatement();
@@ -472,6 +659,21 @@ public class DBHandler {
         conn.close();
     }
 
+
+    // Get appointment num of the latest appointment
+    public int getLatestAppointmentNum() throws Exception {
+        String query = "select num from appointment where num > ALL (select num from appointment)";
+        Connection conn = getConnection();
+        Statement stmt = conn.createStatement();
+        stmt.execute(query);
+        ResultSet rs = stmt.getResultSet();
+        int result = 0;
+        while (rs.next()) {
+            result = rs.getInt("num");
+        }
+        conn.close();
+        return result;
+    }
 
     /* ------------------------------------------------------------------------------------------------------------------------------- //
     ----------------------------------------------- Bill Methods -----------------------------------------------------------------

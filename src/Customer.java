@@ -58,7 +58,6 @@ public class Customer {
     }
 
     public int getCID() {
-
         return cid;
     }
 

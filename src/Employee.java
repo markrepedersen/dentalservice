@@ -1,3 +1,5 @@
+import java.sql.Date;
+
 /**
  * Created by mark on 2016-11-07.
  */
@@ -6,12 +8,12 @@ public class Employee {
     private int salary;
     private int age;
     private String sex;
-    private String dob;
+    private Date dob;
     private long phoneNum;
-    private String lname;
     private String fname;
+    private String lname;
 
-    public Employee(int eid, int salary, int age, String sex, String dob, long phoneNum, String lname, String fname) {
+    public Employee(int eid, String fname, String lname, int salary, int age, String sex, Date dob, long phoneNum) {
         this.eid = eid;
         this.salary = salary;
         this.age = age;
@@ -20,6 +22,12 @@ public class Employee {
         this.phoneNum = phoneNum;
         this.lname = lname;
         this.fname = fname;
+    }
+
+    public Employee(int did, String fname, String lname) {
+        this.eid = did;
+        this.fname = fname;
+        this.lname = lname;
     }
 
     public int getEid() {
@@ -38,7 +46,7 @@ public class Employee {
         return sex;
     }
 
-    public String getDob() {
+    public Date getDob() {
         return dob;
     }
 
@@ -58,7 +66,7 @@ public class Employee {
         this.sex = sex;
     }
 
-    public void setDob(String dob) {
+    public void setDob(Date dob) {
         this.dob = dob;
     }
 

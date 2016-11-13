@@ -25,7 +25,8 @@ create table Employee(
 	age integer,
 	sex char(1),
 	dob date,
-	phone_Num integer
+	phone_Num integer,
+	isSupervisor integer
 	);
 create table Receptionist(
 	rid integer primary key,
@@ -35,7 +36,8 @@ create table Receptionist(
 	age integer,
 	sex char(1),
 	dob date,
-	phone_Num integer
+	phone_Num integer,
+	isSupervisor integer
 	);
 create table Hygienist(
 	hid integer primary key,
@@ -45,7 +47,8 @@ create table Hygienist(
 	age integer,
 	sex char(1),
 	dob date,
-	phone_Num integer
+	phone_Num integer,
+	isSupervisor integer
 	);
 create table Dentist(
 	did integer primary key,
@@ -55,7 +58,8 @@ create table Dentist(
 	age integer,
 	sex char(1),
 	dob date,
-	phone_Num integer
+	phone_Num integer,
+	isSupervisor integer
 	);
 create table WorksFor(
 	eid integer,
@@ -141,87 +145,87 @@ create table Uses(
 --
 -- first, add in the employees
 --
-insert into Employee values (0000001, 'Natasha', 'Romanova', 48000, 34, 'f', '1982-11-28', 6047854321);
-insert into Employee values (0000002, 'Steve', 'Rogers', 39500, 40, 'm', '1976-01-02', 6044865768);
-insert into Employee values (0000003, 'Carol', 'Danvers', 44200, 30, 'f', '1988-07-17', 7784321897);
-insert into Employee values (0000004, 'Clinton', 'Barton', 37000, 38, 'm', '1978-08-06', 6047151212);
-insert into Employee values (0000005, 'Hank', 'Pym', 50000, 37, 'm', '1979-08-06', 6047142232);
-insert into Employee values (0000006, 'Anthony', 'Stark', 39000, 42, 'm', '1974-01-27', 7787142232);
-insert into Employee values (0000007, 'Thor', 'Odinson', 48000, 48, 'm', '1968-03-11', 6043321988);
-insert into Employee values (0000008, 'Richard', 'Jones', 42000, 32, 'm', '1986-05-14', 7786554786);
-insert into Employee values (0000009, 'Pietro', 'Maximoff', 35000, 27, 'm', '1991-12-24', 6042256123);
-insert into Employee values (0000010, 'Wanda', 'Maximoff', 29000, 35, 'f', '1981-10-30', 6049975544);
-insert into Employee values (0000011, 'Victor', 'Shade', 31000, 50, 'm', '1966-06-10', 6043944567);
-insert into Employee values (0000012, 'Hane', 'Whitman', 34000, 39, 'm', '1977-03-09', 7786815876);
-insert into Employee values (0000115, 'Charles', 'Xavier', 104000, 24, 'm', '1992-10-18', 6047894564);
-insert into Employee values (0000116, 'Robert', 'Drake', 95000, 30, 'm', '1986-04-12', 7781234567);
-insert into Employee values (0000117, 'Henry', 'McCoy', 110000, 20, 'm', '1998-05-27', 7784324887);
-insert into Employee values (0000118, 'Kurt', 'Wagner', 118000, 28, 'm', '1988-06-26', 6042347777);
-insert into Employee values (0000119, 'Scott', 'Summers', 107000, 27, 'm', '1989-03-06', 6047686891);
-insert into Employee values (0000120, 'Warren', 'Worthington', 127000, 27, 'm', '1989-08-21', 6047221341);
-insert into Employee values (0000121, 'Alexander', 'Summers', 114000, 27, 'm', '1989-04-15', 7786575555);
-insert into Employee values (0000122, 'Ororo', 'Monroe', 106000, 29, 'f', '1987-01-01', 7785432132);
-insert into Employee values (0000123, 'James', 'Howlett', 109000, 31, 'm', '1985-02-24', 7789965672);
-insert into Employee values (0000124, 'Piotr', 'Rasputin', 109000, 30, 'm', '1986-10-20', 6041118354);
-insert into Employee values (0000125, 'Anna', 'Marie', 118000, 34, 'f', '1982-12-19', 6044538911);
-insert into Employee values (0000126, 'Jean', 'Grey', 118000, 30, 'f', '1986-11-09', 7782345612);
-insert into Employee values (0000331, 'Diana', 'Prince', 184000, 44, 'f', '1972-09-23', 6045556758);
-insert into Employee values (0000332, 'Barry', 'Allen', 199000, 31, 'm', '1985-05-22', 7781148167);
-insert into Employee values (0000333, 'Arthur', 'Curry', 180000, 35, 'm', '1981-09-07', 7786232323);
-insert into Employee values (0000334, 'Bruce', 'Wayne', 200000, 48, 'm', '1968-01-01', 6048695531);
-insert into Employee values (0000345, 'John', 'Jones', 177000, 37, 'm', '1983-03-26', 6048145867);
-insert into Employee values (0000346, 'Clark', 'Kent', 189000, 41, 'm', '1979-11-18', 6047431222);
-insert into Employee values (0000347, 'Hal', 'Jordan', 184000, 34, 'm', '1986-09-14', 6043428888);
-insert into Employee values (0000348, 'Oliver', 'Queen', 199000, 39, 'm', '1981-04-12', 7785472323);
-insert into Employee values (0000349, 'Ray', 'Palmer', 192000, 40, 'm', '1980-02-01', 7785465757);
-insert into Employee values (0000350, 'Carter', 'Hall', 202000, 32, 'm', '1988-08-17', 7789651211);
-insert into Employee values (0000351, 'Laurel', 'Lance', 201000, 38, 'f', '1982-03-23', 7786572299);
-insert into Employee values (0000352, 'John', 'Smith', 210000, 50, 'm', '1970-10-06', 7785432714);
-	--
-	-- now add in Dentist
-	--
-	insert into Dentist values (0000331, 'Diana', 'Prince', 184000, 44, 'f', '1972-09-23', 6045556758);
-	insert into Dentist values (0000332, 'Barry', 'Allen', 199000, 31, 'm', '1985-05-22', 7781148167);
-	insert into Dentist values (0000333, 'Arthur', 'Curry', 180000, 35, 'm', '1981-09-07', 7786232323);
-	insert into Dentist values (0000334, 'Bruce', 'Wayne', 200000, 48, 'm', '1968-01-01', 6048695531);
-	insert into Dentist values (0000345, 'John', 'Jones', 177000, 37, 'm', '1983-03-26', 6048145867);
-	insert into Dentist values (0000346, 'Clark', 'Kent', 189000, 41, 'm', '1979-11-18', 6047431222);
-	insert into Dentist values (0000347, 'Hal', 'Jordan', 184000, 34, 'm', '1986-09-14', 6043428888);
-	insert into Dentist values (0000348, 'Oliver', 'Queen', 199000, 39, 'm', '1981-04-12', 7785472323);
-	insert into Dentist values (0000349, 'Ray', 'Palmer', 192000, 40, 'm', '1980-02-01', 7785465757);
-	insert into Dentist values (0000350, 'Carter', 'Hall', 202000, 32, 'm', '1988-08-17', 7789651211);
-	insert into Dentist values (0000351, 'Laurel', 'Lance', 201000, 38, 'f', '1982-03-23', 7786572299);
-	insert into Dentist values (0000352, 'John', 'Smith', 210000, 50, 'm', '1970-10-06', 7785432714);
+insert into Employee values (0000001, 'Natasha', 'Romanova', 48000, 34, 'f', '1982-11-28', 6047854321, 0);
+insert into Employee values (0000002, 'Steve', 'Rogers', 39500, 40, 'm', '1976-01-02', 6044865768, 1);
+insert into Employee values (0000003, 'Carol', 'Danvers', 44200, 30, 'f', '1988-07-17', 7784321897, 0);
+insert into Employee values (0000004, 'Clinton', 'Barton', 37000, 38, 'm', '1978-08-06', 6047151212, 0);
+insert into Employee values (0000005, 'Hank', 'Pym', 50000, 37, 'm', '1979-08-06', 6047142232, 0);
+insert into Employee values (0000006, 'Anthony', 'Stark', 39000, 42, 'm', '1974-01-27', 7787142232, 0);
+insert into Employee values (0000007, 'Thor', 'Odinson', 48000, 48, 'm', '1968-03-11', 6043321988, 0);
+insert into Employee values (0000008, 'Richard', 'Jones', 42000, 32, 'm', '1986-05-14', 7786554786, 1);
+insert into Employee values (0000009, 'Pietro', 'Maximoff', 35000, 27, 'm', '1991-12-24', 6042256123, 0);
+insert into Employee values (0000010, 'Wanda', 'Maximoff', 29000, 35, 'f', '1981-10-30', 6049975544, 0);
+insert into Employee values (0000011, 'Victor', 'Shade', 31000, 50, 'm', '1966-06-10', 6043944567, 0);
+insert into Employee values (0000012, 'Hane', 'Whitman', 34000, 39, 'm', '1977-03-09', 7786815876, 0);
+insert into Employee values (0000115, 'Charles', 'Xavier', 104000, 24, 'm', '1992-10-18', 6047894564, 1);
+insert into Employee values (0000116, 'Robert', 'Drake', 95000, 30, 'm', '1986-04-12', 7781234567, 1);
+insert into Employee values (0000117, 'Henry', 'McCoy', 110000, 20, 'm', '1998-05-27', 7784324887, 0);
+insert into Employee values (0000118, 'Kurt', 'Wagner', 118000, 28, 'm', '1988-06-26', 6042347777, 0);
+insert into Employee values (0000119, 'Scott', 'Summers', 107000, 27, 'm', '1989-03-06', 6047686891, 0);
+insert into Employee values (0000120, 'Warren', 'Worthington', 127000, 27, 'm', '1989-08-21', 6047221341, 0);
+insert into Employee values (0000121, 'Alexander', 'Summers', 114000, 27, 'm', '1989-04-15', 7786575555, 1);
+insert into Employee values (0000122, 'Ororo', 'Monroe', 106000, 29, 'f', '1987-01-01', 7785432132, 0);
+insert into Employee values (0000123, 'James', 'Howlett', 109000, 31, 'm', '1985-02-24', 7789965672, 0);
+insert into Employee values (0000124, 'Piotr', 'Rasputin', 109000, 30, 'm', '1986-10-20', 6041118354, 0);
+insert into Employee values (0000125, 'Anna', 'Marie', 118000, 34, 'f', '1982-12-19', 6044538911, 0);
+insert into Employee values (0000126, 'Jean', 'Grey', 118000, 30, 'f', '1986-11-09', 7782345612, 0);
+insert into Employee values (0000331, 'Diana', 'Prince', 184000, 44, 'f', '1972-09-23', 6045556758, 0);
+insert into Employee values (0000332, 'Barry', 'Allen', 199000, 31, 'm', '1985-05-22', 7781148167, 0);
+insert into Employee values (0000333, 'Arthur', 'Curry', 180000, 35, 'm', '1981-09-07', 7786232323, 0);
+insert into Employee values (0000334, 'Bruce', 'Wayne', 200000, 48, 'm', '1968-01-01', 6048695531, 0);
+insert into Employee values (0000345, 'John', 'Jones', 177000, 37, 'm', '1983-03-26', 6048145867, 0);
+insert into Employee values (0000346, 'Clark', 'Kent', 189000, 41, 'm', '1979-11-18', 6047431222, 0);
+insert into Employee values (0000347, 'Hal', 'Jordan', 184000, 34, 'm', '1986-09-14', 6043428888, 0);
+insert into Employee values (0000348, 'Oliver', 'Queen', 199000, 39, 'm', '1981-04-12', 7785472323, 1);
+insert into Employee values (0000349, 'Ray', 'Palmer', 192000, 40, 'm', '1980-02-01', 7785465757, 1);
+insert into Employee values (0000350, 'Carter', 'Hall', 202000, 32, 'm', '1988-08-17', 7789651211, 0);
+insert into Employee values (0000351, 'Laurel', 'Lance', 201000, 38, 'f', '1982-03-23', 7786572299, 0);
+insert into Employee values (0000352, 'John', 'Smith', 210000, 50, 'm', '1970-10-06', 7785432714, 0);
+--
+-- now add in Dentist
+--
+insert into Dentist values (0000331, 'Diana', 'Prince', 184000, 44, 'f', '1972-09-23', 6045556758, 0);
+insert into Dentist values (0000332, 'Barry', 'Allen', 199000, 31, 'm', '1985-05-22', 7781148167, 0);
+insert into Dentist values (0000333, 'Arthur', 'Curry', 180000, 35, 'm', '1981-09-07', 7786232323, 0);
+insert into Dentist values (0000334, 'Bruce', 'Wayne', 200000, 48, 'm', '1968-01-01', 6048695531, 0);
+insert into Dentist values (0000345, 'John', 'Jones', 177000, 37, 'm', '1983-03-26', 6048145867, 0);
+insert into Dentist values (0000346, 'Clark', 'Kent', 189000, 41, 'm', '1979-11-18', 6047431222, 0);
+insert into Dentist values (0000347, 'Hal', 'Jordan', 184000, 34, 'm', '1986-09-14', 6043428888, 0);
+insert into Dentist values (0000348, 'Oliver', 'Queen', 199000, 39, 'm', '1981-04-12', 7785472323, 1);
+insert into Dentist values (0000349, 'Ray', 'Palmer', 192000, 40, 'm', '1980-02-01', 7785465757, 1);
+insert into Dentist values (0000350, 'Carter', 'Hall', 202000, 32, 'm', '1988-08-17', 7789651211, 0);
+insert into Dentist values (0000351, 'Laurel', 'Lance', 201000, 38, 'f', '1982-03-23', 7786572299, 0);
+insert into Dentist values (0000352, 'John', 'Smith', 210000, 50, 'm', '1970-10-06', 7785432714, 0);
 --
 -- now add in Receptionist
 --
-insert into Receptionist values (0000001, 'Natasha', 'Romanova', 48000, 34, 'f', '1982-11-28', 6047854321);
-insert into Receptionist values (0000002, 'Steve', 'Rogers', 39500, 40, 'm', '1976-01-02', 6044865768);
-insert into Receptionist values (0000003, 'Carol', 'Danvers', 44200, 30, 'f', '1988-07-17', 7784321897);
-insert into Receptionist values (0000004, 'Clinton', 'Barton', 37000, 38, 'm', '1978-08-06', 6047151212);
-insert into Receptionist values (0000005, 'Hank', 'Pym', 50000, 37, 'm', '1979-08-06', 6047142232);
-insert into Receptionist values (0000006, 'Anthony', 'Stark', 39000, 42, 'm', '1974-01-27', 7787142232);
-insert into Receptionist values (0000007, 'Thor', 'Odinson', 48000, 48, 'm', '1968-03-11', 6043321988);
-insert into Receptionist values (0000008, 'Richard', 'Jones', 42000, 32, 'm', '1986-05-14', 7786554786);
-insert into Receptionist values (0000009, 'Pietro', 'Maximoff', 35000, 27, 'm', '1991-12-24', 6042256123);
-insert into Receptionist values (0000010, 'Wanda', 'Maximoff', 29000, 35, 'f', '1981-10-30', 6049975544);
-insert into Receptionist values (0000011, 'Victor', 'Shade', 31000, 50, 'm', '1966-06-10', 6043944567);
-insert into Receptionist values (0000012, 'Hane', 'Whitman', 34000, 39, 'm', '1977-03-09', 7786815876);
+insert into Receptionist values (0000001, 'Natasha', 'Romanova', 48000, 34, 'f', '1982-11-28', 6047854321, 0);
+insert into Receptionist values (0000002, 'Steve', 'Rogers', 39500, 40, 'm', '1976-01-02', 6044865768, 1);
+insert into Receptionist values (0000003, 'Carol', 'Danvers', 44200, 30, 'f', '1988-07-17', 7784321897, 0);
+insert into Receptionist values (0000004, 'Clinton', 'Barton', 37000, 38, 'm', '1978-08-06', 6047151212, 0);
+insert into Receptionist values (0000005, 'Hank', 'Pym', 50000, 37, 'm', '1979-08-06', 6047142232, 0);
+insert into Receptionist values (0000006, 'Anthony', 'Stark', 39000, 42, 'm', '1974-01-27', 7787142232, 0);
+insert into Receptionist values (0000007, 'Thor', 'Odinson', 48000, 48, 'm', '1968-03-11', 6043321988, 0);
+insert into Receptionist values (0000008, 'Richard', 'Jones', 42000, 32, 'm', '1986-05-14', 7786554786, 1);
+insert into Receptionist values (0000009, 'Pietro', 'Maximoff', 35000, 27, 'm', '1991-12-24', 6042256123, 0);
+insert into Receptionist values (0000010, 'Wanda', 'Maximoff', 29000, 35, 'f', '1981-10-30', 6049975544, 0);
+insert into Receptionist values (0000011, 'Victor', 'Shade', 31000, 50, 'm', '1966-06-10', 6043944567, 0);
+insert into Receptionist values (0000012, 'Hane', 'Whitman', 34000, 39, 'm', '1977-03-09', 7786815876, 0);
 --
 -- now add in Hygienist
 --
-insert into Hygienist values (0000115, 'Charles', 'Xavier', 104000, 24, 'm', '1992-10-18', 6047894564);
-insert into Hygienist values (0000116, 'Robert', 'Drake', 95000, 30, 'm', '1986-04-12', 7781234567);
-insert into Hygienist values (0000117, 'Henry', 'McCoy', 110000, 20, 'm', '1998-05-27', 7784324887);
-insert into Hygienist values (0000118, 'Kurt', 'Wagner', 118000, 28, 'm', '1988-06-26', 6042347777);
-insert into Hygienist values (0000119, 'Scott', 'Summers', 107000, 27, 'm', '1989-03-06', 6047686891);
-insert into Hygienist values (0000120, 'Warren', 'Worthington', 127000, 27, 'm', '1989-08-21', 6047221341);
-insert into Hygienist values (0000121, 'Alexander', 'Summers', 114000, 27, 'm', '1989-04-15', 7786575555);
-insert into Hygienist values (0000122, 'Ororo', 'Monroe', 106000, 29, 'f', '1987-01-01', 7785432132);
-insert into Hygienist values (0000123, 'James', 'Howlett', 109000, 31, 'm', '1985-02-24', 7789965672);
-insert into Hygienist values (0000124, 'Piotr', 'Rasputin', 109000, 30, 'm', '1986-10-20', 6041118354);
-insert into Hygienist values (0000125, 'Anna', 'Marie', 118000, 34, 'f', '1982-12-19', 6044538911);
-insert into Hygienist values (0000126, 'Jean', 'Grey', 118000, 30, 'f', '1986-11-09', 7782345612);
+insert into Hygienist values (0000115, 'Charles', 'Xavier', 104000, 24, 'm', '1992-10-18', 6047894564, 1);
+insert into Hygienist values (0000116, 'Robert', 'Drake', 95000, 30, 'm', '1986-04-12', 7781234567, 1);
+insert into Hygienist values (0000117, 'Henry', 'McCoy', 110000, 20, 'm', '1998-05-27', 7784324887, 0);
+insert into Hygienist values (0000118, 'Kurt', 'Wagner', 118000, 28, 'm', '1988-06-26', 6042347777, 0);
+insert into Hygienist values (0000119, 'Scott', 'Summers', 107000, 27, 'm', '1989-03-06', 6047686891, 0);
+insert into Hygienist values (0000120, 'Warren', 'Worthington', 127000, 27, 'm', '1989-08-21', 6047221341, 0);
+insert into Hygienist values (0000121, 'Alexander', 'Summers', 114000, 27, 'm', '1989-04-15', 7786575555, 1);
+insert into Hygienist values (0000122, 'Ororo', 'Monroe', 106000, 29, 'f', '1987-01-01', 7785432132, 0);
+insert into Hygienist values (0000123, 'James', 'Howlett', 109000, 31, 'm', '1985-02-24', 7789965672, 0);
+insert into Hygienist values (0000124, 'Piotr', 'Rasputin', 109000, 30, 'm', '1986-10-20', 6041118354, 0);
+insert into Hygienist values (0000125, 'Anna', 'Marie', 118000, 34, 'f', '1982-12-19', 6044538911, 0);
+insert into Hygienist values (0000126, 'Jean', 'Grey', 118000, 30, 'f', '1986-11-09', 7782345612, 0);
 --
 -- now add in the WorksFor
 --
@@ -288,8 +292,27 @@ insert into Customer values (111986, 'Ranae', 'Leung', 2504965085, '1995-12-31',
 -- now add in the Treats
 --
 insert into Attends values (0000331, 111542);
+insert into Attends values (0000331, 111801);
+insert into Attends values (0000331, 111888);
+insert into Attends values (0000331, 111999);
+insert into Attends values (0000331, 111861);
+insert into Attends values (0000331, 111993);
+insert into Attends values (0000331, 111657);
+insert into Attends values (0000331, 111811);
+insert into Attends values (0000331, 111834);
+insert into Attends values (0000331, 111921);
+insert into Attends values (0000331, 111967);
+insert into Attends values (0000331, 111542);
+insert into Attends values (0000331, 111682);
+insert into Attends values (0000331, 111659);
+insert into Attends values (0000331, 111986);
+insert into Attends values (0000331, 111801);
+insert into Attends values (0000331, 111801);
+insert into Attends values (0000331, 111801);
+insert into Attends values (0000331, 111801);
 insert into Attends values (0000347, 111801);
 insert into Attends values (0000348, 111801);
+
 insert into Attends values (0000331, 111993);
 insert into Attends values (0000331, 111801);
 insert into Attends values (0000346, 111993);

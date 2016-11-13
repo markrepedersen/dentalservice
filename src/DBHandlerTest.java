@@ -162,8 +162,8 @@ public class DBHandlerTest {
     }
 
     @Test
-    public void getUpcomingCustomerAppointments() throws Exception {
-        List<Appointment> custs = db.getUpcomingCustomerAppointments(111801);
+    public void getUpcomingCustomerAppointmentsByCID() throws Exception {
+        List<Appointment> custs = db.getUpcomingCustomerAppointmentsByCID(111801);
         assertEquals(custs.size(), 2);
         for (Appointment c : custs) {
             System.out.println("num: " + c.getNum());
@@ -182,7 +182,7 @@ public class DBHandlerTest {
 */
 
     @Test
-    public void getUpcomingCustomerAppointments2() throws Exception {
+    public void getUpcomingCustomerAppointments() throws Exception {
         List<Appointment> custs = db.getUpcomingCustomerAppointments();
         assertEquals(custs.size(), 10);
         for (Appointment c : custs) {
@@ -205,6 +205,18 @@ public class DBHandlerTest {
             System.out.println("num: " + c.getNum());
             System.out.println("from: " + c.getFromTime());
             System.out.println("til: " + c.getToTime());
+            System.out.println();
+            System.out.println();
+        }
+    }
+
+    @Test
+    public void getAllDentistsAttended() throws Exception {
+        List<Dentist> custs = db.getAllDentistsAttended();
+        assertEquals(custs.size(), 1);
+        for (Dentist c : custs) {
+            System.out.println("num: " + c.getDid());
+            System.out.println("name: " + c.getFname() + c.getLname());
             System.out.println();
             System.out.println();
         }

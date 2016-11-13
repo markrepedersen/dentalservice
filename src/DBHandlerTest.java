@@ -30,7 +30,9 @@ public class DBHandlerTest {
         db.addCustomer(123456, "mark", "p", 6049970855L, new Date(System.currentTimeMillis()), "hello@gmail.com", "asdf");
         db.addCustomer(234567, "loa", "be", 6049970855L, new Date(System.currentTimeMillis()), "hello@gmail.com", "asdf");
         db.addCustomer(345678, "john", "hamm", 6049970855L, new Date(System.currentTimeMillis()), "hello@gmail.com", "asdf");
-
+        db.getConnection().prepareStatement("insert into Attends values (0000331, 123456)").executeQuery();
+        db.getConnection().prepareStatement("insert into Attends values (0000331, 234567)").executeQuery();
+        db.getConnection().prepareStatement("insert into Attends values (0000331, 345678)").executeQuery();
         db.addBill(90000, "yo", new BigDecimal(10000.00), new BigDecimal(45000.00), new Date(System.currentTimeMillis() + 100000),
                 0, 123456);
         db.addBill(90001, "yo", new BigDecimal(20000.00), new BigDecimal(45000.00), new Date(System.currentTimeMillis() + 100000),
@@ -198,6 +200,22 @@ public class DBHandlerTest {
     }
 
     @Test
+    public void getEmployeesUnderSupervisor() throws Exception {
+        List<Appointment> custs = db.getUpcomingCustomerAppointments();
+        assertEquals(custs.size(), 10);
+        for (Appointment c : custs) {
+            System.out.println("cid: " + c.getCid());
+            System.out.println("fname: " + c.getCname());
+            System.out.println("lname: " + c.getCsurname());
+            System.out.println("num: " + c.getNum());
+            System.out.println("from: " + c.getFromTime());
+            System.out.println("til: " + c.getToTime());
+            System.out.println();
+            System.out.println();
+        }
+    }
+
+    @Test
     public void getPastCustomerAppointments() throws Exception {
         List<Appointment> custs = db.getPastCustomerAppointments(111801);
         assertEquals(custs.size(), 2);
@@ -214,9 +232,23 @@ public class DBHandlerTest {
     public void getAllDentistsAttended() throws Exception {
         List<Dentist> custs = db.getAllDentistsAttended();
         assertEquals(custs.size(), 1);
+        System.out.println(custs.size());
         for (Dentist c : custs) {
             System.out.println("num: " + c.getDid());
             System.out.println("name: " + c.getFname() + c.getLname());
+            System.out.println();
+            System.out.println();
+        }
+    }
+
+    @Test
+    public void getCheapestMedicine() throws Exception {
+        List<Medicine> custs = db.getCheapestMedicine();
+        assertEquals(custs.size(), 1);
+        System.out.println(custs.size());
+        for (Medicine c : custs) {
+            System.out.println("code: " + c.getCode());
+            System.out.println("cost: " + c.getCost());
             System.out.println();
             System.out.println();
         }

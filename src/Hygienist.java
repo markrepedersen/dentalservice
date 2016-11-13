@@ -3,17 +3,57 @@ import java.sql.Date;
 /**
  * Created by mark on 2016-11-07.
  */
-public class Hygienist extends Employee {
+public class Hygienist {
     private int did;
     private int salary;
     private int age;
     private String sex;
     private Date dob;
-    private String phoneNum;
+    private long phoneNum;
     private String fname;
     private String lname;
 
-    public Hygienist(int did, String fname, String lname, int salary, int age, String sex, Date dob, long phoneNum) {
-        super(did, fname, lname, salary, age, sex, dob, phoneNum);
+    public int getDid() {
+        return did;
+    }
+
+    public int getSalary() {
+        return salary;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public Date getDob() {
+        return dob;
+    }
+
+    public long getPhoneNum() {
+        return phoneNum;
+    }
+
+    public String getFname() {
+        return fname;
+    }
+
+    public String getLname() {
+        return lname;
+    }
+
+    public Hygienist(int did, String fname, String lname, int salary, int age, String sex, Date dob, long
+            phoneNum) {
+        this.did = did;
+        this.fname = fname;
+        this.lname = lname;
+        this.salary = salary;
+        this.age = age;
+        this.sex = sex;
+        this.dob = dob;
+        this.phoneNum = phoneNum;
     }
 }

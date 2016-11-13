@@ -136,7 +136,8 @@ create table Uses(
 
 	create table login_details(
 		username Varchar2(255),
-		password Varchar2(255),
+		hashpass Varchar2(255),
+        salt Varchar2(255),
 		type Varchar2(10),
 		primary key(username)
 	);
@@ -302,21 +303,12 @@ insert into Attends values (0000331, 111811);
 insert into Attends values (0000331, 111834);
 insert into Attends values (0000331, 111921);
 insert into Attends values (0000331, 111967);
-insert into Attends values (0000331, 111542);
 insert into Attends values (0000331, 111682);
 insert into Attends values (0000331, 111659);
 insert into Attends values (0000331, 111986);
-insert into Attends values (0000331, 111801);
-insert into Attends values (0000331, 111801);
-insert into Attends values (0000331, 111801);
-insert into Attends values (0000331, 111801);
 insert into Attends values (0000347, 111801);
 insert into Attends values (0000348, 111801);
-
-insert into Attends values (0000331, 111993);
-insert into Attends values (0000331, 111801);
 insert into Attends values (0000346, 111993);
-insert into Attends values (0000331, 111921);
 insert into Attends values (0000350, 111801);
 insert into Attends values (0000352, 111921);
 --

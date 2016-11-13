@@ -24,119 +24,10 @@
       <file leaf-file-name="DBHandlerTest.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/DBHandlerTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="273">
-              <caret line="210" column="5" selection-start-line="210" selection-start-column="5" selection-end-line="210" selection-end-column="5" />
+            <state relative-caret-position="255">
+              <caret line="17" column="17" selection-start-line="17" selection-start-column="17" selection-end-line="17" selection-end-column="17" />
               <folding>
                 <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DBHandler.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/DBHandler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="185">
-              <caret line="309" column="46" selection-start-line="309" selection-start-column="46" selection-end-line="309" selection-end-column="46" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Employee.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Employee.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="30" column="5" selection-start-line="30" selection-start-column="5" selection-end-line="30" selection-end-column="5" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Hygienist.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Hygienist.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="18" column="1" selection-start-line="18" selection-start-column="1" selection-end-line="18" selection-end-column="1" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Dentist.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Dentist.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="184">
-              <caret line="49" column="5" selection-start-line="49" selection-start-column="5" selection-end-line="49" selection-end-column="5" />
-              <folding>
-                <element signature="e#676#677#0" expanded="true" />
-                <element signature="e#717#718#0" expanded="true" />
-                <element signature="e#744#745#0" expanded="true" />
-                <element signature="e#770#771#0" expanded="true" />
-                <element signature="e#825#826#0" expanded="true" />
-                <element signature="e#861#862#0" expanded="true" />
-                <element signature="e#910#911#0" expanded="true" />
-                <element signature="e#940#941#0" expanded="true" />
-                <element signature="e#992#993#0" expanded="true" />
-                <element signature="e#1022#1023#0" expanded="true" />
-                <element signature="e#1072#1073#0" expanded="true" />
-                <element signature="e#1102#1103#0" expanded="true" />
-                <element signature="e#1148#1149#0" expanded="true" />
-                <element signature="e#1188#1189#0" expanded="true" />
-                <element signature="e#1244#1245#0" expanded="true" />
-                <element signature="e#1278#1279#0" expanded="true" />
-                <element signature="e#1334#1335#0" expanded="true" />
-                <element signature="e#1368#1369#0" expanded="true" />
-                <element signature="e#1478#1479#0" expanded="true" />
-                <element signature="e#1507#1508#0" expanded="true" />
-                <element signature="e#1548#1549#0" expanded="true" />
-                <element signature="e#1574#1575#0" expanded="true" />
-                <element signature="e#1618#1619#0" expanded="true" />
-                <element signature="e#1644#1645#0" expanded="true" />
-                <element signature="e#1686#1687#0" expanded="true" />
-                <element signature="e#1712#1713#0" expanded="true" />
-                <element signature="e#1759#1760#0" expanded="true" />
-                <element signature="e#1790#1791#0" expanded="true" />
-                <element signature="e#1836#1837#0" expanded="true" />
-                <element signature="e#1864#1865#0" expanded="true" />
-                <element signature="e#1910#1911#0" expanded="true" />
-                <element signature="e#1938#1939#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Receptionist.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Receptionist.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="15" column="61" selection-start-line="15" selection-start-column="61" selection-end-line="15" selection-end-column="61" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Medicine.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Medicine.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="14" column="39" selection-start-line="14" selection-start-column="39" selection-end-line="14" selection-end-column="39" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Customer.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Customer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="585">
-              <caret line="59" column="25" selection-start-line="59" selection-start-column="25" selection-end-line="59" selection-end-column="25" />
-              <folding>
-                <element signature="e#1479#1480#0" expanded="true" />
-                <element signature="e#1885#1886#0" expanded="true" />
-                <element signature="e#1915#1916#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -152,15 +43,109 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="DBHandler.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/DBHandler.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="75">
+              <caret line="51" column="38" selection-start-line="51" selection-start-column="38" selection-end-line="51" selection-end-column="38" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Login.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/Login.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="270">
+              <caret line="23" column="17" selection-start-line="23" selection-start-column="17" selection-end-line="23" selection-end-column="17" />
+              <folding>
+                <element signature="initializer##0;class#Login#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="dentalClinic2.sql" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/dentalClinic2.sql">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="315">
+              <caret line="139" column="8" selection-start-line="139" selection-start-column="8" selection-end-line="139" selection-end-column="8" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LoginInformation.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/LoginInformation.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="540">
+              <caret line="44" column="5" selection-start-line="44" selection-start-column="5" selection-end-line="44" selection-end-column="5" />
+              <folding>
+                <element signature="e#860#861#0" expanded="true" />
+                <element signature="e#900#901#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DentalService.iml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DentalService.iml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Hygienist.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Hygienist.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="270">
+              <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+              <folding>
+                <element signature="e#306#307#0" expanded="true" />
+                <element signature="e#332#333#0" expanded="true" />
+                <element signature="e#362#363#0" expanded="true" />
+                <element signature="e#391#392#0" expanded="true" />
+                <element signature="e#418#419#0" expanded="true" />
+                <element signature="e#444#445#0" expanded="true" />
+                <element signature="e#474#475#0" expanded="true" />
+                <element signature="e#500#501#0" expanded="true" />
+                <element signature="e#528#529#0" expanded="true" />
+                <element signature="e#554#555#0" expanded="true" />
+                <element signature="e#587#588#0" expanded="true" />
+                <element signature="e#618#619#0" expanded="true" />
+                <element signature="e#650#651#0" expanded="true" />
+                <element signature="e#678#679#0" expanded="true" />
+                <element signature="e#710#711#0" expanded="true" />
+                <element signature="e#738#739#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="Appointment.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Appointment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="525">
+            <state relative-caret-position="600">
               <caret line="48" column="33" selection-start-line="48" selection-start-column="33" selection-end-line="48" selection-end-column="33" />
               <folding>
                 <element signature="e#1112#1113#0" expanded="true" />
                 <element signature="e#1152#1153#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Medicine.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Medicine.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="135">
+              <caret line="11" column="44" selection-start-line="11" selection-start-column="44" selection-end-line="11" selection-end-column="44" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -189,18 +174,21 @@
         <option value="$PROJECT_DIR$/src/StandardQueries.java" />
         <option value="$PROJECT_DIR$/src/Bcrypt.java" />
         <option value="$PROJECT_DIR$/src/BCrypt.java" />
-        <option value="$PROJECT_DIR$/src/LoginInformation.java" />
         <option value="$PROJECT_DIR$/src/TestQueries.java" />
         <option value="$PROJECT_DIR$/src/Tests/DBHandlerTest.java" />
         <option value="$PROJECT_DIR$/src/CustomerPage.form" />
         <option value="$PROJECT_DIR$/src/Appointment.java" />
         <option value="$PROJECT_DIR$/src/Bill.java" />
-        <option value="$PROJECT_DIR$/src/Receptionist.java" />
         <option value="$PROJECT_DIR$/src/Customer.java" />
-        <option value="$PROJECT_DIR$/src/Hygienist.java" />
         <option value="$PROJECT_DIR$/src/Employee.java" />
+        <option value="$PROJECT_DIR$/src/LoginInformation.java" />
         <option value="$PROJECT_DIR$/src/Dentist.java" />
+        <option value="$PROJECT_DIR$/src/Hygienist.java" />
+        <option value="$PROJECT_DIR$/src/Receptionist.java" />
+        <option value="$PROJECT_DIR$/src/Medicine.java" />
         <option value="$PROJECT_DIR$/src/DBHandlerTest.java" />
+        <option value="$PROJECT_DIR$/src/Login.java" />
+        <option value="$PROJECT_DIR$/dentalClinic2.sql" />
         <option value="$PROJECT_DIR$/src/DBHandler.java" />
       </list>
     </option>
@@ -263,7 +251,21 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
+      <pane id="PackagesPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DentalService" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DentalService" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -298,12 +300,11 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="settings.editor.selected.configurable" value="configurable.group.tools" />
+    <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
@@ -320,28 +321,7 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.DBHandlerTest.getAllDentistsAttended">
-    <configuration default="false" name="DBHandlerTest.getCustomerYearlyPayments" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <module name="DentalService" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="DBHandlerTest" />
-      <option name="METHOD_NAME" value="getCustomerYearlyPayments" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="singleModule" />
-      </option>
-      <envs />
-      <patterns />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="JUnit.DBHandlerTest.getCheapestMedicine">
     <configuration default="false" name="DBHandlerTest.getCustomersWithHighestPayments" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="DentalService" />
@@ -417,6 +397,27 @@
       <option name="VM_PARAMETERS" value="-ea" />
       <option name="PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration default="false" name="DBHandlerTest.getCheapestMedicine" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="DentalService" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="DBHandlerTest" />
+      <option name="METHOD_NAME" value="getCheapestMedicine" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$MODULE_DIR$" />
       <option name="ENV_VARIABLES" />
       <option name="PASS_PARENT_ENVS" value="true" />
       <option name="TEST_SEARCH_SCOPE">
@@ -615,19 +616,19 @@
       <method />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="JUnit.DBHandlerTest.getCustomerYearlyPayments" />
-      <item index="1" class="java.lang.String" itemvalue="JUnit.DBHandlerTest.getCustomersWithHighestPayments" />
-      <item index="2" class="java.lang.String" itemvalue="JUnit.DBHandlerTest.getCustomerWith2Payments" />
-      <item index="3" class="java.lang.String" itemvalue="JUnit.DBHandlerTest" />
-      <item index="4" class="java.lang.String" itemvalue="JUnit.DBHandlerTest.getAllDentistsAttended" />
+      <item index="0" class="java.lang.String" itemvalue="JUnit.DBHandlerTest.getCustomersWithHighestPayments" />
+      <item index="1" class="java.lang.String" itemvalue="JUnit.DBHandlerTest.getCustomerWith2Payments" />
+      <item index="2" class="java.lang.String" itemvalue="JUnit.DBHandlerTest" />
+      <item index="3" class="java.lang.String" itemvalue="JUnit.DBHandlerTest.getAllDentistsAttended" />
+      <item index="4" class="java.lang.String" itemvalue="JUnit.DBHandlerTest.getCheapestMedicine" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="JUnit.DBHandlerTest.getAllDentistsAttended" />
-        <item index="1" class="java.lang.String" itemvalue="JUnit.DBHandlerTest" />
-        <item index="2" class="java.lang.String" itemvalue="JUnit.DBHandlerTest.getCustomerWith2Payments" />
-        <item index="3" class="java.lang.String" itemvalue="JUnit.DBHandlerTest.getCustomersWithHighestPayments" />
-        <item index="4" class="java.lang.String" itemvalue="JUnit.DBHandlerTest.getCustomerYearlyPayments" />
+        <item index="0" class="java.lang.String" itemvalue="JUnit.DBHandlerTest.getCheapestMedicine" />
+        <item index="1" class="java.lang.String" itemvalue="JUnit.DBHandlerTest.getAllDentistsAttended" />
+        <item index="2" class="java.lang.String" itemvalue="JUnit.DBHandlerTest" />
+        <item index="3" class="java.lang.String" itemvalue="JUnit.DBHandlerTest.getCustomerWith2Payments" />
+        <item index="4" class="java.lang.String" itemvalue="JUnit.DBHandlerTest.getCustomersWithHighestPayments" />
       </list>
     </recent_temporary>
     <configuration name="&lt;template&gt;" type="TestNG" default="true" selected="false">
@@ -654,26 +655,26 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="DBHandlerTest - 2016.11.11 at 23h 57m 14s.xml">
-      <configuration name="DBHandlerTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="DBHandlerTest - 2016.11.11 at 23h 59m 55s.xml">
-      <configuration name="DBHandlerTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="DBHandlerTest_getAllDentistsAttended - 2016.11.12 at 18h 30m 22s.xml">
+    <history-entry file="DBHandlerTest_getAllDentistsAttended - 2016.11.12 at 19h 23m 34s.xml">
       <configuration name="DBHandlerTest.getAllDentistsAttended" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="DBHandlerTest_getAllDentistsAttended - 2016.11.12 at 18h 31m 01s.xml">
+    <history-entry file="DBHandlerTest_getAllDentistsAttended - 2016.11.12 at 19h 24m 43s.xml">
       <configuration name="DBHandlerTest.getAllDentistsAttended" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="DBHandlerTest_getAllDentistsAttended - 2016.11.12 at 18h 33m 38s.xml">
+    <history-entry file="DBHandlerTest_getAllDentistsAttended - 2016.11.12 at 19h 29m 39s.xml">
       <configuration name="DBHandlerTest.getAllDentistsAttended" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="DBHandlerTest_getCustomerYearlyPayments - 2016.11.11 at 21h 41m 37s.xml">
-      <configuration name="DBHandlerTest.getCustomerYearlyPayments" configurationId="JUnit" />
+    <history-entry file="DBHandlerTest_getAllDentistsAttended - 2016.11.12 at 19h 32m 18s.xml">
+      <configuration name="DBHandlerTest.getAllDentistsAttended" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="DBHandlerTest_getCustomerYearlyPayments - 2016.11.11 at 21h 42m 34s.xml">
-      <configuration name="DBHandlerTest.getCustomerYearlyPayments" configurationId="JUnit" />
+    <history-entry file="DBHandlerTest_getAllDentistsAttended - 2016.11.12 at 19h 37m 07s.xml">
+      <configuration name="DBHandlerTest.getAllDentistsAttended" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DBHandlerTest_getCheapestMedicine - 2016.11.12 at 20h 25m 21s.xml">
+      <configuration name="DBHandlerTest.getCheapestMedicine" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DBHandlerTest_getCheapestMedicine - 2016.11.12 at 20h 27m 00s.xml">
+      <configuration name="DBHandlerTest.getCheapestMedicine" configurationId="JUnit" />
     </history-entry>
     <history-entry file="DBHandlerTest_getCustomerYearlyPayments - 2016.11.11 at 21h 43m 22s.xml">
       <configuration name="DBHandlerTest.getCustomerYearlyPayments" configurationId="JUnit" />
@@ -686,17 +687,17 @@
     </history-entry>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1280" height="735" extended-state="0" />
+    <frame x="0" y="23" width="1280" height="735" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.0" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3296875" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3296875" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2046875" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -759,14 +760,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/Hygienist.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="23" selection-start-line="8" selection-start-column="23" selection-end-line="8" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Receptionist.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
@@ -843,7 +836,24 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
           <caret line="8" column="23" selection-start-line="8" selection-start-column="23" selection-end-line="8" selection-end-column="23" />
-          <folding />
+          <folding>
+            <element signature="e#306#307#0" expanded="true" />
+            <element signature="e#332#333#0" expanded="true" />
+            <element signature="e#362#363#0" expanded="true" />
+            <element signature="e#391#392#0" expanded="true" />
+            <element signature="e#418#419#0" expanded="true" />
+            <element signature="e#444#445#0" expanded="true" />
+            <element signature="e#474#475#0" expanded="true" />
+            <element signature="e#500#501#0" expanded="true" />
+            <element signature="e#528#529#0" expanded="true" />
+            <element signature="e#554#555#0" expanded="true" />
+            <element signature="e#587#588#0" expanded="true" />
+            <element signature="e#618#619#0" expanded="true" />
+            <element signature="e#650#651#0" expanded="true" />
+            <element signature="e#678#679#0" expanded="true" />
+            <element signature="e#710#711#0" expanded="true" />
+            <element signature="e#738#739#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -920,7 +930,24 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
           <caret line="8" column="23" selection-start-line="8" selection-start-column="23" selection-end-line="8" selection-end-column="23" />
-          <folding />
+          <folding>
+            <element signature="e#306#307#0" expanded="true" />
+            <element signature="e#332#333#0" expanded="true" />
+            <element signature="e#362#363#0" expanded="true" />
+            <element signature="e#391#392#0" expanded="true" />
+            <element signature="e#418#419#0" expanded="true" />
+            <element signature="e#444#445#0" expanded="true" />
+            <element signature="e#474#475#0" expanded="true" />
+            <element signature="e#500#501#0" expanded="true" />
+            <element signature="e#528#529#0" expanded="true" />
+            <element signature="e#554#555#0" expanded="true" />
+            <element signature="e#587#588#0" expanded="true" />
+            <element signature="e#618#619#0" expanded="true" />
+            <element signature="e#650#651#0" expanded="true" />
+            <element signature="e#678#679#0" expanded="true" />
+            <element signature="e#710#711#0" expanded="true" />
+            <element signature="e#738#739#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -983,7 +1010,24 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
           <caret line="8" column="23" selection-start-line="8" selection-start-column="23" selection-end-line="8" selection-end-column="23" />
-          <folding />
+          <folding>
+            <element signature="e#306#307#0" expanded="true" />
+            <element signature="e#332#333#0" expanded="true" />
+            <element signature="e#362#363#0" expanded="true" />
+            <element signature="e#391#392#0" expanded="true" />
+            <element signature="e#418#419#0" expanded="true" />
+            <element signature="e#444#445#0" expanded="true" />
+            <element signature="e#474#475#0" expanded="true" />
+            <element signature="e#500#501#0" expanded="true" />
+            <element signature="e#528#529#0" expanded="true" />
+            <element signature="e#554#555#0" expanded="true" />
+            <element signature="e#587#588#0" expanded="true" />
+            <element signature="e#618#619#0" expanded="true" />
+            <element signature="e#650#651#0" expanded="true" />
+            <element signature="e#678#679#0" expanded="true" />
+            <element signature="e#710#711#0" expanded="true" />
+            <element signature="e#738#739#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1026,79 +1070,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/LoginInformation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="5" selection-start-line="10" selection-start-column="5" selection-end-line="10" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/CustomerPage.form">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="ui-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/CustomerPage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Bill.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="885">
-          <caret line="66" column="23" selection-start-line="66" selection-start-column="23" selection-end-line="66" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Medicine.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="14" column="39" selection-start-line="14" selection-start-column="39" selection-end-line="14" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dentalservice.iml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dentalClinic2.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Receptionist.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="61" selection-start-line="15" selection-start-column="61" selection-end-line="15" selection-end-column="61" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Hygienist.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" column="1" selection-start-line="18" selection-start-column="1" selection-end-line="18" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/CustomerPage.form" />
+    <entry file="file://$PROJECT_DIR$/src/CustomerPage.java" />
     <entry file="file://$PROJECT_DIR$/src/Customer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="585">
@@ -1111,9 +1084,95 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Employee.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="30" column="5" selection-start-line="30" selection-start-column="5" selection-end-line="30" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Receptionist.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="23" selection-start-line="17" selection-start-column="23" selection-end-line="17" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Dentist.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" column="4" selection-start-line="15" selection-start-column="4" selection-end-line="25" selection-end-column="5" />
+          <folding>
+            <element signature="e#1072#1073#0" expanded="true" />
+            <element signature="e#1102#1103#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Hygienist.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+          <folding>
+            <element signature="e#306#307#0" expanded="true" />
+            <element signature="e#332#333#0" expanded="true" />
+            <element signature="e#362#363#0" expanded="true" />
+            <element signature="e#391#392#0" expanded="true" />
+            <element signature="e#418#419#0" expanded="true" />
+            <element signature="e#444#445#0" expanded="true" />
+            <element signature="e#474#475#0" expanded="true" />
+            <element signature="e#500#501#0" expanded="true" />
+            <element signature="e#528#529#0" expanded="true" />
+            <element signature="e#554#555#0" expanded="true" />
+            <element signature="e#587#588#0" expanded="true" />
+            <element signature="e#618#619#0" expanded="true" />
+            <element signature="e#650#651#0" expanded="true" />
+            <element signature="e#678#679#0" expanded="true" />
+            <element signature="e#710#711#0" expanded="true" />
+            <element signature="e#738#739#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Medicine.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="11" column="44" selection-start-line="11" selection-start-column="44" selection-end-line="11" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DBHandlerTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="17" selection-start-line="17" selection-start-column="17" selection-end-line="17" selection-end-column="17" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Bill.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="885">
+          <caret line="66" column="23" selection-start-line="66" selection-start-column="23" selection-end-line="66" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DentalService.iml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Appointment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
+        <state relative-caret-position="600">
           <caret line="48" column="33" selection-start-line="48" selection-start-column="33" selection-end-line="48" selection-end-column="33" />
           <folding>
             <element signature="e#1112#1113#0" expanded="true" />
@@ -1122,71 +1181,41 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Employee.java">
+    <entry file="file://$PROJECT_DIR$/dentalClinic2.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="30" column="5" selection-start-line="30" selection-start-column="5" selection-end-line="30" selection-end-column="5" />
+        <state relative-caret-position="315">
+          <caret line="139" column="8" selection-start-line="139" selection-start-column="8" selection-end-line="139" selection-end-column="8" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Dentist.java">
+    <entry file="file://$PROJECT_DIR$/src/LoginInformation.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="49" column="5" selection-start-line="49" selection-start-column="5" selection-end-line="49" selection-end-column="5" />
+        <state relative-caret-position="540">
+          <caret line="44" column="5" selection-start-line="44" selection-start-column="5" selection-end-line="44" selection-end-column="5" />
           <folding>
-            <element signature="e#676#677#0" expanded="true" />
-            <element signature="e#717#718#0" expanded="true" />
-            <element signature="e#744#745#0" expanded="true" />
-            <element signature="e#770#771#0" expanded="true" />
-            <element signature="e#825#826#0" expanded="true" />
-            <element signature="e#861#862#0" expanded="true" />
-            <element signature="e#910#911#0" expanded="true" />
-            <element signature="e#940#941#0" expanded="true" />
-            <element signature="e#992#993#0" expanded="true" />
-            <element signature="e#1022#1023#0" expanded="true" />
-            <element signature="e#1072#1073#0" expanded="true" />
-            <element signature="e#1102#1103#0" expanded="true" />
-            <element signature="e#1148#1149#0" expanded="true" />
-            <element signature="e#1188#1189#0" expanded="true" />
-            <element signature="e#1244#1245#0" expanded="true" />
-            <element signature="e#1278#1279#0" expanded="true" />
-            <element signature="e#1334#1335#0" expanded="true" />
-            <element signature="e#1368#1369#0" expanded="true" />
-            <element signature="e#1478#1479#0" expanded="true" />
-            <element signature="e#1507#1508#0" expanded="true" />
-            <element signature="e#1548#1549#0" expanded="true" />
-            <element signature="e#1574#1575#0" expanded="true" />
-            <element signature="e#1618#1619#0" expanded="true" />
-            <element signature="e#1644#1645#0" expanded="true" />
-            <element signature="e#1686#1687#0" expanded="true" />
-            <element signature="e#1712#1713#0" expanded="true" />
-            <element signature="e#1759#1760#0" expanded="true" />
-            <element signature="e#1790#1791#0" expanded="true" />
-            <element signature="e#1836#1837#0" expanded="true" />
-            <element signature="e#1864#1865#0" expanded="true" />
-            <element signature="e#1910#1911#0" expanded="true" />
-            <element signature="e#1938#1939#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DBHandlerTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="210" column="5" selection-start-line="210" selection-start-column="5" selection-end-line="210" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#860#861#0" expanded="true" />
+            <element signature="e#900#901#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/DBHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="185">
-          <caret line="309" column="46" selection-start-line="309" selection-start-column="46" selection-end-line="309" selection-end-column="46" />
+        <state relative-caret-position="75">
+          <caret line="51" column="38" selection-start-line="51" selection-start-column="38" selection-end-line="51" selection-end-column="38" />
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Login.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="23" column="17" selection-start-line="23" selection-start-column="17" selection-end-line="23" selection-end-column="17" />
+          <folding>
+            <element signature="initializer##0;class#Login#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1243,7 +1272,7 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>DentalService</last-edited>
+          <last-edited>dentalservice</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

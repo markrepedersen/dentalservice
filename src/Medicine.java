@@ -9,10 +9,16 @@ public class Medicine {
     private double cost;
     private String description;
 
+    public Medicine(int code, double cost) {
+        this.code = code;
+        this.cost = cost;
+    }
+
     public Medicine(int code, double cost, String description) {
         this.code = code;
         this.cost = cost;
         this.description = description;
+
     }
 
     public void setCode(int code) {

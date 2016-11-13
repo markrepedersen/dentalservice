@@ -12,8 +12,8 @@ public class DBHandler {
     // Query for customer search table
     private static final String CUSTOMER_WITH_DENTIST =
             "select c.cid, c.fname, c.lname, c.phone_Num, c.birthday, c.email, " +
-            "c.address, d.fname, d.lname from Customer c, Attends a, Dentist d " +
-            "where c.cid = \'a.cid\' and a.did = \'d.did\' and ";
+                    "c.address, d.fname, d.lname from Customer c, Attends a, Dentist d " +
+                    "where c.cid = \'a.cid\' and a.did = \'d.did\' and ";
 
 
     public Connection getConnection() {
@@ -24,8 +24,7 @@ public class DBHandler {
             connectionProps.put("password", "a37504140");
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
             conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1522:ug", connectionProps);
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -42,13 +41,20 @@ public class DBHandler {
     //         3 if user is receptionist
     //        -1 if user's information is not found
     // login type can only be one of: d, r, or h
-    public int queryLoginInfo(String username, String password) throws SQLException {
+    public int queryLoginInfo(String username, String pw) throws SQLException {
         Connection conn = getConnection();
         Statement stmt = conn.createStatement();
-        stmt.execute("SELECT * FROM login_details WHERE username = " + "\'" + username + "\' AND password = \'" + password + "\'");
+        stmt.execute("select * from login_details where username = " + "\'" + username + "\'");
         ResultSet rs = stmt.getResultSet();
+        //result set has tuples
         if (rs.next()) {
-            switch (rs.getType()) {
+            LoginInformation login = new LoginInformation(rs.getString("username"), rs.getString("hashpass"), rs.getString("salt"), rs.getString("type"));
+            // Checks if hashpass = hash(pw + salt)
+            if (!login.getHashPass()
+                    .equals(BCrypt.hashpw(pw, login.getSalt()))) {
+                return -1; // password does not match
+            }
+            switch (login.getType()) {
                 case "d":
                     return 1;
                 case "h":
@@ -135,7 +141,7 @@ public class DBHandler {
     // Creates a list of customer objects that user must iterate through to handle
     public List<Customer> customerSearchByFirstName(String fname) throws SQLException {
         String query = "select c.cid AS CustomerID, c.fname AS FirstName, c.lname AS LastName, c.phone_Num AS PhoneNumber, c.dob AS DateOfBirth, c.email AS Email, " +
-                       "c.address AS Address from Customer c WHERE c.fname LIKE \'%" + fname + "%\'";
+                "c.address AS Address from Customer c WHERE c.fname LIKE \'%" + fname + "%\'";
         ArrayList<Customer> list = new ArrayList<>();
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
@@ -182,8 +188,8 @@ public class DBHandler {
     // Finds specific appointment records for a customer
     public List<Appointment> getUpcomingCustomerAppointmentsByCID(int cid) throws SQLException {
         String query = "select app.num as \"num\", app.type as \"type\", app.from_Time as \"from\", app.to_Time as \"until\"" +
-                       " from Customer cus, Appointment app where " +
-                       "cus.cid = app.cid and app.cid = ? and CURRENT_TIMESTAMP <= app.from_Time";
+                " from Customer cus, Appointment app where " +
+                "cus.cid = app.cid and app.cid = ? and CURRENT_TIMESTAMP <= app.from_Time";
         List<Appointment> list = new ArrayList<>();
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
@@ -217,7 +223,7 @@ public class DBHandler {
                     rs.getInt("cid"),
                     rs.getString("fname"),
                     rs.getString("lname")
-                    );
+            );
             list.add(a);
         }
         conn.close();
@@ -227,8 +233,8 @@ public class DBHandler {
     // Finds past appointment records for a customer
     public List<Appointment> getPastCustomerAppointments(int cid) throws SQLException {
         String query = "select app.num as \"num\", app.type as \"type\", app.from_Time as \"from\", app.to_Time as \"until\"" +
-                       " from Customer cus, Appointment app where " +
-                       "cus.cid = app.cid and app.cid = ? and CURRENT_TIMESTAMP > app.from_Time";
+                " from Customer cus, Appointment app where " +
+                "cus.cid = app.cid and app.cid = ? and CURRENT_TIMESTAMP > app.from_Time";
         List<Appointment> list = new ArrayList<>();
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
@@ -267,29 +273,6 @@ public class DBHandler {
         conn.close();
     }
 
-    // Finds all customers who have attended all dentists
-    public List<Customer> getCustomersAttendedAllDentists() throws SQLException {
-        String query = "select ";
-        ArrayList<Customer> list = new ArrayList<>();
-        Connection conn = getConnection();
-        PreparedStatement ps = conn.prepareStatement(query);
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            Customer e = new Customer(
-                    rs.getInt("cid"),
-                    rs.getString("fname"),
-                    rs.getString("lname"),
-                    rs.getInt("phone_Num"),
-                    rs.getDate("dob"),
-                    rs.getString("email"),
-                    rs.getString("address")
-            );
-            list.add(e);
-        }
-        conn.close();
-        return list;
-    }
-
 
     /* ------------------------------------------------------------------------------------------------------------------------------- //
    ----------------------------------------------- Employee Methods -----------------------------------------------------------------
@@ -297,10 +280,8 @@ public class DBHandler {
 
     // Selecting all dentists who have attended all customers
     public List<Dentist> getAllDentistsAttended() throws SQLException {
-        String query = "select d.fname, d.lname, d.did from dentist d where not exists (" +
-                       "select * from customer where not exists (" +
-                       "select c.cid from customer c, attends a where c.cid = a.cid" +
-                       " and a.did = d.did))";
+        String query = "select d.fname, d.lname, d.did from dentist d where not exists ((" +
+                "select cid from customer) MINUS (select cid from attends a where a.did = d.did))";
         ArrayList<Dentist> list = new ArrayList<>();
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
@@ -352,7 +333,7 @@ public class DBHandler {
 
     public List<Employee> employeeSearchByFirstName(String fname) throws SQLException {
         String query = "select e.eid AS EmployeeID, e.fname AS FirstName, e.lname AS LastName, e.salary AS Salary, e.age AS Age, e.sex AS Sex, " +
-                       "e.dob AS DateOfBirth, phoneNum AS PhoneNumber from Employee e WHERE e.fname LIKE \'%?%\'";
+                "e.dob AS DateOfBirth, phoneNum AS PhoneNumber from Employee e WHERE e.fname LIKE \'%?%\'";
         ArrayList<Employee> list = new ArrayList<>();
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
@@ -368,7 +349,7 @@ public class DBHandler {
                     rs.getString("Sex"),
                     rs.getDate("DateOfBirth"),
                     rs.getLong("PhoneNumber")
-                    );
+            );
             list.add(e);
         }
         conn.close();
@@ -377,7 +358,7 @@ public class DBHandler {
 
     public List<Employee> employeeSearchByLastName(String lname) throws SQLException {
         String query = "select e.eid AS EmployeeID, e.fname AS FirstName, e.lname AS LastName, e.salary AS Salary, e.age AS Age, e.sex AS Sex, " +
-                       "e.dob AS DateOfBirth, phoneNum AS PhoneNumber from Employee e WHERE e.fname LIKE \'%?%\'";
+                "e.dob AS DateOfBirth, phoneNum AS PhoneNumber from Employee e WHERE e.fname LIKE \'%?%\'";
         ArrayList<Employee> list = new ArrayList<>();
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
@@ -395,30 +376,6 @@ public class DBHandler {
                     rs.getLong("PhoneNumber")
             );
             list.add(e);
-        }
-        conn.close();
-        return list;
-    }
-
-
-    public List<Customer> getEmployeesAboveAverageSalary() throws SQLException {
-        String query = "select * from employee e where salary > (" +
-                "select AVG(salary) from employee group by cid having COUNT(*) = 2)";
-        List<Customer> list = new ArrayList<>();
-        Connection conn = getConnection();
-        PreparedStatement ps = conn.prepareStatement(query);
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            Customer b = new Customer(
-                    rs.getInt("cid"),
-                    rs.getString("fname"),
-                    rs.getString("lname"),
-                    rs.getLong("phone_Num"),
-                    rs.getDate("dob"),
-                    rs.getString("email"),
-                    rs.getString("address")
-            );
-            list.add(b);
         }
         conn.close();
         return list;
@@ -501,8 +458,8 @@ public class DBHandler {
     // Find all employees who work for this supervisor
     public List<Employee> getEmployeesUnderSupervisor(int eid) throws SQLException {
         String query = "select e.eid, e.fname, e.lname, e.salary, e.age, e.sex, e.dob, e.phone_Num" +
-                       " from Employee e, WorksFor w" +
-                       " where w.sid = ? and w.eid = e.eid";
+                " from Employee e, WorksFor w" +
+                " where w.sid = ? and w.eid = e.eid";
         List<Employee> list = new ArrayList<>();
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
@@ -530,8 +487,8 @@ public class DBHandler {
     // we do not use first or last name since results must be unique to one customer only
     public List<Bill> getCustomerBills(int cid) throws SQLException {
         String query = "select c.fname as Name, c.lname as Surname, b.type as type, b.dueDate as Due, " +
-                       "b.amountPaid as Payment, (b.amountOwes - b.amountPaid) as Balance" +
-                       " from Customer c, Bill b where b.cid = \'" + cid + "\' and c.cid = \'" + cid + "\'";
+                "b.amountPaid as Payment, (b.amountOwes - b.amountPaid) as Balance" +
+                " from Customer c, Bill b where b.cid = \'" + cid + "\' and c.cid = \'" + cid + "\'";
         List<Bill> list = new ArrayList<>();
         Connection conn = getConnection();
         Statement stmt = conn.createStatement();
@@ -545,7 +502,7 @@ public class DBHandler {
                     rs.getDate("Due"),
                     rs.getBigDecimal("Payment"),
                     rs.getBigDecimal("Balance")
-                    );
+            );
             list.add(b);
         }
         conn.close();
@@ -557,11 +514,11 @@ public class DBHandler {
     // we do not use first or last name since results must be unique to one customer only
     public List<Bill> getCustomerPastPayments(int cid) throws SQLException {
         String query = "select c.cid, c.fname as Name, " +
-                    "c.lname as Surname, " +
-                    "SUM(b.amountPaid) as Payment " +
-                    "from Customer c, Bill b where b.cid = ? " +
-                    "and c.cid = ? and b.cid = c.cid and CURRENT_DATE > dueDate and isPaid = 1" +
-                    "group by c.cid, c.fname, c.lname";
+                "c.lname as Surname, " +
+                "SUM(b.amountPaid) as Payment " +
+                "from Customer c, Bill b where b.cid = ? " +
+                "and c.cid = ? and b.cid = c.cid and CURRENT_DATE > dueDate and isPaid = 1" +
+                "group by c.cid, c.fname, c.lname";
         List<Bill> list = new ArrayList<>();
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
@@ -585,7 +542,7 @@ public class DBHandler {
     // we do not use first or last name since results must be unique to one customer only
     public List<Customer> getCustomerWith2Payments() throws SQLException {
         String query = "select * from customer where cid in (" +
-                       "select cid from bill group by cid having COUNT(*) = 2)";
+                "select cid from bill group by cid having COUNT(*) = 2)";
         List<Customer> list = new ArrayList<>();
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
@@ -612,8 +569,8 @@ public class DBHandler {
     // we do not use first or last name since results must be unique to one customer only
     public List<Bill> getCustomerUnpaidBills(int cid) throws SQLException {
         String query = "select c.fname as Name, c.lname as Surname, b.type as type, b.dueDate as Due, " +
-                       "b.amountPaid as Payment, (b.amountOwes - b.amountPaid) as Balance" +
-                       " from Customer c, Bill b where b.cid = \'" + cid + "\' and c.cid = \'" + cid + "\' and b.isPaid = 0";
+                "b.amountPaid as Payment, (b.amountOwes - b.amountPaid) as Balance" +
+                " from Customer c, Bill b where b.cid = \'" + cid + "\' and c.cid = \'" + cid + "\' and b.isPaid = 0";
         List<Bill> list = new ArrayList<>();
         Connection conn = getConnection();
         Statement stmt = conn.createStatement();
@@ -755,6 +712,23 @@ public class DBHandler {
                     rs.getInt("CODE"),
                     rs.getDouble("COST"),
                     rs.getString("DESCRIPTION"));
+            list.add(m);
+        }
+        return list;
+    }
+
+    // Finds cheapest medicine(s)
+    public List<Medicine> getCheapestMedicine() throws SQLException {
+        String query = "select code, cost from medicine where cost in (select min(cost) from medicine)";
+        List<Medicine> list = new ArrayList<>();
+        Connection conn = getConnection();
+        PreparedStatement ps = conn.prepareStatement(query);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Medicine m = new Medicine(
+                    rs.getInt("code"),
+                    rs.getDouble("cost")
+            );
             list.add(m);
         }
         return list;

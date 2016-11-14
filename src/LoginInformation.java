@@ -7,16 +7,26 @@ public class LoginInformation {
     private String hashPass;
     private String salt;
     private String type;
+    private int    eid;
 
     public LoginInformation() {
     }
 
     //constructor
-    public LoginInformation(String username, String hashPass, String salt, String type) {
+    public LoginInformation(String username, String hashPass, String salt, String type, int eid) {
         this.username = username;
         this.hashPass = hashPass;
         this.salt = salt;
         this.type = type;
+    }
+
+    public void setEid(int eid) {
+        this.eid = eid;
+    }
+
+    public int getEid() {
+
+        return eid;
     }
 
     public void setType(String type) {

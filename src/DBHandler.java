@@ -37,12 +37,47 @@ public class DBHandler {
     ----------------------------------------------- Login Methods -----------------------------------------------------------------
      */
 
-    // Queries database for user's username and password
-    // Returns 1 if user is dentist
+    // Helper method for queryLoginInfo
+    // Determines if user if one of below:
+    //  Returns 1 if user is dentist
     //         2 if user is hygienist
     //         3 if user is receptionist
     //        -1 if user's information is not found
     // login type can only be one of: d, r, or h
+    // employee cannot be in more than one of: r, d, or h tables
+    public int getEmployeeType(int eid) throws SQLException {
+        String dQuery = "select * from employee where eid in (" +
+                "select did from dentist)";
+        String rQuery = "select * from employee where eid in (" +
+                "select rid from receptionist)";
+        String hQuery = "select * from employee where eid in (" +
+                "select hid from hygienist)";
+        Connection conn = getConnection();
+        PreparedStatement ps1 = conn.prepareStatement(dQuery);
+        ResultSet rs1 = ps1.executeQuery();
+        if (rs1.next()) {
+            conn.close();
+            return 1;
+        }
+        PreparedStatement ps2 = conn.prepareStatement(rQuery);
+        ResultSet rs2 = ps2.executeQuery();
+        if (rs2.next()) {
+            conn.close();
+            return 2;
+        }
+        PreparedStatement ps3 = conn.prepareStatement(hQuery);
+        ResultSet rs3 = ps3.executeQuery();
+        if (rs3.next()) {
+            conn.close();
+            return 3;
+        }
+        // this shouldn't be able to happen
+        // just a fail-safe to satisfy compiler
+        conn.close();
+        return -1;
+    }
+
+    // Queries database for user's username and password
     public int queryLoginInfo(String username, String pw) throws SQLException {
         Connection conn = getConnection();
         Statement stmt = conn.createStatement();
@@ -50,23 +85,23 @@ public class DBHandler {
         ResultSet rs = stmt.getResultSet();
         //result set has tuples
         if (rs.next()) {
-            LoginInformation login = new LoginInformation(rs.getString("username"), rs.getString("hashpass"), rs.getString("salt"), rs.getString("type"));
+            LoginInformation login = new LoginInformation(
+                    rs.getString("username"),
+                    rs.getString("hashpass"),
+                    rs.getString("salt"),
+                    rs.getString("type"),
+                    rs.getInt("eid"));
             // Checks if hashpass = hash(pw + salt)
             if (!login.getHashPass()
                     .equals(BCrypt.hashpw(pw, login.getSalt()))) {
                 return -1; // password does not match
             }
-            switch (login.getType()) {
-                case "d":
-                    return 1;
-                case "h":
-                    return 2;
-                case "r":
-                    return 3;
-            }
+            return getEmployeeType(login.getEid());
         }
+        conn.close();
         return -1; // empty result set => username not found
     }
+
 
 
     /* ------------------------------------------------------------------------------------------------------------------------------- //
@@ -275,6 +310,21 @@ public class DBHandler {
         conn.close();
     }
 
+    // Get highest Customer ID
+    public int getHighestCustomerID() throws Exception {
+        String query = "select max(cid) from customer";
+        Connection conn = getConnection();
+        Statement stmt = conn.createStatement();
+        stmt.execute(query);
+        ResultSet rs = stmt.getResultSet();
+        int result = 0;
+        while (rs.next()) {
+            result = rs.getInt(1);
+        }
+        conn.close();
+        return result;
+    }
+
 
     /* ------------------------------------------------------------------------------------------------------------------------------- //
    ----------------------------------------------- Employee Methods -----------------------------------------------------------------
@@ -304,9 +354,10 @@ public class DBHandler {
     // Employee credentials are username, pw
     // type can only be one of: d, r, or h
     public void registerEmployee(String username, String pw, String type) throws SQLException {
+        int eid = getHighestEmployeeID() + 1;
         String salt = BCrypt.gensalt();
         String hashpass = BCrypt.hashpw(pw, salt);
-        String query = "insert into login_details values (\'" + username + "\', " + "\'" + hashpass + "\', " + "\'" + salt + "\', " + "\'" + type + "\')";
+        String query = "insert into login_details values (\'" + username + "\', " + "\'" + hashpass + "\', " + "\'" + salt + "\', " + "\'" + type + "\', " + "\'" + eid + "\'" + ")";
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
         ps.executeUpdate();
@@ -331,22 +382,6 @@ public class DBHandler {
         Statement stmt = conn.createStatement();
         stmt.executeUpdate("DELETE FROM EMPLOYEE WHERE eid = \'" + eid + "\')");
         conn.close();
-    }
-    @Test
-
-    // Get highest Customer ID
-    public int getHighestCustomerID() throws Exception {
-        String query = "select max(cid) from customer";
-        Connection conn = getConnection();
-        Statement stmt = conn.createStatement();
-        stmt.execute(query);
-        ResultSet rs = stmt.getResultSet();
-        int result = 0;
-        while (rs.next()) {
-            result = rs.getInt(1);
-        }
-        conn.close();
-        return result;
     }
 
     public List<Employee> employeeSearchByFirstName(String fname) throws SQLException {
@@ -451,6 +486,20 @@ public class DBHandler {
             list.add(e);
         }
         return list;
+    }
+
+    // Get highest Customer ID
+    public int getHighestEmployeeID() throws SQLException {
+        String query = "select max(eid) from employee";
+        Connection conn = getConnection();
+        PreparedStatement stmt = conn.prepareStatement(query);
+        ResultSet rs = stmt.executeQuery();
+        int result = 0;
+        while (rs.next()) {
+            result = rs.getInt(1);
+        }
+        conn.close();
+        return result;
     }
 
     /* ------------------------------------------------------------------------------------------------------------------------------- //

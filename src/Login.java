@@ -15,7 +15,6 @@ public class Login {
     private JPasswordField passwordField;
     private JButton loginButton;
     private ImageIcon logoImage;
-    private JLabel logoLabel;
     private JLabel usernameLabel;
     private JLabel passwordLabel;
 
@@ -27,7 +26,7 @@ public class Login {
         loginButton.addActionListener(new LoginButtonClicked(usernameField.getText(), passwordField.getPassword()));
     }
 
-    public static void main(String[] args) {
+    public void init() {
         JFrame frame = new JFrame("Login");
         frame.setContentPane(new Login().loginView);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -52,10 +51,6 @@ public class Login {
     private void $$$setupUI$$$() {
         loginView = new JPanel();
         loginView.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(4, 2, new Insets(10, 10, 10, 10), -1, -1));
-        logoLabel = new JLabel();
-        logoLabel.setIcon(new ImageIcon(getClass().getResource("/IMAGES/logo.png")));
-        logoLabel.setText("");
-        loginView.add(logoLabel, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 2, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         usernameLabel = new JLabel();
         usernameLabel.setText("Username:");
         loginView.add(usernameLabel, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -96,15 +91,31 @@ public class Login {
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
+            Menu m = new Menu();
+            switch (type) {
+                case 1:
+                    m.init();
+                    break;
+                case 2:
+                    m.init();
+                    break;
+                case 3:
+                    m.init();
+                    break;
+                default:
+                    // user not found
+                    int result = JOptionPane.showConfirmDialog(null, "Those login credentials weren't found. Would you like to register for an account?");
+                    switch (result) {
+                        case JOptionPane.YES_OPTION:
+                            break;
+                        case JOptionPane.CANCEL_OPTION:
+                            break;
+                        case JOptionPane.NO_OPTION:
 
-            if (type == 1) {
-                // Set Scene to ...
-            } else if (type == 2) {
-                // Set Scene to ...
-            } else if (type == 3) {
-                // Set Scene to ...
-            } else {
-                // Username & Password Incorrect
+
+
+                    }
+                    break;
             }
         }
     }

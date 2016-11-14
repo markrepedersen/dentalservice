@@ -139,6 +139,7 @@ create table Uses(
 		hashpass Varchar2(255),
         salt Varchar2(255),
 		type Varchar2(10),
+		eid  integer,
 		primary key(username)
 	);
 --

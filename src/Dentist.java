@@ -8,12 +8,11 @@ public class Dentist {
     private int salary;
     private int age;
     private String sex;
-    private Date dob;
     private long phoneNum;
     private String fname;
     private String lname;
 
-    public Dentist(int did, String fname, String lname, int salary, int age, String sex, Date dob, long
+    public Dentist(int did, String fname, String lname, int salary, int age, String sex, long
             phoneNum) {
         this.did = did;
         this.fname = fname;
@@ -21,7 +20,6 @@ public class Dentist {
         this.salary = salary;
         this.age = age;
         this.sex = sex;
-        this.dob = dob;
         this.phoneNum = phoneNum;
     }
 
@@ -47,9 +45,6 @@ public class Dentist {
         this.sex = sex;
     }
 
-    public void setDob(Date dob) {
-        this.dob = dob;
-    }
 
     public void setPhoneNum(long phoneNum) {
         this.phoneNum = phoneNum;
@@ -80,9 +75,6 @@ public class Dentist {
         return sex;
     }
 
-    public Date getDob() {
-        return dob;
-    }
 
     public long getPhoneNum() {
         return phoneNum;

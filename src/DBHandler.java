@@ -1,5 +1,3 @@
-import org.junit.Test;
-
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
@@ -38,7 +36,7 @@ public class DBHandler {
      */
 
     // Helper method for queryLoginInfo
-    // Determines if user if one of below:
+    // Determines if user is one of below:
     //  Returns 1 if user is dentist
     //         2 if user is hygienist
     //         3 if user is receptionist
@@ -46,26 +44,26 @@ public class DBHandler {
     // login type can only be one of: d, r, or h
     // employee cannot be in more than one of: r, d, or h tables
     public int getEmployeeType(int eid) throws SQLException {
-        String dQuery = "select * from employee where eid in (" +
-                "select did from dentist)";
-        String rQuery = "select * from employee where eid in (" +
-                "select rid from receptionist)";
-        String hQuery = "select * from employee where eid in (" +
-                "select hid from hygienist)";
+        String dQuery = "select * from dentist where did = ?";
+        String rQuery = "select * from receptionist where rid = ?";
+        String hQuery = "select * from hygienist where hid = ?";
         Connection conn = getConnection();
         PreparedStatement ps1 = conn.prepareStatement(dQuery);
+        ps1.setInt(1, eid);
         ResultSet rs1 = ps1.executeQuery();
         if (rs1.next()) {
             conn.close();
             return 1;
         }
         PreparedStatement ps2 = conn.prepareStatement(rQuery);
+        ps2.setInt(1, eid);
         ResultSet rs2 = ps2.executeQuery();
         if (rs2.next()) {
             conn.close();
             return 2;
         }
         PreparedStatement ps3 = conn.prepareStatement(hQuery);
+        ps3.setInt(1, eid);
         ResultSet rs3 = ps3.executeQuery();
         if (rs3.next()) {
             conn.close();
@@ -325,10 +323,80 @@ public class DBHandler {
         return result;
     }
 
+    public List<Bill> getAllCustomerBills() throws SQLException {
+        String query = "select c.fname as Name, c.lname as Surname, b.type as type, b.dueDate as Due, " +
+                "b.amountPaid as Payment, (b.amountOwes - b.amountPaid) as Balance" +
+                " from Customer c, Bill b where b.cid = c.cid'";
+        List<Bill> list = new ArrayList<>();
+        Connection conn = getConnection();
+        Statement stmt = conn.createStatement();
+        stmt.execute(query);
+        ResultSet rs = stmt.getResultSet();
+        while (rs.next()) {
+            Bill b = new Bill(
+                    rs.getString("Name"),
+                    rs.getString("Surname"),
+                    rs.getString("type"),
+                    rs.getDate("Due"),
+                    rs.getBigDecimal("Payment"),
+                    rs.getBigDecimal("Balance")
+            );
+            list.add(b);
+        }
+        conn.close();
+        return list;
+    }
+
 
     /* ------------------------------------------------------------------------------------------------------------------------------- //
    ----------------------------------------------- Employee Methods -----------------------------------------------------------------
     */
+
+    // Find highest earning employee
+    public List<Employee> getHighestEarningEmployee() throws SQLException {
+        String query = "select eid, fname, lname, age, sex, salary from employee where salary > ALL (" +
+                "select salary from employee)";
+        ArrayList<Employee> list = new ArrayList<>();
+        Connection conn = getConnection();
+        PreparedStatement ps = conn.prepareStatement(query);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Employee e = new Employee(
+                    rs.getInt("eid"),
+                    rs.getInt("salary"),
+                    rs.getInt("age"),
+                    rs.getString("sex"),
+                    rs.getString("fname"),
+                    rs.getString("lname")
+            );
+            list.add(e);
+        }
+        conn.close();
+        return list;
+    }
+
+    // Find lowest earning employee
+    public List<Employee> getLowestEarningEmployee() throws SQLException {
+        String query = "select * from employee where salary < ALL (" +
+                "select salary from employee)";
+        ArrayList<Employee> list = new ArrayList<>();
+        Connection conn = getConnection();
+        PreparedStatement ps = conn.prepareStatement(query);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Employee e = new Employee(
+                    rs.getInt("eid"),
+                    rs.getInt("salary"),
+                    rs.getInt("age"),
+                    rs.getString("sex"),
+                    rs.getString("fname"),
+                    rs.getString("lname")
+            );
+            list.add(e);
+        }
+        conn.close();
+        return list;
+    }
 
     // Selecting all dentists who have attended all customers
     public List<Dentist> getAllDentistsAttended() throws SQLException {
@@ -353,8 +421,11 @@ public class DBHandler {
     // Registers an employee into the system, letting them have access to the application
     // Employee credentials are username, pw
     // type can only be one of: d, r, or h
-    public void registerEmployee(String username, String pw, String type) throws SQLException {
+    public void registerEmployee(String username, String pw, String type,
+                                 String fname, String lname, int age,
+                                 String sex, long phoneNum) throws SQLException {
         int eid = getHighestEmployeeID() + 1;
+        addEmployee(eid, fname, lname, 0, age, sex, phoneNum);
         String salt = BCrypt.gensalt();
         String hashpass = BCrypt.hashpw(pw, salt);
         String query = "insert into login_details values (\'" + username + "\', " + "\'" + hashpass + "\', " + "\'" + salt + "\', " + "\'" + type + "\', " + "\'" + eid + "\'" + ")";
@@ -364,29 +435,38 @@ public class DBHandler {
         conn.close();
     }
 
-    public void addEmployee(int eid, String fname, String lname, int salary, int age, String sex, String dob, long phoneNum) throws SQLException {
+    public void addEmployee(int eid, String fname, String lname, int salary, int age, String sex, long phoneNum) throws SQLException {
         Connection conn = getConnection();
         Statement stmt = conn.createStatement();
-        stmt.executeUpdate("INSERT INTO EMPLOYEE VALUES (\'" + eid + "\', \'" + salary + "\', \'" + age + "\', \'" + sex + "\', \'" + dob + "\', \'" + phoneNum + "\')");
+        stmt.executeUpdate("INSERT INTO EMPLOYEE VALUES (\'" + eid + "\', \'" + salary + "\', \'" + age + "\', \'" + sex + "\', " + phoneNum + "\')");
         conn.close();
     }
 
-    public void updateEmployee(int eid, String fname, String lname, int salary, int age, String sex, String dob, long phoneNum) throws SQLException {
+    public void updateEmployee(int eid, String fname, String lname, int salary, int age, String sex, long phoneNum) throws SQLException {
         Connection conn = getConnection();
-        Statement stmt = conn.createStatement();
-        stmt.executeUpdate("UPDATE appointment SET fname = \'" + fname + "\', lname = \'" + lname + "\', salary = \'" + salary + "\', age = \'" + age + "\', sex = \'" + sex + "\', dob = \'" + dob + "\', phoneNum = \'" + phoneNum + "\' WHERE eid = \'" + eid + "\'");
+        String query = "UPDATE employee SET fname = ?, lname = ?, salary = ?, age = ?, sex = ?, phoneNum = ? WHERE eid = ?";
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.executeQuery();
+        ps.setInt(1, eid);
+        ps.setString(1, fname);
+        ps.setString(1, lname);
+        ps.setInt(1, salary);
+        ps.setInt(1, age);
+        ps.setString(1, sex);
+        ps.setLong(1, phoneNum);
     }
 
     public void removeEmployee(int eid) throws SQLException {
         Connection conn = getConnection();
-        Statement stmt = conn.createStatement();
-        stmt.executeUpdate("DELETE FROM EMPLOYEE WHERE eid = \'" + eid + "\')");
-        conn.close();
+        String query = "DELETE FROM EMPLOYEE WHERE eid = ?";
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setInt(1, eid);
+        ps.executeQuery();
     }
 
     public List<Employee> employeeSearchByFirstName(String fname) throws SQLException {
         String query = "select e.eid AS EmployeeID, e.fname AS FirstName, e.lname AS LastName, e.salary AS Salary, e.age AS Age, e.sex AS Sex, " +
-                "e.dob AS DateOfBirth, phoneNum AS PhoneNumber from Employee e WHERE e.fname LIKE \'%?%\'";
+                "phoneNum AS PhoneNumber from Employee e WHERE e.fname LIKE \'%?%\'";
         ArrayList<Employee> list = new ArrayList<>();
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
@@ -400,7 +480,6 @@ public class DBHandler {
                     rs.getInt("Salary"),
                     rs.getInt("Age"),
                     rs.getString("Sex"),
-                    rs.getDate("DateOfBirth"),
                     rs.getLong("PhoneNumber")
             );
             list.add(e);
@@ -427,7 +506,6 @@ public class DBHandler {
                     rs.getInt(4),
                     rs.getInt(5),
                     rs.getString(6),
-                    rs.getDate(7),
                     rs.getLong(8));
             list.add(e);
         }
@@ -440,7 +518,7 @@ public class DBHandler {
     // Shows only those with eid = parameter eid
     // Creates a list of Employee objects that user must iterate through to handle
     public ArrayList<Employee> empSearchByEID(int eid) throws SQLException {
-        String query = "select c.cid, c.fname, c.lname, c.phone_Num, c.dob, c.email, " +
+        String query = "select c.cid, c.fname, c.lname, c.phone_Num, c.email, " +
                 "c.address from Customer c where c.cid = ?";
         ArrayList<Employee> list = new ArrayList<>();
         Connection conn = getConnection();
@@ -455,7 +533,6 @@ public class DBHandler {
                     rs.getInt(4),
                     rs.getInt(5),
                     rs.getString(6),
-                    rs.getDate(7),
                     rs.getLong(8));
             list.add(e);
         }
@@ -466,7 +543,7 @@ public class DBHandler {
     // Shows only those with lname = parameter lname
     // Creates a list of customer objects that user must iterate through to handle
     public List<Employee> empSearchByLastName(String lname) throws SQLException {
-        String query = "select c.eid, c.fname, c.lname, c.phone_Num, c.dob, c.email, " +
+        String query = "select c.eid, c.fname, c.lname, c.phone_Num, c.email, " +
                 "c.address from Customer c where c.lname = ?";
         ArrayList<Employee> list = new ArrayList<>();
         Connection conn = getConnection();
@@ -481,7 +558,6 @@ public class DBHandler {
                     rs.getInt(4),
                     rs.getInt(5),
                     rs.getString(6),
-                    rs.getDate(7),
                     rs.getLong(8));
             list.add(e);
         }
@@ -542,7 +618,6 @@ public class DBHandler {
                     rs.getInt("salary"),
                     rs.getInt("age"),
                     rs.getString("sex"),
-                    rs.getDate("dob"),
                     rs.getLong("phone_Num")
             );
             list.add(b);
@@ -567,7 +642,6 @@ public class DBHandler {
                     rs.getInt("salary"),
                     rs.getInt("age"),
                     rs.getString("sex"),
-                    rs.getDate("dob"),
                     rs.getLong("phone_Num")
             );
             list.add(b);
@@ -578,7 +652,7 @@ public class DBHandler {
 
     // Find all employees who work for this supervisor
     public List<Employee> getEmployeesUnderSupervisor(int eid) throws SQLException {
-        String query = "select e.eid, e.fname, e.lname, e.salary, e.age, e.sex, e.dob, e.phone_Num" +
+        String query = "select e.eid, e.fname, e.lname, e.salary, e.age, e.sex, e.phone_Num" +
                 " from Employee e, WorksFor w" +
                 " where w.sid = ? and w.eid = e.eid";
         List<Employee> list = new ArrayList<>();
@@ -594,7 +668,6 @@ public class DBHandler {
                     rs.getInt("salary"),
                     rs.getInt("age"),
                     rs.getString("sex"),
-                    rs.getDate("dob"),
                     rs.getLong("phone_Num")
             );
             list.add(b);

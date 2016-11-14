@@ -8,20 +8,27 @@ public class Employee {
     private int salary;
     private int age;
     private String sex;
-    private Date dob;
     private long phoneNum;
     private String fname;
     private String lname;
 
-    public Employee(int eid, String fname, String lname, int salary, int age, String sex, Date dob, long phoneNum) {
+    public Employee(int eid, String fname, String lname, int salary, int age, String sex, long phoneNum) {
         this.eid = eid;
         this.salary = salary;
         this.age = age;
         this.sex = sex;
-        this.dob = dob;
         this.phoneNum = phoneNum;
         this.lname = lname;
         this.fname = fname;
+    }
+
+    public Employee(int eid, int salary, int age, String sex, String fname, String lname) {
+        this.eid = eid;
+        this.salary = salary;
+        this.age = age;
+        this.sex = sex;
+        this.fname = fname;
+        this.lname = lname;
     }
 
     public Employee(int did, String fname, String lname) {
@@ -46,9 +53,6 @@ public class Employee {
         return sex;
     }
 
-    public Date getDob() {
-        return dob;
-    }
 
     public void setEid(int eid) {
         this.eid = eid;
@@ -66,9 +70,6 @@ public class Employee {
         this.sex = sex;
     }
 
-    public void setDob(Date dob) {
-        this.dob = dob;
-    }
 
     public void setPhoneNum(long phoneNum) {
         this.phoneNum = phoneNum;

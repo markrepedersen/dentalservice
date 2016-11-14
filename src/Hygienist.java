@@ -8,7 +8,6 @@ public class Hygienist {
     private int salary;
     private int age;
     private String sex;
-    private Date dob;
     private long phoneNum;
     private String fname;
     private String lname;
@@ -29,9 +28,6 @@ public class Hygienist {
         return sex;
     }
 
-    public Date getDob() {
-        return dob;
-    }
 
     public long getPhoneNum() {
         return phoneNum;
@@ -45,7 +41,7 @@ public class Hygienist {
         return lname;
     }
 
-    public Hygienist(int did, String fname, String lname, int salary, int age, String sex, Date dob, long
+    public Hygienist(int did, String fname, String lname, int salary, int age, String sex,  long
             phoneNum) {
         this.did = did;
         this.fname = fname;
@@ -53,7 +49,6 @@ public class Hygienist {
         this.salary = salary;
         this.age = age;
         this.sex = sex;
-        this.dob = dob;
         this.phoneNum = phoneNum;
     }
 }

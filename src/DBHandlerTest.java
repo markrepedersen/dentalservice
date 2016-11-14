@@ -52,10 +52,10 @@ public class DBHandlerTest {
         db.addBill(90008, "yo", new BigDecimal(231.33), new BigDecimal(325.98), new Date(System.currentTimeMillis() + 100000),
                 0, 345678);
 
-        db.registerEmployee("Mark", "Pedersen", "d");
-        db.registerEmployee("Abhinav", "Behera", "h");
-        db.registerEmployee("Liam", "Adams", "d");
-        db.registerEmployee("Theo", "Lau", "r");
+        db.registerEmployee("Mark", "Pedersen", "d", "Mark", "Pedersen", 12, "m", 6049970855L);
+        db.registerEmployee("Abhinav", "Behera", "h", "Mark", "Pedersen", 12, "m", 6049970855L);
+        db.registerEmployee("Liam", "Adams", "d", "Mark", "Pedersen", 12, "m", 6049970855L);
+        db.registerEmployee("Theo", "Lau", "r", "Mark", "Pedersen", 12, "m", 6049970855L);
         setUpIsDone = true;
         conn.prepareStatement("commit").execute();
     }

@@ -9,7 +9,7 @@ import javax.swing.*;
  * Created by Theodore on 11/11/16.
  */
 
-public class Login {
+public class Login{
     private JPanel loginView;
     private JTextField usernameField;
     private JPasswordField passwordField;
@@ -17,13 +17,54 @@ public class Login {
     private ImageIcon logoImage;
     private JLabel usernameLabel;
     private JLabel passwordLabel;
+    private JButton regButton;
+    private JFrame jFrame;
 
     private int type; // 1 - Doctor, 2 - Hygienist, 3 - Receptionist
 
     DBHandler db;
 
     public Login() {
-        loginButton.addActionListener(new LoginButtonClicked(usernameField.getText(), passwordField.getPassword()));
+        regButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new RegisterForm().init();
+            }
+        });
+        loginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                db = new DBHandler();
+
+                try {
+                    type = db.queryLoginInfo(usernameField.getText(), new String(passwordField.getPassword()));
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+                Menu m = new Menu();
+                switch (type) {
+                    case 1:
+                        m.init();
+                        break;
+                    case 2:
+                        m.init();
+                        break;
+                    case 3:
+                        m.init();
+                        break;
+                    default:
+                        initRegisterDialog();
+                        break;
+                }
+            }
+        });
+    }
+
+    public void initRegisterDialog() {
+        int result = JOptionPane.showConfirmDialog(null, "Those login credentials weren't found. Would you like to register for an account?");
+        if (result == JOptionPane.YES_OPTION) {
+            new RegisterForm().init();
+        }
     }
 
     public void init() {
@@ -32,6 +73,7 @@ public class Login {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
     }
 
     {
@@ -71,52 +113,5 @@ public class Login {
      */
     public JComponent $$$getRootComponent$$$() {
         return loginView;
-    }
-
-    private class LoginButtonClicked implements ActionListener {
-        private String username;
-        private String password;
-
-        public LoginButtonClicked(String username, char[] password) {
-            this.username = username;
-            this.password = String.valueOf(password);
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            db = new DBHandler();
-
-            try {
-                type = db.queryLoginInfo(username, password);
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
-            Menu m = new Menu();
-            switch (type) {
-                case 1:
-                    m.init();
-                    break;
-                case 2:
-                    m.init();
-                    break;
-                case 3:
-                    m.init();
-                    break;
-                default:
-                    // user not found
-                    int result = JOptionPane.showConfirmDialog(null, "Those login credentials weren't found. Would you like to register for an account?");
-                    switch (result) {
-                        case JOptionPane.YES_OPTION:
-                            break;
-                        case JOptionPane.CANCEL_OPTION:
-                            break;
-                        case JOptionPane.NO_OPTION:
-
-
-
-                    }
-                    break;
-            }
-        }
     }
 }

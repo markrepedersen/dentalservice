@@ -3,7 +3,8 @@
  */
 public class App {
     public static void main(String[] args) {
-        new Login().init();
+        //new Login().init();
+        new Menu().init();
 
     }
 }

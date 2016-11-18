@@ -469,7 +469,7 @@ public class Menu extends JFrame{
                 }
 
                 try {
-                    dbh.addEmployee(newEid, empFName, empLName, empSal, empAge, empSex, empPhone);
+                    dbh.addEmployee(newEid, empFName, empLName, empSal, empAge, empSex, empPhone, 0);
                     populateEmployeeTable(dbh.employeeViewDefaultTable());
                     JOptionPane.showMessageDialog(null, "New Employee Successfully Added!");
                 }

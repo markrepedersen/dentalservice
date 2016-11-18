@@ -35,7 +35,6 @@ public class DBHandler {
     ----------------------------------------------- Login Methods -----------------------------------------------------------------
      */
 
-    // Helper method for queryLoginInfo
     // Determines if user is one of below:
     //  Returns 1 if user is dentist
     //         2 if user is hygienist
@@ -43,38 +42,6 @@ public class DBHandler {
     //        -1 if user's information is not found
     // login type can only be one of: d, r, or h
     // employee cannot be in more than one of: r, d, or h tables
-    public int getEmployeeType(int eid) throws SQLException {
-        String dQuery = "select * from dentist where did = ?";
-        String rQuery = "select * from receptionist where rid = ?";
-        String hQuery = "select * from hygienist where hid = ?";
-        Connection conn = getConnection();
-        PreparedStatement ps1 = conn.prepareStatement(dQuery);
-        ps1.setInt(1, eid);
-        ResultSet rs1 = ps1.executeQuery();
-        if (rs1.next()) {
-            conn.close();
-            return 1;
-        }
-        PreparedStatement ps2 = conn.prepareStatement(rQuery);
-        ps2.setInt(1, eid);
-        ResultSet rs2 = ps2.executeQuery();
-        if (rs2.next()) {
-            conn.close();
-            return 2;
-        }
-        PreparedStatement ps3 = conn.prepareStatement(hQuery);
-        ps3.setInt(1, eid);
-        ResultSet rs3 = ps3.executeQuery();
-        if (rs3.next()) {
-            conn.close();
-            return 3;
-        }
-        // this shouldn't be able to happen
-        // just a fail-safe to satisfy compiler
-        conn.close();
-        return -1;
-    }
-
     // Queries database for user's username and password
     public int queryLoginInfo(String username, String pw) throws SQLException {
         Connection conn = getConnection();
@@ -94,7 +61,15 @@ public class DBHandler {
                     .equals(BCrypt.hashpw(pw, login.getSalt()))) {
                 return -1; // password does not match
             }
-            return getEmployeeType(login.getEid());
+            conn.close();
+            switch (login.getType()) {
+                case "d" :
+                    return 1;
+                case "h" :
+                    return 2;
+                case "r" :
+                    return 3;
+            }
         }
         conn.close();
         return -1; // empty result set => username not found
@@ -425,7 +400,7 @@ public class DBHandler {
                                  String fname, String lname, int age,
                                  String sex, long phoneNum) throws SQLException {
         int eid = getHighestEmployeeID() + 1;
-        addEmployee(eid, fname, lname, 0, age, sex, phoneNum);
+        addEmployee(eid, fname, lname, 0, age, sex, phoneNum, 0);
         String salt = BCrypt.gensalt();
         String hashpass = BCrypt.hashpw(pw, salt);
         String query = "insert into login_details values (\'" + username + "\', " + "\'" + hashpass + "\', " + "\'" + salt + "\', " + "\'" + type + "\', " + "\'" + eid + "\'" + ")";
@@ -435,25 +410,35 @@ public class DBHandler {
         conn.close();
     }
 
-    public void addEmployee(int eid, String fname, String lname, int salary, int age, String sex, long phoneNum) throws SQLException {
+    public void addEmployee(int eid, String fname, String lname, int salary, int age, String sex, long phoneNum, int isSupervisor) throws SQLException {
         Connection conn = getConnection();
-        Statement stmt = conn.createStatement();
-        stmt.executeUpdate("INSERT INTO EMPLOYEE VALUES (\'" + eid + "\', \'" + salary + "\', \'" + age + "\', \'" + sex + "\', " + phoneNum + "\')");
+        String query = "INSERT INTO EMPLOYEE VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setInt(1, eid);
+        ps.setString(2, fname);
+        ps.setString(3, lname);
+        ps.setInt(4, salary);
+        ps.setInt(5, age);
+        ps.setString(6, sex);
+        ps.setLong(7, phoneNum);
+        ps.setInt(8, isSupervisor);
+        ps.executeUpdate();
         conn.close();
     }
 
-    public void updateEmployee(int eid, String fname, String lname, int salary, int age, String sex, long phoneNum) throws SQLException {
+    public void updateEmployee(int eid, String fname, String lname, int salary, int age, String sex, long phoneNum, int isSupervisor) throws SQLException {
         Connection conn = getConnection();
-        String query = "UPDATE employee SET fname = ?, lname = ?, salary = ?, age = ?, sex = ?, phoneNum = ? WHERE eid = ?";
+        String query = "UPDATE employee SET fname = ?, lname = ?, salary = ?, age = ?, sex = ?, phoneNum = ?, isSupervisor = ? WHERE eid = ?";
         PreparedStatement ps = conn.prepareStatement(query);
         ps.executeQuery();
-        ps.setInt(1, eid);
         ps.setString(1, fname);
-        ps.setString(1, lname);
-        ps.setInt(1, salary);
-        ps.setInt(1, age);
-        ps.setString(1, sex);
-        ps.setLong(1, phoneNum);
+        ps.setString(2, lname);
+        ps.setInt(3, salary);
+        ps.setInt(4, age);
+        ps.setString(5, sex);
+        ps.setLong(6, phoneNum);
+        ps.setInt(7, isSupervisor);
+        ps.setInt(8, eid);
     }
 
     public void removeEmployee(int eid) throws SQLException {
@@ -466,7 +451,7 @@ public class DBHandler {
 
     public List<Employee> employeeSearchByFirstName(String fname) throws SQLException {
         String query = "select e.eid AS EmployeeID, e.fname AS FirstName, e.lname AS LastName, e.salary AS Salary, e.age AS Age, e.sex AS Sex, " +
-                "phoneNum AS PhoneNumber from Employee e WHERE e.fname LIKE \'%?%\'";
+                "phoneNum AS PhoneNumber from Employee e WHERE e.fname LIKE \'%" + fname + "%\'";
         ArrayList<Employee> list = new ArrayList<>();
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(query);

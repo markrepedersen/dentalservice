@@ -19,6 +19,7 @@ public class DBHandlerTest {
     DBHandler db;
     private static boolean setUpIsDone = false;
 
+
     @Before
     public void setUp() throws Exception {
         db = new DBHandler();

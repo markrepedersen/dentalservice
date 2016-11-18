@@ -18,6 +18,7 @@ public class LoginInformation {
         this.hashPass = hashPass;
         this.salt = salt;
         this.type = type;
+        this.eid = eid;
     }
 
     public void setEid(int eid) {

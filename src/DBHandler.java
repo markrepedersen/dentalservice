@@ -95,7 +95,6 @@ public class DBHandler {
     // False otherwise
     public boolean isValidCustomerID(int cid) throws SQLException {
         String query = "select * from Customer where cid = ?";
-        List<Customer> list = new ArrayList<>();
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
         ResultSet rs = ps.executeQuery(query);
@@ -338,8 +337,8 @@ public class DBHandler {
 
     // Find highest earning employee
     public List<Employee> getHighestEarningEmployee() throws SQLException {
-        String query = "select eid, fname, lname, age, sex, salary from employee where salary > ALL (" +
-                "select salary from employee)";
+        String query = "select eid, fname, lname, age, sex, salary from employee where salary in (" +
+                "select max(salary) from employee)";
         ArrayList<Employee> list = new ArrayList<>();
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
@@ -361,8 +360,8 @@ public class DBHandler {
 
     // Find lowest earning employee
     public List<Employee> getLowestEarningEmployee() throws SQLException {
-        String query = "select * from employee where salary < ALL (" +
-                "select salary from employee)";
+        String query = "select eid, fname, lname, age, sex, salary from employee where salary in (" +
+                       "select min(salary) from employee)";
         ArrayList<Employee> list = new ArrayList<>();
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
@@ -384,7 +383,7 @@ public class DBHandler {
 
     // Selecting all dentists who have attended all customers
     public List<Dentist> getAllDentistsAttended() throws SQLException {
-        String query = "select d.fname, d.lname, d.did from dentist d where not exists ((" +
+        String query = "select d.fname, d.lname, d.did, d.age, d.sex from dentist d where not exists ((" +
                 "select cid from customer) MINUS (select cid from attends a where a.did = d.did))";
         ArrayList<Dentist> list = new ArrayList<>();
         Connection conn = getConnection();
@@ -394,7 +393,9 @@ public class DBHandler {
             Dentist e = new Dentist(
                     rs.getInt("did"),
                     rs.getString("fname"),
-                    rs.getString("lname")
+                    rs.getString("lname"),
+                    rs.getInt("age"),
+                    rs.getString("sex")
             );
             list.add(e);
         }

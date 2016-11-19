@@ -12,6 +12,14 @@ public class Dentist {
     private String fname;
     private String lname;
 
+    public Dentist(int did, String fname, String lname, int age, String sex) {
+        this.did = did;
+        this.age = age;
+        this.sex = sex;
+        this.fname = fname;
+        this.lname = lname;
+    }
+
     public Dentist(int did, String fname, String lname, int salary, int age, String sex, long
             phoneNum) {
         this.did = did;

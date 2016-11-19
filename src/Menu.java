@@ -657,7 +657,7 @@ public class Menu extends JFrame{
 
         DefaultTableModel dtm = new DefaultTableModel();
 
-        String[] colNames = {"Employee ID", "First Name", "Last Name"};
+        String[] colNames = {"Employee ID", "First Name", "Last Name", "Age", "Sex", "Salary"};
 
         //Add Column Names
         for(int i=0; i<colNames.length; i++){
@@ -671,6 +671,9 @@ public class Menu extends JFrame{
             rowData[0] = data.get(i).getEid();
             rowData[1] = data.get(i).getFname();
             rowData[2] = data.get(i).getLname();
+            rowData[3] = data.get(i).getAge();
+            rowData[4] = data.get(i).getSex();
+            rowData[5] = data.get(i).getSalary();
             dtm.addRow(rowData);
         }
         insightsTable.setModel(dtm);
@@ -704,7 +707,7 @@ public class Menu extends JFrame{
 
         DefaultTableModel dtm = new DefaultTableModel();
 
-        String[] colNames = {"Dentist ID", "First Name", "Last Name"};
+        String[] colNames = {"Dentist ID", "First Name", "Last Name", "Age", "Sex"};
 
         //Add Column Names
         for(int i=0; i<colNames.length; i++){
@@ -718,6 +721,8 @@ public class Menu extends JFrame{
             rowData[0] = data.get(i).getDid();
             rowData[1] = data.get(i).getFname();
             rowData[2] = data.get(i).getLname();
+            rowData[3] = data.get(i).getAge();
+            rowData[4] = data.get(i).getSex();
             dtm.addRow(rowData);
         }
         insightsTable.setModel(dtm);

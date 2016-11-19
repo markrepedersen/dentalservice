@@ -34,14 +34,20 @@ public class Login{
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                System.out.println("got here");
                 db = new DBHandler();
 
                 try {
+                    System.out.println("got here part 2");
                     type = db.queryLoginInfo(usernameField.getText(), new String(passwordField.getPassword()));
+                    System.out.println(usernameField.getText());
+                    System.out.println(passwordField.getPassword());
+                    System.out.println(type);
                 } catch (SQLException e1) {
                     e1.printStackTrace();
                 }
                 Menu m = new Menu();
+                System.out.println("got here part 3");
                 switch (type) {
                     case 1:
                         m.init();

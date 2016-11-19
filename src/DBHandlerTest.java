@@ -185,6 +185,20 @@ public class DBHandlerTest {
 */
 
     @Test
+    public void empSearchByLastName() throws SQLException {
+        List<Employee> emps = db.empSearchByLastName("Smith");
+        assertEquals(emps.size(), 1);
+        for (Employee c : emps) {
+            System.out.println("eid: " + c.getEid());
+            System.out.println("fname: " + c.getFname());
+            System.out.println("lname: " + c.getLname());
+            System.out.println();
+            System.out.println();
+        }
+    }
+
+
+    @Test
     public void getUpcomingCustomerAppointments() throws Exception {
         List<Appointment> custs = db.getUpcomingCustomerAppointments();
         assertEquals(custs.size(), 10);
@@ -253,6 +267,13 @@ public class DBHandlerTest {
             System.out.println();
             System.out.println();
         }
+    }
+
+
+    @Test
+    public void simpleLoginTest() throws SQLException {
+        db.registerEmployee("m", "m", "d", "mark", "mark", 99, "m", 6048887777L);
+        assertEquals(db.queryLoginInfo("m", "m"), 1);
     }
 
 

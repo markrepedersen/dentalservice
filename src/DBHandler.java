@@ -59,6 +59,14 @@ public class DBHandler {
             // Checks if hashpass = hash(pw + salt)
             if (!login.getHashPass()
                     .equals(BCrypt.hashpw(pw, login.getSalt()))) {
+                System.out.println();
+                System.out.println();
+
+                System.out.println(login.getHashPass());
+                System.out.println(BCrypt.hashpw(pw, login.getSalt()));
+                System.out.println();
+                System.out.println();
+
                 return -1; // password does not match
             }
             conn.close();
@@ -72,6 +80,7 @@ public class DBHandler {
             }
         }
         conn.close();
+        System.out.println("no username like that");
         return -1; // empty result set => username not found
     }
 
@@ -402,6 +411,7 @@ public class DBHandler {
         int eid = getHighestEmployeeID() + 1;
         addEmployee(eid, fname, lname, 0, age, sex, phoneNum, 0);
         String salt = BCrypt.gensalt();
+        //System.out.println("salt is: " + salt);
         String hashpass = BCrypt.hashpw(pw, salt);
         String query = "insert into login_details values (\'" + username + "\', " + "\'" + hashpass + "\', " + "\'" + salt + "\', " + "\'" + type + "\', " + "\'" + eid + "\'" + ")";
         Connection conn = getConnection();
@@ -491,7 +501,7 @@ public class DBHandler {
                     rs.getInt(4),
                     rs.getInt(5),
                     rs.getString(6),
-                    rs.getLong(8));
+                    rs.getLong(7));
             list.add(e);
         }
 
@@ -503,8 +513,8 @@ public class DBHandler {
     // Shows only those with eid = parameter eid
     // Creates a list of Employee objects that user must iterate through to handle
     public ArrayList<Employee> empSearchByEID(int eid) throws SQLException {
-        String query = "select c.cid, c.fname, c.lname, c.phone_Num, c.email, " +
-                "c.address from Customer c where c.cid = ?";
+        String query = "select eid, fname, lname, age, sex, " +
+                       "phone_Num from Employee where eid = ?";
         ArrayList<Employee> list = new ArrayList<>();
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
@@ -516,9 +526,8 @@ public class DBHandler {
                     rs.getString(2),
                     rs.getString(3),
                     rs.getInt(4),
-                    rs.getInt(5),
-                    rs.getString(6),
-                    rs.getLong(8));
+                    rs.getString(5),
+                    rs.getLong(6));
             list.add(e);
         }
         return list;
@@ -528,8 +537,8 @@ public class DBHandler {
     // Shows only those with lname = parameter lname
     // Creates a list of customer objects that user must iterate through to handle
     public List<Employee> empSearchByLastName(String lname) throws SQLException {
-        String query = "select c.eid, c.fname, c.lname, c.phone_Num, c.email, " +
-                "c.address from Customer c where c.lname = ?";
+        String query = "select eid, fname, lname, age, sex, " +
+                "phone_Num, isSupervisor from Employee where lname = ?";
         ArrayList<Employee> list = new ArrayList<>();
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
@@ -541,9 +550,8 @@ public class DBHandler {
                     rs.getString(2),
                     rs.getString(3),
                     rs.getInt(4),
-                    rs.getInt(5),
-                    rs.getString(6),
-                    rs.getLong(8));
+                    rs.getString(5),
+                    rs.getLong(6));
             list.add(e);
         }
         return list;

@@ -102,7 +102,17 @@ public class Menu extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 String searchText = custSearchBoxField.getText();
 
-                if(custIDRadioButton.isSelected() && custLNameRadioButton.isSelected()){
+                if (searchText.equals("")) {
+                    List<Customer> data = null;
+                    try {
+                        data = dbh.customerViewDefaultTable();
+                    } catch (SQLException e1) {
+                        e1.printStackTrace();
+                    }
+                    populateCustomerTable(data);
+                }
+
+                else if(custIDRadioButton.isSelected() && custLNameRadioButton.isSelected()){
                     JOptionPane.showMessageDialog(null, "Please choose a single criterion for searching.");
                 }
                 else if(custLNameRadioButton.isSelected()){
@@ -144,6 +154,7 @@ public class Menu extends JFrame{
                         JOptionPane.showMessageDialog(null, "No records exist for that search.");
 
                 }
+                //else if (custIDRadioButton.isSelected() && )
                 else{
 
                     List<Customer> data = null;
@@ -165,7 +176,18 @@ public class Menu extends JFrame{
 
                 String searchText = appointmentsSearchField.getText();
 
-                if(lastNameRadioButton.isSelected() && cidRadioButton.isSelected()){
+                if (searchText.equals("")) {
+                    List<Appointment> data = null;
+                    try {
+                        data = dbh.getUpcomingCustomerAppointments();
+                    } catch (SQLException e1) {
+                        e1.printStackTrace();
+                    }
+
+                    populateAppointmentData(data);
+                }
+
+                else if(lastNameRadioButton.isSelected() && cidRadioButton.isSelected()){
                     JOptionPane.showMessageDialog(null, "Please choose a single criterion for searching.");
                 }
                 else if(lastNameRadioButton.isSelected()){
@@ -370,7 +392,18 @@ public class Menu extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 String searchText = empSearchBoxField.getText();
 
-                if(byEmpLNameRadioButton.isSelected() && byEmpIDRadioButton.isSelected()){
+                if (searchText.equals("")) {
+                    List<Employee> data = null;
+                    try {
+                        data = dbh.employeeViewDefaultTable();
+                    } catch (SQLException e1) {
+                        e1.printStackTrace();
+                    }
+
+                    populateEmployeeTable(data);
+                }
+
+                else if(byEmpLNameRadioButton.isSelected() && byEmpIDRadioButton.isSelected()){
                     JOptionPane.showMessageDialog(null, "Please choose a single criterion for searching.");
                 }
                 else if(byEmpLNameRadioButton.isSelected()){
@@ -744,7 +777,7 @@ public class Menu extends JFrame{
 
 
 
-    //POPULATES CUSTOMER TABLE FROM A LIST OF CUSTOMERS
+    //POPULATES EMPLOYEE TABLE FROM A LIST OF CUSTOMERS
     public void populateEmployeeTable(List<Employee> list){
 
         DefaultTableModel dtm = new DefaultTableModel();

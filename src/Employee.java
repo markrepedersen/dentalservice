@@ -22,6 +22,15 @@ public class Employee {
         this.fname = fname;
     }
 
+    public Employee(int eid, String fname, String lname, int age, String sex, long phoneNum) {
+        this.eid = eid;
+        this.age = age;
+        this.sex = sex;
+        this.phoneNum = phoneNum;
+        this.fname = fname;
+        this.lname = lname;
+    }
+
     public Employee(int eid, int salary, int age, String sex, String fname, String lname) {
         this.eid = eid;
         this.salary = salary;

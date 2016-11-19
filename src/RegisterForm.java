@@ -35,7 +35,6 @@ public class RegisterForm {
             @Override
             public void actionPerformed(ActionEvent e) {
                 DBHandler db = new DBHandler();
-                System.out.println(type.getSelectedIndex());
                 try {
                     try {
                         Integer.parseInt(age.getText());
@@ -50,7 +49,7 @@ public class RegisterForm {
                                         lname.getText(),
                                         Integer.parseInt(age.getText()),
                                         sex.getSelectedItem().toString(),
-                                        Integer.parseInt(phoneNum.getText()));
+                                        Long.parseLong(phoneNum.getText()));
                                 break;
                             case 1: //hygienist
                                 db.registerEmployee(
@@ -61,7 +60,7 @@ public class RegisterForm {
                                         lname.getText(),
                                         Integer.parseInt(age.getText()),
                                         sex.getSelectedItem().toString(),
-                                        Integer.parseInt(phoneNum.getText()));
+                                        Long.parseLong(phoneNum.getText()));
                                 break;
                             case 2: //receptionist
                                 db.registerEmployee(
@@ -72,13 +71,14 @@ public class RegisterForm {
                                         lname.getText(),
                                         Integer.parseInt(age.getText()),
                                         sex.getSelectedItem().toString(),
-                                        Integer.parseInt(phoneNum.getText()));
+                                        Long.parseLong(phoneNum.getText()));
                                 break;
                         }
-                        JOptionPane.showMessageDialog(null, "Thank you for registering. You may now log in.");
+                        JOptionPane.showMessageDialog(null, "Thank you for registering. Please log in with those credentials.");
                         jFrame.dispose();
                     }
                     catch (NumberFormatException e1) {
+                        e1.printStackTrace();
                         JOptionPane.showMessageDialog(null, "Age or phone number must be an integer.");
                     }
                 }

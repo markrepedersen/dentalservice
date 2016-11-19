@@ -1,18 +1,18 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
-
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
  * Created by liamadams on 2016-11-08.
  */
-public class Menu extends JFrame{
+public class Menu extends JFrame {
     private JButton logoutButton;
     private JButton createNewAppointmentButton;
     private JButton addCustomerButton;
@@ -89,6 +89,8 @@ public class Menu extends JFrame{
     private JButton updateButton;
     private JComboBox empUpdateCombo;
     private JButton empUpdateButton;
+    private JRadioButton byCustIDRadioButton;
+    private JRadioButton byCustLNameRadioButton;
     private DBHandler dbh;
 
 
@@ -102,7 +104,9 @@ public class Menu extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 String searchText = custSearchBoxField.getText();
 
-                if (searchText.equals("")) {
+                if (searchText.equals("") ||
+                        (searchText.equals("") && custIDRadioButton.isSelected()) ||
+                        (searchText.equals("") && custLNameRadioButton.isSelected())) {
                     List<Customer> data = null;
                     try {
                         data = dbh.customerViewDefaultTable();
@@ -110,12 +114,9 @@ public class Menu extends JFrame{
                         e1.printStackTrace();
                     }
                     populateCustomerTable(data);
-                }
-
-                else if(custIDRadioButton.isSelected() && custLNameRadioButton.isSelected()){
+                } else if (custIDRadioButton.isSelected() && custLNameRadioButton.isSelected()) {
                     JOptionPane.showMessageDialog(null, "Please choose a single criterion for searching.");
-                }
-                else if(custLNameRadioButton.isSelected()){
+                } else if (custLNameRadioButton.isSelected()) {
 
                     List<Customer> data = null;
                     try {
@@ -126,21 +127,19 @@ public class Menu extends JFrame{
 
                     populateCustomerTable(data);
 
-                    if(data.isEmpty())
+                    if (data.isEmpty())
                         JOptionPane.showMessageDialog(null, "No records exist for that search.");
 
 
-                }
-                else if(custIDRadioButton.isSelected()){
+                } else if (custIDRadioButton.isSelected()) {
 
                     List<Customer> data = null;
                     int cid = 0;
                     try {
-                        try{
+                        try {
                             cid = Integer.parseInt(searchText);
                             data = dbh.customerSearchByCID(cid);
-                        }
-                        catch (NumberFormatException ex) {
+                        } catch (NumberFormatException ex) {
                             JOptionPane.showMessageDialog(null, "CID needs to be a number not string!");
                         }
 
@@ -150,12 +149,12 @@ public class Menu extends JFrame{
 
                     populateCustomerTable(data);
 
-                    if(data.isEmpty())
+                    if (data.isEmpty())
                         JOptionPane.showMessageDialog(null, "No records exist for that search.");
 
                 }
                 //else if (custIDRadioButton.isSelected() && )
-                else{
+                else {
 
                     List<Customer> data = null;
                     try {
@@ -176,7 +175,9 @@ public class Menu extends JFrame{
 
                 String searchText = appointmentsSearchField.getText();
 
-                if (searchText.equals("")) {
+                if (searchText.equals("") ||
+                        (searchText.equals("") && lastNameRadioButton.isSelected()) ||
+                        (searchText.equals("") && cidRadioButton.isSelected())) {
                     List<Appointment> data = null;
                     try {
                         data = dbh.getUpcomingCustomerAppointments();
@@ -185,12 +186,9 @@ public class Menu extends JFrame{
                     }
 
                     populateAppointmentData(data);
-                }
-
-                else if(lastNameRadioButton.isSelected() && cidRadioButton.isSelected()){
+                } else if (lastNameRadioButton.isSelected() && cidRadioButton.isSelected()) {
                     JOptionPane.showMessageDialog(null, "Please choose a single criterion for searching.");
-                }
-                else if(lastNameRadioButton.isSelected()){
+                } else if (lastNameRadioButton.isSelected()) {
 
                     List<Appointment> data = null;
                     try {
@@ -200,24 +198,22 @@ public class Menu extends JFrame{
                     }
 
                     populateAppointmentData(data);
-                    if(data.isEmpty())
+                    if (data.isEmpty())
                         JOptionPane.showMessageDialog(null, "No records exist for that search.");
 
 
-                }
-                else if(cidRadioButton.isSelected()){
+                } else if (cidRadioButton.isSelected()) {
 
                     List<Appointment> data = null;
                     try {
 
-                        try{
+                        try {
                             int cid = Integer.parseInt(searchText);
                             data = dbh.searchCustomerAppointmentByCid(searchText);
                             populateAppointmentData(data);
-                            if(data.isEmpty())
+                            if (data.isEmpty())
                                 JOptionPane.showMessageDialog(null, "No records exist for that search.");
-                        }
-                        catch (NumberFormatException ex) {
+                        } catch (NumberFormatException ex) {
                             JOptionPane.showMessageDialog(null, "CID needs to be a number not string!");
                         }
 
@@ -225,8 +221,7 @@ public class Menu extends JFrame{
                         e1.printStackTrace();
                     }
 
-                }
-                else{
+                } else {
 
                     List<Appointment> data = null;
                     try {
@@ -254,7 +249,7 @@ public class Menu extends JFrame{
                 int cid = 0;
                 Timestamp from = new Timestamp(2017);
                 Timestamp t = new Timestamp(12000);
-           //     int year, int month, int date, int hour, int minute, int second, int nano
+                //     int year, int month, int date, int hour, int minute, int second, int nano
                 Timestamp to = new Timestamp(2018, 12, 10, 1, 2, 3, 4);
                 int rid = 134;
                 int appID = 0;
@@ -262,22 +257,20 @@ public class Menu extends JFrame{
 
                 try {
                     cid = Integer.parseInt(newAppCidField.getText());
-                }
-                catch (NumberFormatException ex) {
+                } catch (NumberFormatException ex) {
                     System.out.println("Not a number");
                 }
 
                 type = newAppTypeComboBox.getSelectedItem().toString();
 
                 try {
-                    if(dbh.isValidCustomerID(cid)) {
+                    if (dbh.isValidCustomerID(cid)) {
 
                         dbh.addAppointment(appID, type, from, to, rid, cid);
                         System.out.println("Valid ID entered!");
                         populateAppointmentData(dbh.getUpcomingCustomerAppointments());
 
-                     }
-                     else{
+                    } else {
                         JOptionPane.showMessageDialog(null, "Customer ID entered is not valid");
                     }
 
@@ -295,14 +288,13 @@ public class Menu extends JFrame{
                 int appNum = Integer.parseInt(deleteAppField.getText());
 
                 try {
-                    if(dbh.isValidAppNum(appNum)) {
+                    if (dbh.isValidAppNum(appNum)) {
 
                         dbh.removeAppointment(appNum);
                         populateAppointmentData(dbh.getUpcomingCustomerAppointments());
                         JOptionPane.showMessageDialog(null, "Appointment successfully deleted!");
 
-                    }
-                    else{
+                    } else {
                         JOptionPane.showMessageDialog(null, "There is no appointment with that number!");
                     }
 
@@ -329,32 +321,28 @@ public class Menu extends JFrame{
                 String address = newCustAddressField.getText();
 
                 try {
-                    newCid = dbh.getHighestCustomerID()+1;
+                    newCid = dbh.getHighestCustomerID() + 1;
 
-                }
-                catch (Exception e3) {
+                } catch (Exception e3) {
                     e3.printStackTrace();
                 }
 
                 try {
                     phone = Long.parseLong(newCustPhoneField.getText());
-                }
-                catch (NumberFormatException ex) {
+                } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(null, "Phone number needs to be a number!");
                 }
 
                 String email = newCustEmailField.getText();
 
-                if (!isValidEmailAddress(email)){
+                if (!isValidEmailAddress(email)) {
                     JOptionPane.showMessageDialog(null, "Invalid email address entered.");
-                }
-                else {
+                } else {
                     try {
                         dbh.addCustomer(newCid, fname, lname, phone, new Date(birthYear, birthMonth, birthDay), email, address);
                         populateCustomerTable(dbh.customerViewDefaultTable());
                         JOptionPane.showMessageDialog(null, "New Customer Successfully Added!");
-                    }
-                    catch (SQLException e1){
+                    } catch (SQLException e1) {
                         e1.printStackTrace();
                     }
                 }
@@ -368,14 +356,13 @@ public class Menu extends JFrame{
                 int custID = Integer.parseInt(deleteCustField.getText());
 
                 try {
-                    if(dbh.isValidCustomerID(custID)) {
+                    if (dbh.isValidCustomerID(custID)) {
 
                         dbh.removeCustomer(custID);
                         populateCustomerTable(dbh.customerViewDefaultTable());
                         JOptionPane.showMessageDialog(null, "Customer successfully deleted!");
 
-                    }
-                    else{
+                    } else {
                         JOptionPane.showMessageDialog(null, "There is no customer with that ID!");
                     }
 
@@ -388,76 +375,72 @@ public class Menu extends JFrame{
 
         //SEARCH EMPLOYEES
         empSearchButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String searchText = empSearchBoxField.getText();
+                                              @Override
+                                              public void actionPerformed(ActionEvent e) {
+                                                  String searchText = empSearchBoxField.getText();
 
-                if (searchText.equals("")) {
-                    List<Employee> data = null;
-                    try {
-                        data = dbh.employeeViewDefaultTable();
-                    } catch (SQLException e1) {
-                        e1.printStackTrace();
-                    }
+                                                  if (searchText.equals("") ||
+                                                          (searchText.equals("") && byEmpIDRadioButton.isSelected()) ||
+                                                          (searchText.equals("") && byEmpLNameRadioButton.isSelected())) {
+                                                      List<Employee> data = null;
+                                                      try {
+                                                          data = dbh.employeeViewDefaultTable();
+                                                      } catch (SQLException e1) {
+                                                          e1.printStackTrace();
+                                                      }
 
-                    populateEmployeeTable(data);
-                }
+                                                      populateEmployeeTable(data);
+                                                  } else if (byEmpLNameRadioButton.isSelected() && byEmpIDRadioButton.isSelected()) {
+                                                      JOptionPane.showMessageDialog(null, "Please choose a single criterion for searching.");
+                                                  } else if (byEmpLNameRadioButton.isSelected()) {
 
-                else if(byEmpLNameRadioButton.isSelected() && byEmpIDRadioButton.isSelected()){
-                    JOptionPane.showMessageDialog(null, "Please choose a single criterion for searching.");
-                }
-                else if(byEmpLNameRadioButton.isSelected()){
+                                                      List<Employee> data = null;
+                                                      try {
+                                                          data = dbh.empSearchByLastName(searchText);
+                                                      } catch (SQLException e1) {
+                                                          e1.printStackTrace();
+                                                      }
 
-                    List<Employee> data = null;
-                    try {
-                        data = dbh.empSearchByLastName(searchText);
-                    } catch (SQLException e1) {
-                        e1.printStackTrace();
-                    }
-
-                    populateEmployeeTable(data);
-                    if(data.isEmpty())
-                        JOptionPane.showMessageDialog(null, "No records exist for that search.");
-
-
-                }
-                else if(byEmpIDRadioButton.isSelected()){
-
-                    List<Employee> data = null;
-                    try {
-
-                        try{
-                            int eid = Integer.parseInt(searchText);
-                            data = dbh.empSearchByEID(eid);
-                            populateEmployeeTable(data);
-                            if(data.isEmpty())
-                                JOptionPane.showMessageDialog(null, "No records exist for that search.");
-                        }
-                        catch (NumberFormatException ex) {
-                            JOptionPane.showMessageDialog(null, "Employee ID needs to be a number not string!");
-                        }
-
-                    } catch (SQLException e1) {
-                        e1.printStackTrace();
-                    }
-
-                }
-                else{
-
-                    List<Employee> data = null;
-                    try {
-                        data = dbh.employeeViewDefaultTable();
-                    } catch (SQLException e1) {
-                        e1.printStackTrace();
-                    }
-
-                    populateEmployeeTable(data);
-
-                }
+                                                      populateEmployeeTable(data);
+                                                      if (data.isEmpty())
+                                                          JOptionPane.showMessageDialog(null, "No records exist for that search.");
 
 
-            }
-            }
+                                                  } else if (byEmpIDRadioButton.isSelected()) {
+
+                                                      List<Employee> data = null;
+                                                      try {
+
+                                                          try {
+                                                              int eid = Integer.parseInt(searchText);
+                                                              data = dbh.empSearchByEID(eid);
+                                                              populateEmployeeTable(data);
+                                                              if (data.isEmpty())
+                                                                  JOptionPane.showMessageDialog(null, "No records exist for that search.");
+                                                          } catch (NumberFormatException ex) {
+                                                              JOptionPane.showMessageDialog(null, "Employee ID needs to be a number not string!");
+                                                          }
+
+                                                      } catch (SQLException e1) {
+                                                          e1.printStackTrace();
+                                                      }
+
+                                                  } else {
+
+                                                      List<Employee> data = null;
+                                                      try {
+                                                          data = dbh.employeeViewDefaultTable();
+                                                      } catch (SQLException e1) {
+                                                          e1.printStackTrace();
+                                                      }
+
+                                                      populateEmployeeTable(data);
+
+                                                  }
+
+
+                                              }
+                                          }
         );
         addEmployeeButton.addActionListener(new ActionListener() {
             @Override
@@ -465,10 +448,9 @@ public class Menu extends JFrame{
 
                 int newEid = 0;
                 try {
-                   newEid = dbh.getHighestCustomerID()+1;
+                    newEid = dbh.getHighestCustomerID() + 1;
 
-                }
-                catch (Exception e3) {
+                } catch (Exception e3) {
                     e3.printStackTrace();
                 }
 
@@ -484,20 +466,17 @@ public class Menu extends JFrame{
 
                 try {
                     empPhone = Long.parseLong(empPhoneField.getText());
-                }
-                catch (NumberFormatException ex) {
+                } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(null, "Phone number needs to be a number!");
                 }
                 try {
                     empAge = Integer.parseInt(empAgeField.getText());
-                }
-                catch (NumberFormatException ex) {
+                } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(null, "Age needs to be a number!");
                 }
                 try {
                     empSal = Integer.parseInt(empSalField.getText());
-                }
-                catch (NumberFormatException ex) {
+                } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(null, "Salary needs to be a number!");
                 }
 
@@ -505,8 +484,7 @@ public class Menu extends JFrame{
                     dbh.addEmployee(newEid, empFName, empLName, empSal, empAge, empSex, empPhone, 0);
                     populateEmployeeTable(dbh.employeeViewDefaultTable());
                     JOptionPane.showMessageDialog(null, "New Employee Successfully Added!");
-                }
-                catch (SQLException e1){
+                } catch (SQLException e1) {
                     e1.printStackTrace();
                 }
 
@@ -522,32 +500,27 @@ public class Menu extends JFrame{
                 int custID = 0;
                 try {
                     custID = Integer.parseInt(custIDBillingField.getText());
-                }catch (NumberFormatException nm) {
+                } catch (NumberFormatException nm) {
                     JOptionPane.showMessageDialog(null, "Customer ID must be a number!");
                 }
 
                 int comboSelection = billingCombo.getSelectedIndex();
 
-                try{
-                    if(comboSelection==0){
+                try {
+                    if (comboSelection == 0) {
                         populateBillsTable(dbh.getCustomerUnpaidBills(custID));
 
-                    }
-                else if(comboSelection == 1){
+                    } else if (comboSelection == 1) {
                         //Unpaid Bills
                         populateBillsTable(dbh.getCustomerUnpaidBills(custID));
 
-                    }
-                    else{
+                    } else {
                         //Past Payments
                         populateBillsTableWithPastData(dbh.getCustomerPastPayments(custID));
                     }
                 } catch (SQLException s) {
                     s.printStackTrace();
                 }
-
-
-
 
 
             }
@@ -575,7 +548,7 @@ public class Menu extends JFrame{
                             populateInsightsTableWithMedicine(dbh.getCheapestMedicine());
                             break;
                     }
-                }catch (SQLException e1){
+                } catch (SQLException e1) {
                     e1.printStackTrace();
                 }
 
@@ -592,16 +565,15 @@ public class Menu extends JFrame{
                 int updateOption = empUpdateCombo.getSelectedIndex();
 
                 //Determine employee ID format is valid
-                try{
+                try {
                     empID = Integer.parseInt(empIDField.getText());
-                }
-                catch (NumberFormatException e1){
+                } catch (NumberFormatException e1) {
                     JOptionPane.showMessageDialog(null, "Employee ID needs to be a number!");
                     e1.printStackTrace();
                 }
 
 
-                switch(updateOption){
+                switch (updateOption) {
                     //Case 0 = Fname
                     case 0:
                         break;
@@ -620,8 +592,6 @@ public class Menu extends JFrame{
                 }
 
 
-
-
             }
         });
 
@@ -632,41 +602,114 @@ public class Menu extends JFrame{
 
 
                 int empID = 0;
-                try{
+                try {
                     empID = Integer.parseInt(empIDField.getText());
                     try {
                         dbh.removeEmployee(empID);
                         JOptionPane.showMessageDialog(null, "Employee Successfully Deleted!");
                         populateEmployeeTable(dbh.employeeViewDefaultTable());
-                    }
-                    catch (SQLException e1){
+                    } catch (SQLException e1) {
                         e1.printStackTrace();
                     }
-                }
-                catch (NumberFormatException e1){
+                } catch (NumberFormatException e1) {
                     JOptionPane.showMessageDialog(null, "Employee ID needs to be a number!");
                     e1.printStackTrace();
                 }
 
             }
         });
+        findMedicinesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String searchText = medCustIDField.getText();
+                if (searchText.equals("") ||
+                        (searchText.equals("") && byCustIDRadioButton.isSelected()) ||
+                        (searchText.equals("") && byCustLNameRadioButton.isSelected())) {
+                    List<Medicine> data = null;
+                    try {
+                        data = dbh.medDefaultView();
+                    } catch (SQLException e1) {
+                        e1.printStackTrace();
+                    }
+                    populateMedicineTable(data);
+                } else if (byCustIDRadioButton.isSelected() && byCustLNameRadioButton.isSelected()) {
+                    JOptionPane.showMessageDialog(null, "Please choose a single criterion for searching.");
+                } else if (byCustLNameRadioButton.isSelected()) {
+
+                    List<Medicine> data = null;
+                    try {
+                        data = dbh.getCustomerMedicines(searchText);
+                    } catch (SQLException e1) {
+                        e1.printStackTrace();
+                    }
+
+                    populateMedicineTable(data);
+
+                    if (data.isEmpty())
+                        JOptionPane.showMessageDialog(null, "No records exist for that search.");
+
+
+                } else if (byCustIDRadioButton.isSelected()) {
+
+                    List<Medicine> data = null;
+                    int cid = 0;
+                    try {
+                        try {
+                            cid = Integer.parseInt(searchText);
+                            data = dbh.getCustomerMedicines(cid);
+                        } catch (NumberFormatException ex) {
+                            JOptionPane.showMessageDialog(null, "CID needs to be a number not string!");
+                        }
+
+                    } catch (SQLException e1) {
+                        e1.printStackTrace();
+                    }
+
+                    populateMedicineTable(data);
+
+                    if (data.isEmpty())
+                        JOptionPane.showMessageDialog(null, "No records exist for that search.");
+
+                }
+                //else if (custIDRadioButton.isSelected() && )
+                else {
+
+                    List<Medicine> data = null;
+                    try {
+                        data = dbh.medDefaultView();
+                    } catch (SQLException e1) {
+                        e1.printStackTrace();
+                    }
+                    populateMedicineTable(data);
+                }
+
+            }
+        });
+
+        // logs out of user's view and goes back to login screen
+        logoutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
     }
 
     //POPULATES INSIGHTS TABLE FROM A LIST OF EMPLOYEES Data
-    public void populateInsightsTableWithEmployee(List<Employee> data){
+    public void populateInsightsTableWithEmployee(List<Employee> data) {
 
         DefaultTableModel dtm = new DefaultTableModel();
 
         String[] colNames = {"Employee ID", "First Name", "Last Name", "Age", "Sex", "Salary"};
 
         //Add Column Names
-        for(int i=0; i<colNames.length; i++){
+        for (int i = 0; i < colNames.length; i++) {
             dtm.addColumn(colNames[i]);
         }
 
         //Add Row Data
         Object[] rowData = new Object[6];
-        for(int i=0; i < data.size(); i++){
+        for (int i = 0; i < data.size(); i++) {
 
             rowData[0] = data.get(i).getEid();
             rowData[1] = data.get(i).getFname();
@@ -680,43 +723,44 @@ public class Menu extends JFrame{
     }
 
     //POPULATES INSIGHTS TABLE FROM A LIST OF MEDICINE DATA
-    public void populateInsightsTableWithMedicine(List<Medicine> data){
+    public void populateInsightsTableWithMedicine(List<Medicine> data) {
 
         DefaultTableModel dtm = new DefaultTableModel();
 
-        String[] colNames = {"Medicine Code", "Medicine Cost"};
+        String[] colNames = {"Medicine Code", "Description", "Medicine Cost"};
 
         //Add Column Names
-        for(int i=0; i<colNames.length; i++){
+        for (int i = 0; i < colNames.length; i++) {
             dtm.addColumn(colNames[i]);
         }
 
         //Add Row Data
         Object[] rowData = new Object[6];
-        for(int i=0; i < data.size(); i++){
+        for (int i = 0; i < data.size(); i++) {
 
             rowData[0] = data.get(i).getCode();
-            rowData[1] = data.get(i).getCost();
+            rowData[1] = data.get(i).getDescription();
+            rowData[2] = data.get(i).getCost();
             dtm.addRow(rowData);
         }
         insightsTable.setModel(dtm);
     }
 
     //POPULATES INSIGHTS TABLE FROM A LIST OF DENTISTS Data
-    public void populateInsightsTableWithDentist(List<Dentist> data){
+    public void populateInsightsTableWithDentist(List<Dentist> data) {
 
         DefaultTableModel dtm = new DefaultTableModel();
 
         String[] colNames = {"Dentist ID", "First Name", "Last Name", "Age", "Sex"};
 
         //Add Column Names
-        for(int i=0; i<colNames.length; i++){
+        for (int i = 0; i < colNames.length; i++) {
             dtm.addColumn(colNames[i]);
         }
 
         //Add Row Data
         Object[] rowData = new Object[6];
-        for(int i=0; i < data.size(); i++){
+        for (int i = 0; i < data.size(); i++) {
 
             rowData[0] = data.get(i).getDid();
             rowData[1] = data.get(i).getFname();
@@ -730,20 +774,20 @@ public class Menu extends JFrame{
 
 
     //POPULATES BILLS TABLE FROM A LIST OF BILLS Data
-    public void populateBillsTable(List<Bill> data){
+    public void populateBillsTable(List<Bill> data) {
 
         DefaultTableModel dtm = new DefaultTableModel();
 
         String[] colNames = {"First Name", "Last Name", "Type", "Due", "Payment", "Balance"};
 
         //Add Column Names
-        for(int i=0; i<colNames.length; i++){
+        for (int i = 0; i < colNames.length; i++) {
             dtm.addColumn(colNames[i]);
         }
 
         //Add Row Data
         Object[] rowData = new Object[6];
-        for(int i=0; i < data.size(); i++){
+        for (int i = 0; i < data.size(); i++) {
 
             rowData[0] = data.get(i).getCname();
             rowData[1] = data.get(i).getSurname();
@@ -757,20 +801,20 @@ public class Menu extends JFrame{
     }
 
     //POPULATES BILLS TABLE FROM A LIST OF BILLS Data
-    public void populateBillsTableWithPastData(List<Bill> data){
+    public void populateBillsTableWithPastData(List<Bill> data) {
 
         DefaultTableModel dtm = new DefaultTableModel();
 
         String[] colNames = {"First Name", "Last Name", "Payment"};
 
         //Add Column Names
-        for(int i=0; i<colNames.length; i++){
+        for (int i = 0; i < colNames.length; i++) {
             dtm.addColumn(colNames[i]);
         }
 
         //Add Row Data
         Object[] rowData = new Object[6];
-        for(int i=0; i < data.size(); i++){
+        for (int i = 0; i < data.size(); i++) {
 
             rowData[0] = data.get(i).getCname();
             rowData[1] = data.get(i).getSurname();
@@ -781,22 +825,21 @@ public class Menu extends JFrame{
     }
 
 
-
     //POPULATES EMPLOYEE TABLE FROM A LIST OF CUSTOMERS
-    public void populateEmployeeTable(List<Employee> list){
+    public void populateEmployeeTable(List<Employee> list) {
 
         DefaultTableModel dtm = new DefaultTableModel();
 
         String[] colNames = {"Employee ID", "Last Name", "First Name", "Age", "Sex", "Birthday", "Phone", "Salary"};
 
         //Add Column Names
-        for(int i=0; i<colNames.length; i++){
+        for (int i = 0; i < colNames.length; i++) {
             dtm.addColumn(colNames[i]);
         }
 
         //Add Row Data
         Object[] rowData = new Object[8];
-        for(int i=0; i < list.size(); i++){
+        for (int i = 0; i < list.size(); i++) {
             rowData[0] = list.get(i).getEid();
             rowData[1] = list.get(i).getLname();
             rowData[2] = list.get(i).getFname();
@@ -810,22 +853,22 @@ public class Menu extends JFrame{
     }
 
     //POPULATES CUSTOMER TABLE FROM A LIST OF CUSTOMERS
-    public void populateCustomerTable(List<Customer> list){
+    public void populateCustomerTable(List<Customer> list) {
 
-       // List<Customer> data = new ArrayList<Customer>();
+        // List<Customer> data = new ArrayList<Customer>();
 
         DefaultTableModel dtm = new DefaultTableModel();
 
         String[] colNames = {"Customer ID", "Last Name", "First Name", "Email", "Phone", "Birthday", "Address", "Dentist"};
 
         //Add Column Names
-        for(int i=0; i<colNames.length; i++){
+        for (int i = 0; i < colNames.length; i++) {
             dtm.addColumn(colNames[i]);
         }
 
         //Add Row Data
         Object[] rowData = new Object[8];
-        for(int i=0; i < list.size(); i++){
+        for (int i = 0; i < list.size(); i++) {
             rowData[0] = list.get(i).getCID();
             rowData[1] = list.get(i).getLname();
             rowData[2] = list.get(i).getFname();
@@ -840,20 +883,20 @@ public class Menu extends JFrame{
     }
 
     //POPULATES APPOINTMENTS TABLE FROM A LIST OF APPOINTMENTS
-    public void populateAppointmentData(List<Appointment> data){
+    public void populateAppointmentData(List<Appointment> data) {
 
         DefaultTableModel dtm = new DefaultTableModel();
 
         String[] colNames = {"Name", "Customer ID", "Appointment Number", "Type", "From", "To"};
 
         //Add Column Names
-        for(int i=0; i<colNames.length; i++){
+        for (int i = 0; i < colNames.length; i++) {
             dtm.addColumn(colNames[i]);
         }
 
         //Add Row Data
         Object[] rowData = new Object[6];
-        for(int i=0; i < data.size(); i++){
+        for (int i = 0; i < data.size(); i++) {
 
             rowData[0] = data.get(i).getCname() + " " + data.get(i).getCsurname();
             rowData[1] = data.get(i).getCid();
@@ -863,7 +906,31 @@ public class Menu extends JFrame{
             rowData[5] = data.get(i).getToTime();
             dtm.addRow(rowData);
         }
-         AppointmentsTable.setModel(dtm);
+        AppointmentsTable.setModel(dtm);
+    }
+
+    //POPULATES APPOINTMENTS TABLE FROM A LIST OF APPOINTMENTS
+    public void populateMedicineTable(List<Medicine> data) {
+
+        DefaultTableModel dtm = new DefaultTableModel();
+
+        String[] colNames = {"code", "description", "cost"};
+
+        //Add Column Names
+        for (int i = 0; i < colNames.length; i++) {
+            dtm.addColumn(colNames[i]);
+        }
+
+        //Add Row Data
+        Object[] rowData = new Object[3];
+        for (int i = 0; i < data.size(); i++) {
+
+            rowData[0] = data.get(i).getCode();
+            rowData[1] = data.get(i).getDescription();
+            rowData[2] = data.get(i).getCost();
+            dtm.addRow(rowData);
+        }
+        medsTable.setModel(dtm);
     }
 
     //RETURNS TRUE IF EMAIL ADDRESS IS VALID - taken from Stack Overflow
@@ -874,25 +941,27 @@ public class Menu extends JFrame{
         return m.matches();
     }
 
-    public void init(){
+    public void init() {
 
 
-        List<Customer> customers = new ArrayList<Customer>();
-        List<Appointment> apps = new ArrayList<Appointment>();
-        List<Employee> emps = new ArrayList<Employee>();
+        List<Customer> customers = new ArrayList<>();
+        List<Appointment> apps = new ArrayList<>();
+        List<Employee> emps = new ArrayList<>();
+        List<Medicine> meds = new ArrayList<>();
 
         try {
             customers = dbh.customerViewDefaultTable();
             apps = dbh.getUpcomingCustomerAppointments();
             emps = dbh.employeeViewDefaultTable();
-        }
-        catch (SQLException e){
+            meds = dbh.medDefaultView();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
         populateAppointmentData(apps);
         populateCustomerTable(customers);
         populateEmployeeTable(emps);
+        populateMedicineTable(meds);
 
         setContentPane(menuPane);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -901,7 +970,6 @@ public class Menu extends JFrame{
         setVisible(true);
 
     }
-
 
 
 }

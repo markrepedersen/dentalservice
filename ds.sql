@@ -13,7 +13,7 @@ drop table Appointment cascade constraints;
 drop table Bill cascade constraints;
 drop table Uses cascade constraints;
 drop table login_details;
-drop table attends;
+drop table attends cascade constraints;
 --
 -- Now add each table.
 --
@@ -340,7 +340,7 @@ insert into Appointment values (4207, 'CHEK', '2016-12-25 15:00:00', '2016-12-25
 insert into Appointment values (4255, 'EXTR', '2017-01-03 11:00:00', '2016-01-03 13:00:00', 0000010, 111967);
 insert into Appointment values (4241, 'EXTR', '2017-01-08 15:00:00', '2016-01-08 17:00:00', 0000010, 111993);
 insert into Appointment values (4274, 'FILL', '2017-01-10 10:00:00', '2016-01-10 10:40:00', 0000008, 111993);
---
+
 -- now add in Bill
 --
 insert into Bill values (48232, 'BANK', 10.00, 87.61, '2015-12-31', 1, 111801);

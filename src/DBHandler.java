@@ -560,7 +560,7 @@ public class DBHandler {
     // Creates a list of customer objects that user must iterate through to handle
     public List<Employee> empSearchByLastName(String lname) throws SQLException {
         String query = "select eid, fname, lname, age, sex, " +
-                "phone_Num, isSupervisor from Employee where lname = ?";
+                "phone_Num from Employee where lname = ?";
         ArrayList<Employee> list = new ArrayList<>();
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(query);

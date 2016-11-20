@@ -1033,8 +1033,8 @@ public class Menu extends JFrame {
             empRowData[2] = list.get(i).getFname();
             empRowData[3] = list.get(i).getAge();
             empRowData[4] = list.get(i).getSex();
-            empRowData[6] = list.get(i).getPhoneNum();
-            empRowData[7] = list.get(i).getSalary();
+            empRowData[5] = list.get(i).getPhoneNum();
+            empRowData[6] = list.get(i).getSalary();
             dtm.addRow(empRowData);
         }
         empTable.setModel(dtm);

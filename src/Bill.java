@@ -41,6 +41,17 @@ public class Bill {
     }
 
     // constructor for getCustomerBills method
+    public Bill(int cid, String name, String surname, String type, Date dueDate, BigDecimal payment, BigDecimal balance) {
+        this.cid = cid;
+        this.cname = name;
+        this.surname = surname;
+        this.type = type;
+        this.dueDate = dueDate;
+        this.amountPaid = payment;
+        this.balance = balance;
+    }
+
+    // constructor for getCustomerBills method
     public Bill(String name, String surname, String type, Date dueDate, BigDecimal payment, BigDecimal balance) {
         this.cname = name;
         this.surname = surname;

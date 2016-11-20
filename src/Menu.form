@@ -844,7 +844,7 @@
               </component>
             </children>
           </grid>
-          <grid id="150ee" layout-manager="GridLayoutManager" row-count="3" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="150ee" layout-manager="GridLayoutManager" row-count="3" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <tabbedpane title="Medicine"/>
@@ -854,7 +854,7 @@
             <children>
               <scrollpane id="bd183" binding="medsScrollPane">
                 <constraints>
-                  <grid row="2" column="0" row-span="1" col-span="4" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <grid row="2" column="0" row-span="1" col-span="5" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties/>
                 <border type="none"/>
@@ -867,10 +867,10 @@
               </scrollpane>
               <component id="403d5" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="0" row-span="1" col-span="5" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="Customer ID"/>
+                  <text value="Search"/>
                 </properties>
               </component>
               <component id="9884a" class="javax.swing.JTextField" binding="medCustIDField">
@@ -883,7 +883,7 @@
               </component>
               <component id="7eb6" class="javax.swing.JButton" binding="findMedicinesButton" default-binding="true">
                 <constraints>
-                  <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="Find Medicines"/>
@@ -891,7 +891,7 @@
               </component>
               <component id="7485f" class="javax.swing.JRadioButton" binding="byCustLNameRadioButton">
                 <constraints>
-                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="By Last Name"/>
@@ -899,10 +899,18 @@
               </component>
               <component id="e53f9" class="javax.swing.JRadioButton" binding="byCustIDRadioButton">
                 <constraints>
-                  <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="By Customer ID"/>
+                </properties>
+              </component>
+              <component id="84c76" class="javax.swing.JRadioButton" binding="bySearchTermRadioButton">
+                <constraints>
+                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="By Search Term"/>
                 </properties>
               </component>
             </children>
@@ -951,14 +959,6 @@
                   <text value="Customer ID"/>
                 </properties>
               </component>
-              <component id="aea15" class="javax.swing.JButton" binding="showCustomersWith2Button" default-binding="true">
-                <constraints>
-                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Show Customers with 2 Payments"/>
-                </properties>
-              </component>
               <component id="cac52" class="javax.swing.JComboBox" binding="billingCombo">
                 <constraints>
                   <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
@@ -966,7 +966,7 @@
                 <properties>
                   <model>
                     <item value="All Bills Past and Present"/>
-                    <item value="Show Upaid Bills"/>
+                    <item value="Show Unpaid Bills"/>
                     <item value="Show Past Payments"/>
                   </model>
                 </properties>
@@ -977,6 +977,22 @@
                 </constraints>
                 <properties>
                   <text value="Retrieve Data"/>
+                </properties>
+              </component>
+              <component id="a56bc" class="javax.swing.JComboBox" binding="comboBox1" default-binding="true">
+                <constraints>
+                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <model/>
+                </properties>
+              </component>
+              <component id="76ea6" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Number of Payments"/>
                 </properties>
               </component>
             </children>

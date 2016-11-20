@@ -19,6 +19,15 @@ public class Customer {
     private String address;
     private String dentist; //Customer's currently assigned dentist - can be null if no assigned dentist at time
 
+    public Customer(int cid, String fname, String lname, long phoneNum, String email, String address) {
+        this.cid = cid;
+        this.phoneNum = phoneNum;
+        this.fname = fname;
+        this.lname = lname;
+        this.email = email;
+        this.address = address;
+    }
+
     public Customer(int cid, String fname, String lname, long phoneNum, Date birthday, String email, String address) {
         this.cid = cid;
         this.phoneNum = phoneNum;
@@ -27,6 +36,17 @@ public class Customer {
         this.email = email;
         this.address = address;
         this.birthday = birthday;
+    }
+
+    public Customer(int cid, String fname, String lname, long phoneNum, Date birthday, String email, String address, String dentist) {
+        this.cid = cid;
+        this.phoneNum = phoneNum;
+        this.fname = fname;
+        this.lname = lname;
+        this.email = email;
+        this.address = address;
+        this.birthday = birthday;
+        this.dentist = dentist;
     }
 
     public void setDentist(String dentist) {

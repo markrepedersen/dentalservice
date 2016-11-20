@@ -90,6 +90,26 @@ public class DBHandler {
     ----------------------------------------------- Customer Methods -----------------------------------------------------------------
     */
 
+    // Finds the customer for a given appointment number
+    // returns a customer
+    public Customer getCustomerByAppointmentNum(int num) throws SQLException {
+        String query = "select c.cid as id, c.fname as f, c.lname as l, c.phone_Num as p, c.email as e, c.address as a from Appointment a, Customer c where c.cid = a.cid and a.num = ?";
+        Connection conn = getConnection();
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setInt(1, num);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return new Customer(
+                    rs.getInt("id"),
+                    rs.getString("f"),
+                    rs.getString("l"),
+                    rs.getLong("p"),
+                    rs.getString("e"),
+                    rs.getString("a"));
+        }
+        return null;
+    }
+
     // Find out if a cid is valid or not
     // Returns true if cid is in use
     // False otherwise
@@ -97,7 +117,8 @@ public class DBHandler {
         String query = "select * from Customer where cid = ?";
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
-        ResultSet rs = ps.executeQuery(query);
+        ps.setInt(1, cid);
+        ResultSet rs = ps.executeQuery();
         boolean valid = false;
         if (rs.next()) {
             valid = true;
@@ -109,7 +130,7 @@ public class DBHandler {
     // The default view that an employee will have
     // Creates a list of customer objects that user must iterate through to handle
     public List<Customer> customerViewDefaultTable() throws SQLException {
-        String query = "select * from Customer";
+        String query = "select * from customer";
         List<Customer> list = new ArrayList<>();
         Connection conn = getConnection();
         Statement stmt = conn.createStatement();
@@ -123,7 +144,7 @@ public class DBHandler {
                     rs.getDate(5),
                     rs.getString(6),
                     rs.getString(7));
-            list.add(c);
+                    list.add(c);
         }
         conn.close();
         return list;
@@ -284,10 +305,10 @@ public class DBHandler {
         ps.executeUpdate();
     }
 
-    public void removeCustomer(int eid) throws SQLException {
+    public void removeCustomer(int cid) throws SQLException {
         Connection conn = getConnection();
         Statement stmt = conn.createStatement();
-        stmt.executeUpdate("DELETE FROM CUSTOMER WHERE eid = \'" + eid + "\'");
+        stmt.executeUpdate("DELETE FROM CUSTOMER WHERE cid = \'" + cid + "\'");
         conn.close();
     }
 
@@ -756,7 +777,7 @@ public class DBHandler {
     // cid is customer's cid
     // we do not use first or last name since results must be unique to one customer only
     public List<Bill> getCustomerUnpaidBills(int cid) throws SQLException {
-        String query = "select c.fname as Name, c.lname as Surname, b.type as type, b.dueDate as Due, " +
+        String query = "select c.cid as id, c.fname as Name, c.lname as Surname, b.type as type, b.dueDate as Due, " +
                 "b.amountPaid as Payment, (b.amountOwes - b.amountPaid) as Balance" +
                 " from Customer c, Bill b where b.cid = \'" + cid + "\' and c.cid = \'" + cid + "\' and b.isPaid = 0";
         List<Bill> list = new ArrayList<>();
@@ -766,6 +787,7 @@ public class DBHandler {
         ResultSet rs = stmt.getResultSet();
         while (rs.next()) {
             Bill b = new Bill(
+                    rs.getInt("id"),
                     rs.getString("Name"),
                     rs.getString("Surname"),
                     rs.getString("type"),
@@ -804,13 +826,13 @@ public class DBHandler {
         return list;
     }
 
-    // Finds specific appointment records for all customers by Last Name
-    public List<Appointment> searchCustomerAppointmentByCid(String key) throws SQLException {
+    // Finds specific appointment records for all customers by cid
+    public List<Appointment> searchCustomerAppointmentByCid(int cid) throws SQLException {
         String query = "select * from customer c, appointment a where a.cid = c.cid and CURRENT_TIMESTAMP <= a.from_Time and c.cid = ?";
         List<Appointment> list = new ArrayList<>();
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
-        ps.setString(1, key);
+        ps.setInt(1, cid);
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             Appointment a = new Appointment(
@@ -919,9 +941,54 @@ public class DBHandler {
         stmt.executeUpdate("DELETE FROM bill WHERE bid = \'" + bid + "\'");
     }
 
+    // The default view that bill table will have
+    // Creates a list of bill objects that user must iterate through to handle
+    public List<Bill> billsDefaultView() throws SQLException {
+        String query = "select c.cid as id, c.fname as f, c.lname as l, b.type as t, b.dueDate as d, b.amountPaid as p, (b.amountOwes - b.amountPaid) as bal" +
+                       " from Bill b, Customer c where c.cid = b.cid";
+        List<Bill> list = new ArrayList<>();
+        Connection conn = getConnection();
+        PreparedStatement ps = conn.prepareStatement(query);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Bill m = new Bill(
+                    rs.getInt("id"),
+                    rs.getString("f"),
+                    rs.getString("l"),
+                    rs.getString("t"),
+                    rs.getDate("d"),
+                    rs.getBigDecimal("p"),
+                    rs.getBigDecimal("bal")
+            );
+            list.add(m);
+        }
+
+        return list;
+    }
+
     /* ------------------------------------------------------------------------------------------------------------------------------- //
     ----------------------------------------------- Medicine Methods -----------------------------------------------------------------
     */
+
+    // Search in medicine description for this term
+    // returns all medicines that have searchTerm in the description
+    public List<Medicine> medSearchByDescriptionTerm(String searchTerm) throws SQLException {
+        String query = "select * from Medicine where description like \'%" + searchTerm + "%\'";
+        List<Medicine> list = new ArrayList<>();
+        Connection conn = getConnection();
+        PreparedStatement ps = conn.prepareStatement(query);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Medicine m = new Medicine(
+                    rs.getInt(1),
+                    rs.getDouble(2),
+                    rs.getString(3)
+            );
+            list.add(m);
+        }
+
+        return list;
+    }
 
     // The default view that medicine table will have
     // Creates a list of medicine objects that user must iterate through to handle

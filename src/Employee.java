@@ -1,5 +1,3 @@
-import java.sql.Date;
-
 /**
  * Created by mark on 2016-11-07.
  */
@@ -50,57 +48,55 @@ public class Employee {
         return eid;
     }
 
-    public int getSalary() {
-        return salary;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public String getSex() {
-        return sex;
-    }
-
-
     public void setEid(int eid) {
         this.eid = eid;
+    }
+
+    public int getSalary() {
+        return salary;
     }
 
     public void setSalary(int salary) {
         this.salary = salary;
     }
 
+    public int getAge() {
+        return age;
+    }
+
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public String getSex() {
+        return sex;
     }
 
     public void setSex(String sex) {
         this.sex = sex;
     }
 
+    public long getPhoneNum() {
+        return phoneNum;
+    }
 
     public void setPhoneNum(long phoneNum) {
         this.phoneNum = phoneNum;
-    }
-
-    public void setLname(String lname) {
-        this.lname = lname;
-    }
-
-    public void setFname(String fname) {
-        this.fname = fname;
-    }
-
-    public long getPhoneNum() {
-        return phoneNum;
     }
 
     public String getLname() {
         return lname;
     }
 
+    public void setLname(String lname) {
+        this.lname = lname;
+    }
+
     public String getFname() {
         return fname;
+    }
+
+    public void setFname(String fname) {
+        this.fname = fname;
     }
 }

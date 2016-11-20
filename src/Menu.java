@@ -2,6 +2,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -79,7 +81,6 @@ public class Menu extends JFrame {
     private JTextField custIDBillingField;
     private JButton retrieveBillDataButton;
     private JComboBox billingCombo;
-    private JButton showCustomersWith2Button;
     private JLabel custIDBillLabel;
     private JTextField medCustIDField;
     private JTable medsTable;
@@ -91,12 +92,161 @@ public class Menu extends JFrame {
     private JButton empUpdateButton;
     private JRadioButton byCustIDRadioButton;
     private JRadioButton byCustLNameRadioButton;
+    private JRadioButton bySearchTermRadioButton;
+    private JComboBox comboBox1;
     private DBHandler dbh;
+
+    // row data arrays
+    private Object[] custRowData;
+    private Object[] medRowData;
+    private Object[] billsRowData;
+    private Object[] empRowData;
+    private Object[] apptRowData;
+    private Object[] insightsRowData;
 
 
     public Menu() {
         super("Menu Dashboard");
         dbh = new DBHandler();
+
+        // -----------------------------------------------------------------------------------------------------//
+        // Adds row selection functionality
+        // Upon double clicking a row in a table, opens up a window with specific functionality depending
+        // on respective table
+        // ------>
+        // added some stubs for all the tables - only have functionality for customers and appointments as of now
+        // since no idea what the functionality for the others would be
+
+        billsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        medsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        custTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        empTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        AppointmentsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        insightsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+/*
+        billsTable.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    JTable target = (JTable) e.getSource();
+                    int row = target.getSelectedRow();
+                    StringBuffer sb = new StringBuffer();
+                    String lineSeparator = System.getProperty("line.separator");
+                    sb.append(tabledata[row][0] + lineSeparator);
+                    sb.append(tabledata[row][1] + lineSeparator);
+                    sb.append(tabledata[row][2] + lineSeparator);
+                    TextFrame textFrame = new TextFrame(sb.toString());
+                    textFrame.setVisible(true);
+                }
+            }
+        });
+
+
+        medsTable.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    JTable target = (JTable) e.getSource();
+                    int row = target.getSelectedRow();
+                    StringBuffer sb = new StringBuffer();
+                    String lineSeparator = System.getProperty("line.separator");
+                    sb.append(tabledata[row][0] + lineSeparator);
+                    sb.append(tabledata[row][1] + lineSeparator);
+                    sb.append(tabledata[row][2] + lineSeparator);
+                    TextFrame textFrame = new TextFrame(sb.toString());
+                    textFrame.setVisible(true);
+                }
+            }
+        });
+
+        */
+
+        custTable.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    if (e.getClickCount() == 2) {
+                        JTable target = (JTable) e.getSource();
+                        int cid = (int) target.getValueAt(target.getSelectedRow(), 0);
+                        String name = (String) target.getValueAt(target.getSelectedRow(), 2) + " " + target.getValueAt(target.getSelectedRow(), 1);
+                        List<Appointment> data = dbh.getUpcomingCustomerAppointmentsByCID(cid);
+                        if (data.size() == 0) {
+                            JOptionPane.showMessageDialog(null, "There are no appointments for this customer currently.");
+                            return;
+                        }
+                        CustAptmts frame = new CustAptmts(data, name);
+                        frame.setVisible(true);
+                    }
+                } catch (SQLException exception) {
+                    exception.printStackTrace();
+                }
+            }
+        });
+
+
+        /*
+
+        empTable.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    JTable target = (JTable) e.getSource();
+                    int row = target.getSelectedRow();
+                    StringBuffer sb = new StringBuffer();
+                    String lineSeparator = System.getProperty("line.separator");
+                    sb.append(tabledata[row][0] + lineSeparator);
+                    sb.append(tabledata[row][1] + lineSeparator);
+                    sb.append(tabledata[row][2] + lineSeparator);
+                    TextFrame textFrame = new TextFrame(sb.toString());
+                    textFrame.setVisible(true);
+                }
+            }
+        });
+*/
+        AppointmentsTable.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    if (e.getClickCount() == 2) {
+                        JTable target = (JTable) e.getSource();
+                        int num = (int) target.getValueAt(target.getSelectedRow(), 0);
+                        Customer c = dbh.getCustomerByAppointmentNum(num);
+                        if (c == null) {
+                            // why did i even put this here. this isn't even supposed to be possible.
+                            JOptionPane.showMessageDialog(null, "No customers for this appointment");
+                        } else {
+                            CustForAptmt cust = new CustForAptmt(
+                                    c.getCID(),
+                                    c.getFname(),
+                                    c.getLname(),
+                                    c.getPhoneNum(),
+                                    c.getEmail(),
+                                    c.getAddress());
+                        }
+
+                    }
+                } catch (SQLException exception) {
+                    exception.printStackTrace();
+                }
+            }
+        });
+
+        /*
+
+        insightsTable.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    JTable target = (JTable) e.getSource();
+                    int row = target.getSelectedRow();
+                    StringBuffer sb = new StringBuffer();
+                    String lineSeparator = System.getProperty("line.separator");
+                    sb.append(tabledata[row][0] + lineSeparator);
+                    sb.append(tabledata[row][1] + lineSeparator);
+                    sb.append(tabledata[row][2] + lineSeparator);
+                    TextFrame textFrame = new TextFrame(sb.toString());
+                    textFrame.setVisible(true);
+                }
+            }
+        });
+        */
+
+        // -----------------------------------------------------------------------------------------------------//
+
 
         //CUSTOMER SEARCH
         searchButton.addActionListener(new ActionListener() {
@@ -209,7 +359,7 @@ public class Menu extends JFrame {
 
                         try {
                             int cid = Integer.parseInt(searchText);
-                            data = dbh.searchCustomerAppointmentByCid(searchText);
+                            data = dbh.searchCustomerAppointmentByCid(cid);
                             populateAppointmentData(data);
                             if (data.isEmpty())
                                 JOptionPane.showMessageDialog(null, "No records exist for that search.");
@@ -496,30 +646,29 @@ public class Menu extends JFrame {
         retrieveBillDataButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                String searchText = custIDBillingField.getText();
                 int custID = 0;
                 try {
-                    custID = Integer.parseInt(custIDBillingField.getText());
-                } catch (NumberFormatException nm) {
-                    JOptionPane.showMessageDialog(null, "Customer ID must be a number!");
-                }
-
-                int comboSelection = billingCombo.getSelectedIndex();
-
-                try {
+                    if (!searchText.equals("")) {
+                        custID = Integer.parseInt(searchText);
+                    } else {
+                        populateBillsTable(dbh.billsDefaultView());
+                        return;
+                    }
+                    int comboSelection = billingCombo.getSelectedIndex();
                     if (comboSelection == 0) {
                         populateBillsTable(dbh.getCustomerUnpaidBills(custID));
-
                     } else if (comboSelection == 1) {
                         //Unpaid Bills
                         populateBillsTable(dbh.getCustomerUnpaidBills(custID));
-
                     } else {
                         //Past Payments
                         populateBillsTableWithPastData(dbh.getCustomerPastPayments(custID));
                     }
-                } catch (SQLException s) {
-                    s.printStackTrace();
+                } catch (NumberFormatException nm) {
+                    JOptionPane.showMessageDialog(null, "Customer ID must be a number!");
+                } catch (SQLException exc) {
+                    exc.printStackTrace();
                 }
 
 
@@ -622,9 +771,7 @@ public class Menu extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String searchText = medCustIDField.getText();
-                if (searchText.equals("") ||
-                        (searchText.equals("") && byCustIDRadioButton.isSelected()) ||
-                        (searchText.equals("") && byCustLNameRadioButton.isSelected())) {
+                if (searchText.equals("")) {
                     List<Medicine> data = null;
                     try {
                         data = dbh.medDefaultView();
@@ -670,9 +817,23 @@ public class Menu extends JFrame {
                     if (data.isEmpty())
                         JOptionPane.showMessageDialog(null, "No records exist for that search.");
 
-                }
-                //else if (custIDRadioButton.isSelected() && )
-                else {
+                } else if (bySearchTermRadioButton.isSelected()) {
+
+                    List<Medicine> data = null;
+                    int cid = 0;
+                    try {
+                        data = dbh.medSearchByDescriptionTerm(searchText);
+
+
+                    } catch (SQLException e1) {
+                        e1.printStackTrace();
+                    }
+                    populateMedicineTable(data);
+
+                    if (data.isEmpty())
+                        JOptionPane.showMessageDialog(null, "No records exist for that search.");
+
+                } else {
 
                     List<Medicine> data = null;
                     try {
@@ -682,7 +843,6 @@ public class Menu extends JFrame {
                     }
                     populateMedicineTable(data);
                 }
-
             }
         });
 
@@ -690,7 +850,8 @@ public class Menu extends JFrame {
         logoutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                new Login().init();
+                dispose();
             }
         });
     }
@@ -698,7 +859,11 @@ public class Menu extends JFrame {
     //POPULATES INSIGHTS TABLE FROM A LIST OF EMPLOYEES Data
     public void populateInsightsTableWithEmployee(List<Employee> data) {
 
-        DefaultTableModel dtm = new DefaultTableModel();
+        DefaultTableModel dtm = new DefaultTableModel() {
+            public boolean isCellEditable(int row, int column) {
+                return false;//This causes all cells to be not editable
+            }
+        };
 
         String[] colNames = {"Employee ID", "First Name", "Last Name", "Age", "Sex", "Salary"};
 
@@ -708,16 +873,16 @@ public class Menu extends JFrame {
         }
 
         //Add Row Data
-        Object[] rowData = new Object[6];
+        insightsRowData = new Object[6];
         for (int i = 0; i < data.size(); i++) {
 
-            rowData[0] = data.get(i).getEid();
-            rowData[1] = data.get(i).getFname();
-            rowData[2] = data.get(i).getLname();
-            rowData[3] = data.get(i).getAge();
-            rowData[4] = data.get(i).getSex();
-            rowData[5] = data.get(i).getSalary();
-            dtm.addRow(rowData);
+            insightsRowData[0] = data.get(i).getEid();
+            insightsRowData[1] = data.get(i).getFname();
+            insightsRowData[2] = data.get(i).getLname();
+            insightsRowData[3] = data.get(i).getAge();
+            insightsRowData[4] = data.get(i).getSex();
+            insightsRowData[5] = data.get(i).getSalary();
+            dtm.addRow(insightsRowData);
         }
         insightsTable.setModel(dtm);
     }
@@ -725,7 +890,11 @@ public class Menu extends JFrame {
     //POPULATES INSIGHTS TABLE FROM A LIST OF MEDICINE DATA
     public void populateInsightsTableWithMedicine(List<Medicine> data) {
 
-        DefaultTableModel dtm = new DefaultTableModel();
+        DefaultTableModel dtm = new DefaultTableModel() {
+            public boolean isCellEditable(int row, int column) {
+                return false;//This causes all cells to be not editable
+            }
+        };
 
         String[] colNames = {"Medicine Code", "Description", "Medicine Cost"};
 
@@ -735,13 +904,13 @@ public class Menu extends JFrame {
         }
 
         //Add Row Data
-        Object[] rowData = new Object[6];
+        insightsRowData = new Object[6];
         for (int i = 0; i < data.size(); i++) {
 
-            rowData[0] = data.get(i).getCode();
-            rowData[1] = data.get(i).getDescription();
-            rowData[2] = data.get(i).getCost();
-            dtm.addRow(rowData);
+            insightsRowData[0] = data.get(i).getCode();
+            insightsRowData[1] = data.get(i).getDescription();
+            insightsRowData[2] = data.get(i).getCost();
+            dtm.addRow(insightsRowData);
         }
         insightsTable.setModel(dtm);
     }
@@ -749,7 +918,11 @@ public class Menu extends JFrame {
     //POPULATES INSIGHTS TABLE FROM A LIST OF DENTISTS Data
     public void populateInsightsTableWithDentist(List<Dentist> data) {
 
-        DefaultTableModel dtm = new DefaultTableModel();
+        DefaultTableModel dtm = new DefaultTableModel() {
+            public boolean isCellEditable(int row, int column) {
+                return false;//This causes all cells to be not editable
+            }
+        };
 
         String[] colNames = {"Dentist ID", "First Name", "Last Name", "Age", "Sex"};
 
@@ -759,15 +932,15 @@ public class Menu extends JFrame {
         }
 
         //Add Row Data
-        Object[] rowData = new Object[6];
+        insightsRowData = new Object[6];
         for (int i = 0; i < data.size(); i++) {
 
-            rowData[0] = data.get(i).getDid();
-            rowData[1] = data.get(i).getFname();
-            rowData[2] = data.get(i).getLname();
-            rowData[3] = data.get(i).getAge();
-            rowData[4] = data.get(i).getSex();
-            dtm.addRow(rowData);
+            insightsRowData[0] = data.get(i).getDid();
+            insightsRowData[1] = data.get(i).getFname();
+            insightsRowData[2] = data.get(i).getLname();
+            insightsRowData[3] = data.get(i).getAge();
+            insightsRowData[4] = data.get(i).getSex();
+            dtm.addRow(insightsRowData);
         }
         insightsTable.setModel(dtm);
     }
@@ -776,9 +949,13 @@ public class Menu extends JFrame {
     //POPULATES BILLS TABLE FROM A LIST OF BILLS Data
     public void populateBillsTable(List<Bill> data) {
 
-        DefaultTableModel dtm = new DefaultTableModel();
+        DefaultTableModel dtm = new DefaultTableModel() {
+            public boolean isCellEditable(int row, int column) {
+                return false;//This causes all cells to be not editable
+            }
+        };
 
-        String[] colNames = {"First Name", "Last Name", "Type", "Due", "Payment", "Balance"};
+        String[] colNames = {"Customer ID", "First Name", "Last Name", "Type", "Due", "Payment", "Balance"};
 
         //Add Column Names
         for (int i = 0; i < colNames.length; i++) {
@@ -786,16 +963,16 @@ public class Menu extends JFrame {
         }
 
         //Add Row Data
-        Object[] rowData = new Object[6];
+        billsRowData = new Object[7];
         for (int i = 0; i < data.size(); i++) {
-
-            rowData[0] = data.get(i).getCname();
-            rowData[1] = data.get(i).getSurname();
-            rowData[2] = data.get(i).getType();
-            rowData[3] = data.get(i).getDueDate();
-            rowData[4] = data.get(i).getAmountPaid();
-            rowData[5] = data.get(i).getBalance();
-            dtm.addRow(rowData);
+            billsRowData[0] = data.get(i).getCid();
+            billsRowData[1] = data.get(i).getCname();
+            billsRowData[2] = data.get(i).getSurname();
+            billsRowData[3] = data.get(i).getType();
+            billsRowData[4] = data.get(i).getDueDate();
+            billsRowData[5] = data.get(i).getAmountPaid();
+            billsRowData[6] = data.get(i).getBalance();
+            dtm.addRow(billsRowData);
         }
         billsTable.setModel(dtm);
     }
@@ -803,9 +980,13 @@ public class Menu extends JFrame {
     //POPULATES BILLS TABLE FROM A LIST OF BILLS Data
     public void populateBillsTableWithPastData(List<Bill> data) {
 
-        DefaultTableModel dtm = new DefaultTableModel();
+        DefaultTableModel dtm = new DefaultTableModel() {
+            public boolean isCellEditable(int row, int column) {
+                return false;//This causes all cells to be not editable
+            }
+        };
 
-        String[] colNames = {"First Name", "Last Name", "Payment"};
+        String[] colNames = {"Customer ID", "First Name", "Last Name", "Type", "Due", "Payment", "Balance"};
 
         //Add Column Names
         for (int i = 0; i < colNames.length; i++) {
@@ -813,13 +994,16 @@ public class Menu extends JFrame {
         }
 
         //Add Row Data
-        Object[] rowData = new Object[6];
+        billsRowData = new Object[7];
         for (int i = 0; i < data.size(); i++) {
-
-            rowData[0] = data.get(i).getCname();
-            rowData[1] = data.get(i).getSurname();
-            rowData[4] = data.get(i).getAmountPaid();
-            dtm.addRow(rowData);
+            billsRowData[0] = data.get(i).getCid();
+            billsRowData[1] = data.get(i).getCname();
+            billsRowData[2] = data.get(i).getSurname();
+            billsRowData[3] = data.get(i).getType();
+            billsRowData[4] = data.get(i).getDueDate();
+            billsRowData[5] = data.get(i).getAmountPaid();
+            billsRowData[6] = data.get(i).getBalance();
+            dtm.addRow(billsRowData);
         }
         billsTable.setModel(dtm);
     }
@@ -828,9 +1012,13 @@ public class Menu extends JFrame {
     //POPULATES EMPLOYEE TABLE FROM A LIST OF CUSTOMERS
     public void populateEmployeeTable(List<Employee> list) {
 
-        DefaultTableModel dtm = new DefaultTableModel();
+        DefaultTableModel dtm = new DefaultTableModel() {
+            public boolean isCellEditable(int row, int column) {
+                return false;//This causes all cells to be not editable
+            }
+        };
 
-        String[] colNames = {"Employee ID", "Last Name", "First Name", "Age", "Sex", "Birthday", "Phone", "Salary"};
+        String[] colNames = {"Employee ID", "Last Name", "First Name", "Age", "Sex", "Phone", "Salary"};
 
         //Add Column Names
         for (int i = 0; i < colNames.length; i++) {
@@ -838,16 +1026,16 @@ public class Menu extends JFrame {
         }
 
         //Add Row Data
-        Object[] rowData = new Object[8];
+        empRowData = new Object[8];
         for (int i = 0; i < list.size(); i++) {
-            rowData[0] = list.get(i).getEid();
-            rowData[1] = list.get(i).getLname();
-            rowData[2] = list.get(i).getFname();
-            rowData[3] = list.get(i).getAge();
-            rowData[4] = list.get(i).getSex();
-            rowData[6] = list.get(i).getPhoneNum();
-            rowData[7] = list.get(i).getSalary();
-            dtm.addRow(rowData);
+            empRowData[0] = list.get(i).getEid();
+            empRowData[1] = list.get(i).getLname();
+            empRowData[2] = list.get(i).getFname();
+            empRowData[3] = list.get(i).getAge();
+            empRowData[4] = list.get(i).getSex();
+            empRowData[6] = list.get(i).getPhoneNum();
+            empRowData[7] = list.get(i).getSalary();
+            dtm.addRow(empRowData);
         }
         empTable.setModel(dtm);
     }
@@ -855,9 +1043,11 @@ public class Menu extends JFrame {
     //POPULATES CUSTOMER TABLE FROM A LIST OF CUSTOMERS
     public void populateCustomerTable(List<Customer> list) {
 
-        // List<Customer> data = new ArrayList<Customer>();
-
-        DefaultTableModel dtm = new DefaultTableModel();
+        DefaultTableModel dtm = new DefaultTableModel() {
+            public boolean isCellEditable(int row, int column) {
+                return false;//This causes all cells to be not editable
+            }
+        };
 
         String[] colNames = {"Customer ID", "Last Name", "First Name", "Email", "Phone", "Birthday", "Address", "Dentist"};
 
@@ -867,17 +1057,17 @@ public class Menu extends JFrame {
         }
 
         //Add Row Data
-        Object[] rowData = new Object[8];
+        custRowData = new Object[8];
         for (int i = 0; i < list.size(); i++) {
-            rowData[0] = list.get(i).getCID();
-            rowData[1] = list.get(i).getLname();
-            rowData[2] = list.get(i).getFname();
-            rowData[3] = list.get(i).getEmail();
-            rowData[4] = list.get(i).getPhoneNum();
-            rowData[5] = list.get(i).getBirthday();
-            rowData[6] = list.get(i).getAddress();
-            rowData[7] = list.get(i).getDentist();
-            dtm.addRow(rowData);
+            custRowData[0] = list.get(i).getCID();
+            custRowData[1] = list.get(i).getLname();
+            custRowData[2] = list.get(i).getFname();
+            custRowData[3] = list.get(i).getEmail();
+            custRowData[4] = list.get(i).getPhoneNum();
+            custRowData[5] = list.get(i).getBirthday();
+            custRowData[6] = list.get(i).getAddress();
+            custRowData[7] = list.get(i).getDentist();
+            dtm.addRow(custRowData);
         }
         custTable.setModel(dtm);
     }
@@ -885,9 +1075,13 @@ public class Menu extends JFrame {
     //POPULATES APPOINTMENTS TABLE FROM A LIST OF APPOINTMENTS
     public void populateAppointmentData(List<Appointment> data) {
 
-        DefaultTableModel dtm = new DefaultTableModel();
+        DefaultTableModel dtm = new DefaultTableModel() {
+            public boolean isCellEditable(int row, int column) {
+                return false;//This causes all cells to be not editable
+            }
+        };
 
-        String[] colNames = {"Name", "Customer ID", "Appointment Number", "Type", "From", "To"};
+        String[] colNames = {"Appointment Number", "Type", "From", "To"};
 
         //Add Column Names
         for (int i = 0; i < colNames.length; i++) {
@@ -895,16 +1089,14 @@ public class Menu extends JFrame {
         }
 
         //Add Row Data
-        Object[] rowData = new Object[6];
+        apptRowData = new Object[data.size()];
         for (int i = 0; i < data.size(); i++) {
 
-            rowData[0] = data.get(i).getCname() + " " + data.get(i).getCsurname();
-            rowData[1] = data.get(i).getCid();
-            rowData[2] = data.get(i).getNum();
-            rowData[3] = data.get(i).getType();
-            rowData[4] = data.get(i).getFromTime();
-            rowData[5] = data.get(i).getToTime();
-            dtm.addRow(rowData);
+            apptRowData[0] = data.get(i).getNum();
+            apptRowData[1] = data.get(i).getType();
+            apptRowData[2] = data.get(i).getFromTime();
+            apptRowData[3] = data.get(i).getToTime();
+            dtm.addRow(apptRowData);
         }
         AppointmentsTable.setModel(dtm);
     }
@@ -912,7 +1104,11 @@ public class Menu extends JFrame {
     //POPULATES APPOINTMENTS TABLE FROM A LIST OF APPOINTMENTS
     public void populateMedicineTable(List<Medicine> data) {
 
-        DefaultTableModel dtm = new DefaultTableModel();
+        DefaultTableModel dtm = new DefaultTableModel() {
+            public boolean isCellEditable(int row, int column) {
+                return false;//This causes all cells to be not editable
+            }
+        };
 
         String[] colNames = {"code", "description", "cost"};
 
@@ -922,13 +1118,13 @@ public class Menu extends JFrame {
         }
 
         //Add Row Data
-        Object[] rowData = new Object[3];
+        medRowData = new Object[3];
         for (int i = 0; i < data.size(); i++) {
 
-            rowData[0] = data.get(i).getCode();
-            rowData[1] = data.get(i).getDescription();
-            rowData[2] = data.get(i).getCost();
-            dtm.addRow(rowData);
+            medRowData[0] = data.get(i).getCode();
+            medRowData[1] = data.get(i).getDescription();
+            medRowData[2] = data.get(i).getCost();
+            dtm.addRow(medRowData);
         }
         medsTable.setModel(dtm);
     }
@@ -943,17 +1139,19 @@ public class Menu extends JFrame {
 
     public void init() {
 
-
         List<Customer> customers = new ArrayList<>();
         List<Appointment> apps = new ArrayList<>();
         List<Employee> emps = new ArrayList<>();
         List<Medicine> meds = new ArrayList<>();
+        List<Bill> bills = new ArrayList<>();
+
 
         try {
             customers = dbh.customerViewDefaultTable();
             apps = dbh.getUpcomingCustomerAppointments();
             emps = dbh.employeeViewDefaultTable();
             meds = dbh.medDefaultView();
+            bills = dbh.billsDefaultView();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -962,6 +1160,7 @@ public class Menu extends JFrame {
         populateCustomerTable(customers);
         populateEmployeeTable(emps);
         populateMedicineTable(meds);
+        populateBillsTable(bills);
 
         setContentPane(menuPane);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

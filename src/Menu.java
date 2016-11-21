@@ -1,3 +1,5 @@
+import org.jfree.ui.RefineryUtilities;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
@@ -94,6 +96,8 @@ public class Menu extends JFrame {
     private JRadioButton byCustLNameRadioButton;
     private JRadioButton bySearchTermRadioButton;
     private JComboBox numPaymentsComboBox;
+    private JButton pieChartButton;
+    private JButton button1;
     private DBHandler dbh;
 
     // row data arrays
@@ -389,6 +393,22 @@ public class Menu extends JFrame {
                 }
 
 
+            }
+        });
+
+        pieChartButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    List<CountColumn> data = dbh.getUpcomingCustomerAppointmentTypesColumnCount();
+
+                    PieChart frame = new PieChart("Appointment Types", data);
+                    frame.pack();
+                    RefineryUtilities.centerFrameOnScreen(frame);
+                    frame.setVisible(true);
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 

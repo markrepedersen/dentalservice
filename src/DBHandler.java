@@ -261,6 +261,24 @@ public class DBHandler {
         return list;
     }
 
+    // Finds specific appointment records for all customers
+    public List<CountColumn> getUpcomingCustomerAppointmentTypesColumnCount() throws SQLException {
+        String query = "SELECT type AS Type, count(*) AS Count FROM appointment group by type";
+        List<CountColumn> list = new ArrayList<>();
+        Connection conn = getConnection();
+        PreparedStatement ps = conn.prepareStatement(query);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            CountColumn c = new CountColumn(
+                    rs.getString("Type"),
+                    rs.getInt("Count")
+            );
+            list.add(c);
+        }
+        conn.close();
+        return list;
+    }
+
     // Finds past appointment records for a customer
     public List<Appointment> getPastCustomerAppointments(int cid) throws SQLException {
         String query = "select app.num as \"num\", app.type as \"type\", app.from_Time as \"from\", app.to_Time as \"until\"" +

@@ -378,6 +378,63 @@ insert into Uses values (0000351, 558234);
 
 --
 -- End of inserts
+
+--
+-- Procedures
+--
+-- CREATE OR REPLACE PROCEDURE Emp_Insert ( eid integer,
+--                                        	fname varchar2(255) NOT NULL,
+--                                         	lname varchar2(255) NOT NULL,
+--                                         	salary integer,
+--                                         	age integer,
+--                                         	sex char(1),
+--                                         	phone_Num integer,
+--                                         	isSupervisor integer )
+--AS language Java
+--name 'EmpInsertTrigger.insEmpTrigger (int, java.lang.String, java.lang.String, int, int, java.lang.String, long, int)';
+
+--CREATE OR REPLACE PROCEDURE Emp_Delete ( eid integer)
+--AS language Java
+--name 'EmpDeleteTrigger.delEmpTrigger (int)';
+
+--CREATE OR REPLACE PROCEDURE Emp_Update ( eid integer,
+--                                         	fname varchar2(255) NOT NULL,
+--                                         	lname varchar2(255) NOT NULL,
+--                                        	salary integer,
+--                                         	age integer,
+--                                         	sex char(1),
+--                                         	phone_Num integer,
+--                                         	isSupervisor integer )
+--AS language Java
+--name 'EmpUpdateTrigger.upEmpTrigger (int, java.lang.String, java.lang.String, int, int, java.lang.String, long, int)';
+--
+-- end of procedures
+--
+
+--
+-- Triggers
+--
+--CREATE OR REPLACE TRIGGER Emp_Insert_Trigger
+--AFTER INSERT ON Employee
+--FOR EACH ROW
+--CALL Emp_Insert(:new.eid, :new.fname, :new.lname, :new.salary, :new.age, :new.sex, :new.phone_Num, :new.isSupervisor);
+--/
+
+--CREATE OR REPLACE TRIGGER Emp_Delete_Trigger
+--AFTER DELETE ON Employee
+--FOR EACH ROW
+--CALL Emp_Delete(:old.eid);
+--/
+
+--CREATE OR REPLACE TRIGGER Emp_Update_Trigger
+--AFTER UPDATE ON Employee
+--FOR EACH ROW
+--CALL Emp_Update(:old.eid, :new.fname, :new.lname, :new.salary, :new.age, :new.sex, :new.phone_Num, :new.isSupervisor);
+--/
+
+--
+-- End of triggers
+--
 -- End of Data
 --
 

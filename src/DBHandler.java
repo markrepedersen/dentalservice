@@ -719,12 +719,11 @@ public class DBHandler {
     // cid is customer's cid
     // we do not use first or last name since results must be unique to one customer only
     public List<Bill> getCustomerPastPayments(int cid) throws SQLException {
-        String query = "select c.cid, c.fname as Name, " +
-                "c.lname as Surname, " +
-                "SUM(b.amountPaid) as Payment " +
+        String query = "select c.cid as id, c.fname as Name, " +
+                "c.lname as Surname, b.type as t, " +
+                "b.amountOwes as owes, b.dueDate as due " +
                 "from Customer c, Bill b where b.cid = ? " +
-                "and c.cid = ? and b.cid = c.cid and CURRENT_DATE > dueDate and isPaid = 1" +
-                "group by c.cid, c.fname, c.lname";
+                "and c.cid = ? and b.cid = c.cid and CURRENT_DATE > dueDate and isPaid = 1";
         List<Bill> list = new ArrayList<>();
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
@@ -733,9 +732,12 @@ public class DBHandler {
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             Bill b = new Bill(
+                    rs.getInt("id"),
                     rs.getString("Name"),
                     rs.getString("Surname"),
-                    rs.getBigDecimal("Payment")
+                    rs.getString("t"),
+                    rs.getDate("due"),
+                    rs.getBigDecimal("owes")
             );
             list.add(b);
         }

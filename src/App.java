@@ -26,8 +26,8 @@ public class App {
                 e1.printStackTrace();
             }
         }
-        new Login().init();
-        //new Menu().init();
+        //new Login().init();
+        new Menu().init();
 
     }
 }

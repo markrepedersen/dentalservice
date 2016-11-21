@@ -996,7 +996,7 @@ public class Menu extends JFrame {
             }
         };
 
-        String[] colNames = {"Customer ID", "First Name", "Last Name", "Type", "Due", "Payment", "Balance"};
+        String[] colNames = {"Customer ID", "First Name", "Last Name", "Type", "Due", "Amount"};
 
         //Add Column Names
         for (int i = 0; i < colNames.length; i++) {
@@ -1011,8 +1011,7 @@ public class Menu extends JFrame {
             billsRowData[2] = data.get(i).getSurname();
             billsRowData[3] = data.get(i).getType();
             billsRowData[4] = data.get(i).getDueDate();
-            billsRowData[5] = data.get(i).getAmountPaid();
-            billsRowData[6] = data.get(i).getBalance();
+            billsRowData[5] = data.get(i).getAmountOwes();
             dtm.addRow(billsRowData);
         }
         billsTable.setModel(dtm);

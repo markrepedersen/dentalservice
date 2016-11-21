@@ -93,7 +93,7 @@ public class Menu extends JFrame {
     private JRadioButton byCustIDRadioButton;
     private JRadioButton byCustLNameRadioButton;
     private JRadioButton bySearchTermRadioButton;
-    private JComboBox comboBox1;
+    private JComboBox numPaymentsComboBox;
     private DBHandler dbh;
 
     // row data arrays
@@ -139,25 +139,29 @@ public class Menu extends JFrame {
                 }
             }
         });
-
+*/
 
         medsTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
-                    JTable target = (JTable) e.getSource();
-                    int row = target.getSelectedRow();
-                    StringBuffer sb = new StringBuffer();
-                    String lineSeparator = System.getProperty("line.separator");
-                    sb.append(tabledata[row][0] + lineSeparator);
-                    sb.append(tabledata[row][1] + lineSeparator);
-                    sb.append(tabledata[row][2] + lineSeparator);
-                    TextFrame textFrame = new TextFrame(sb.toString());
-                    textFrame.setVisible(true);
+                try {
+                    if (e.getClickCount() == 2) {
+                        JTable target = (JTable) e.getSource();
+                        int code = (int) target.getValueAt(target.getSelectedRow(), 0);
+                        List<Customer> data = dbh.getCustomersWithMedicine(code);
+                        if (data.size() == 0) {
+                            JOptionPane.showMessageDialog(null, "No prescribed customers.");
+                            return;
+                        }
+                        CustForMeds frame = new CustForMeds(data);
+                        frame.setVisible(true);
+                    }
+                } catch (SQLException exception) {
+                    exception.printStackTrace();
                 }
             }
         });
 
-        */
+
 
         custTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
@@ -854,6 +858,12 @@ public class Menu extends JFrame {
                 dispose();
             }
         });
+        numPaymentsComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
     }
 
     //POPULATES INSIGHTS TABLE FROM A LIST OF EMPLOYEES Data
@@ -873,7 +883,7 @@ public class Menu extends JFrame {
         }
 
         //Add Row Data
-        insightsRowData = new Object[6];
+        insightsRowData = new Object[100];
         for (int i = 0; i < data.size(); i++) {
 
             insightsRowData[0] = data.get(i).getEid();
@@ -904,7 +914,7 @@ public class Menu extends JFrame {
         }
 
         //Add Row Data
-        insightsRowData = new Object[6];
+        insightsRowData = new Object[100];
         for (int i = 0; i < data.size(); i++) {
 
             insightsRowData[0] = data.get(i).getCode();
@@ -932,7 +942,7 @@ public class Menu extends JFrame {
         }
 
         //Add Row Data
-        insightsRowData = new Object[6];
+        insightsRowData = new Object[100];
         for (int i = 0; i < data.size(); i++) {
 
             insightsRowData[0] = data.get(i).getDid();
@@ -963,7 +973,7 @@ public class Menu extends JFrame {
         }
 
         //Add Row Data
-        billsRowData = new Object[7];
+        billsRowData = new Object[100];
         for (int i = 0; i < data.size(); i++) {
             billsRowData[0] = data.get(i).getCid();
             billsRowData[1] = data.get(i).getCname();
@@ -994,7 +1004,7 @@ public class Menu extends JFrame {
         }
 
         //Add Row Data
-        billsRowData = new Object[7];
+        billsRowData = new Object[100];
         for (int i = 0; i < data.size(); i++) {
             billsRowData[0] = data.get(i).getCid();
             billsRowData[1] = data.get(i).getCname();
@@ -1026,7 +1036,7 @@ public class Menu extends JFrame {
         }
 
         //Add Row Data
-        empRowData = new Object[8];
+        empRowData = new Object[100];
         for (int i = 0; i < list.size(); i++) {
             empRowData[0] = list.get(i).getEid();
             empRowData[1] = list.get(i).getLname();
@@ -1057,7 +1067,7 @@ public class Menu extends JFrame {
         }
 
         //Add Row Data
-        custRowData = new Object[8];
+        custRowData = new Object[100];
         for (int i = 0; i < list.size(); i++) {
             custRowData[0] = list.get(i).getCID();
             custRowData[1] = list.get(i).getLname();

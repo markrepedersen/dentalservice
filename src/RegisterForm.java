@@ -43,7 +43,7 @@ public class RegisterForm {
                             case 0: //dentist
                                 db.registerEmployee(
                                         username.getText(),
-                                        password.getSelectedText(),
+                                        new String(password.getPassword()),
                                         "d",
                                         fname.getText(),
                                         lname.getText(),
@@ -54,7 +54,7 @@ public class RegisterForm {
                             case 1: //hygienist
                                 db.registerEmployee(
                                         username.getText(),
-                                        password.getSelectedText(),
+                                        new String(password.getPassword()),
                                         "h",
                                         fname.getText(),
                                         lname.getText(),
@@ -65,7 +65,7 @@ public class RegisterForm {
                             case 2: //receptionist
                                 db.registerEmployee(
                                         username.getText(),
-                                        password.getSelectedText(),
+                                        new String(password.getPassword()),
                                         "r",
                                         fname.getText(),
                                         lname.getText(),
@@ -83,8 +83,7 @@ public class RegisterForm {
                     }
                 }
                 catch (SQLException e2) {
-                    e2.printStackTrace();
-                    //JOptionPane.showMessageDialog(null, "An account with this username already exists. Please choose again.");
+                    JOptionPane.showMessageDialog(null, "An account with this username already exists. Please choose again.");
                 }
             }
         });

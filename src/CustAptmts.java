@@ -36,7 +36,7 @@ public class CustAptmts extends JFrame {
         }
 
         //Add Row Data
-        Object[] rowData = new Object[4];
+        Object[] rowData = new Object[100];
         for (int i = 0; i < data.size(); i++) {
             rowData[0] = data.get(i).getNum();
             rowData[1] = data.get(i).getType();

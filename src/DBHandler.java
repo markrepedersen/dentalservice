@@ -56,19 +56,12 @@ public class DBHandler {
                     rs.getString("salt"),
                     rs.getString("type"),
                     rs.getInt("eid"));
-            // Checks if hashpass = hash(pw + salt)
+            //Checks if hashpass = hash(pw + salt)
             if (!login.getHashPass()
                     .equals(BCrypt.hashpw(pw, login.getSalt()))) {
-                System.out.println();
-                System.out.println();
-
-                System.out.println(login.getHashPass());
-                System.out.println(BCrypt.hashpw(pw, login.getSalt()));
-                System.out.println();
-                System.out.println();
-
                 return -1; // password does not match
             }
+
             conn.close();
             switch (login.getType()) {
                 case "d" :
@@ -80,7 +73,6 @@ public class DBHandler {
             }
         }
         conn.close();
-        System.out.println("no username like that");
         return -1; // empty result set => username not found
     }
 
@@ -427,17 +419,22 @@ public class DBHandler {
     // Registers an employee into the system, letting them have access to the application
     // Employee credentials are username, pw
     // type can only be one of: d, r, or h
-    public void registerEmployee(String username, String pw, String type,
+    public void registerEmployee(String username, String pw,
+                                 String type,
                                  String fname, String lname, int age,
                                  String sex, long phoneNum) throws SQLException {
         int eid = getHighestEmployeeID() + 1;
         addEmployee(eid, fname, lname, 0, age, sex, phoneNum, 0);
         String salt = BCrypt.gensalt();
-        //System.out.println("salt is: " + salt);
         String hashpass = BCrypt.hashpw(pw, salt);
-        String query = "insert into login_details values (\'" + username + "\', " + "\'" + hashpass + "\', " + "\'" + salt + "\', " + "\'" + type + "\', " + "\'" + eid + "\'" + ")";
+        String query = "insert into login_details values (?, ?, ?, ?, ?)";
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
+        ps.setString(1, username);
+        ps.setString(2, hashpass);
+        ps.setString(3, salt);
+        ps.setString(4, type);
+        ps.setInt(5, eid);
         ps.executeUpdate();
         conn.close();
     }
@@ -1097,5 +1094,27 @@ public class DBHandler {
         return list;
     }
 
+
+    // Finds customers who are prescribed this medicine
+    public List<Customer> getCustomersWithMedicine(int code) throws SQLException {
+        String query = "select c.cid as id, c.fname as f, c.lname as l, c.phone_Num as p, c.email as e, c.address as a " +
+                       "from Customer c, Medicine m, Treats t where c.cid = t.cid and m.code = t.code and m.code = ?";
+        List<Customer> list = new ArrayList<>();
+        Connection conn = getConnection();
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setInt(1, code);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Customer m = new Customer(
+                    rs.getInt("id"),
+                    rs.getString("f"),
+                    rs.getString("l"),
+                    rs.getLong("p"),
+                    rs.getString("e"),
+                    rs.getString("a"));
+            list.add(m);
+        }
+        return list;
+    }
 
 }

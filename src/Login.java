@@ -9,7 +9,7 @@ import javax.swing.*;
  * Created by Theodore on 11/11/16.
  */
 
-public class Login{
+public class Login extends JFrame {
     private JPanel loginView;
     private JTextField usernameField;
     private JPasswordField passwordField;
@@ -22,7 +22,7 @@ public class Login{
 
     private int type; // 1 - Doctor, 2 - Hygienist, 3 - Receptionist
 
-    DBHandler db;
+    private DBHandler db = new DBHandler();
 
     public Login() {
         regButton.addActionListener(new ActionListener() {
@@ -34,29 +34,24 @@ public class Login{
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("got here");
-                db = new DBHandler();
-
                 try {
-                    System.out.println("got here part 2");
-                    type = db.queryLoginInfo(usernameField.getText(), new String(passwordField.getPassword()));
-                    System.out.println(usernameField.getText());
-                    System.out.println(passwordField.getPassword());
-                    System.out.println(type);
+                    type = db.queryLoginInfo(usernameField.getText().trim(), new String(passwordField.getPassword()).trim());
                 } catch (SQLException e1) {
                     e1.printStackTrace();
                 }
                 Menu m = new Menu();
-                System.out.println("got here part 3");
                 switch (type) {
                     case 1:
                         m.init();
+                        dispose();
                         break;
                     case 2:
                         m.init();
+                        dispose();
                         break;
                     case 3:
                         m.init();
+                        dispose();
                         break;
                     default:
                         initRegisterDialog();

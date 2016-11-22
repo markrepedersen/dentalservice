@@ -684,39 +684,57 @@ public class Menu extends JFrame {
             }
         });
 
-        //Update Emp Button
+        //UPDATE EMPLOYEE
         empUpdateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String updateText = empUpdateField.getText();
                 int empID = 0;
                 int updateOption = empUpdateCombo.getSelectedIndex();
+                List<Employee> emps;
 
-                //Determine employee ID format is valid
+
                 try {
-                    empID = Integer.parseInt(empIDField.getText());
+
+                    empID = Integer.parseInt(empIDField.getText()); //Determine employee ID format is valid
+                    emps = dbh.employeeViewDefaultTable();
+                    Employee target = null;
+
+                    for (Employee emp : emps){
+                        if (emp.getEid()==empID){
+                            target = emp;
+                        }
+                    }
+
+                    switch (updateOption) {
+                        //Case 0 = Fname
+                        case 0:
+                            dbh.updateEmployee(target.getEid(), updateText, target.getLname(), target.getSalary(), target.getAge(), target.getSex());
+                            break;
+                        //Case 1 = Lname
+                        case 1:
+                            dbh.updateEmployee(target.getEid(), target.getFname(), updateText, target.getSalary(), target.getAge(), target.getSex());
+                            break;
+                        //Case 2 = Salary
+                        case 2:
+                            dbh.updateEmployee(target.getEid(), target.getFname(), target.getLname(), Integer.parseInt(updateText), target.getAge(), target.getSex());
+                            break;
+                        //Case 3 = Sex
+                        case 3:
+                            dbh.updateEmployee(target.getEid(), target.getFname(), target.getLname(), target.getSalary(), target.getAge(), updateText);
+                            break;
+                        //Case 4 = Age
+                        case 4:
+                            dbh.updateEmployee(target.getEid(), target.getFname(), target.getLname(), target.getSalary(), Integer.parseInt(updateText), target.getSex());
+                            break;
+                    }
+
                 } catch (NumberFormatException e1) {
-                    JOptionPane.showMessageDialog(null, "Employee ID needs to be a number!");
+                    JOptionPane.showMessageDialog(null, "Please check the type of your input. Employee ID, Age and Salary need to be numbers.");
+                    //   e1.printStackTrace();
+                } catch (SQLException e1){
+                    JOptionPane.showMessageDialog(null, "Database error. Please ensure sex is only either M or F.");
                     e1.printStackTrace();
-                }
-
-
-                switch (updateOption) {
-                    //Case 0 = Fname
-                    case 0:
-                        break;
-                    //Case 1 = Lname
-                    case 1:
-                        break;
-                    //Case 2 = Salary
-                    case 2:
-                        break;
-                    //Case 3 = Sex
-                    case 3:
-                        break;
-                    //Case 4 = Age
-                    case 4:
-                        break;
                 }
 
 

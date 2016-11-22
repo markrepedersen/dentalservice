@@ -416,7 +416,13 @@ public class Menu extends JFrame {
 
                 try {
                     int rid = Rememberall.getRid();
+
+                    System.out.println(rid);
+
                     int appID = dbh.getHighestAppointmentNum() + 1;
+                    System.out.println(appID);
+                    System.out.println(cid);
+
                     if (dbh.isValidCustomerID(cid)) {
 
                         dbh.addAppointment(appID, type, from, to, rid, cid);

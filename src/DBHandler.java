@@ -69,6 +69,7 @@ public class DBHandler {
                 case "h" :
                     return 2;
                 case "r" :
+                    Rememberall.setDid(login.getEid());
                     return 3;
             }
         }
@@ -359,7 +360,7 @@ public class DBHandler {
     public List<Bill> getAllCustomerBills() throws SQLException {
         String query = "select c.fname as Name, c.lname as Surname, b.type as type, b.dueDate as Due, " +
                 "b.amountPaid as Payment, (b.amountOwes - b.amountPaid) as Balance" +
-                " from Customer c, Bill b where b.cid = c.cid'";
+                " from Customer c, Bill b where b.cid = c.cid";
         List<Bill> list = new ArrayList<>();
         Connection conn = getConnection();
         Statement stmt = conn.createStatement();
@@ -462,6 +463,17 @@ public class DBHandler {
                                  String sex, long phoneNum) throws SQLException {
         int eid = getHighestEmployeeID() + 1;
         addEmployee(eid, fname, lname, 0, age, sex, phoneNum, 0);
+        switch (type) {
+            case "d" :
+                addDentist(eid, fname, lname, 0, age, sex, phoneNum, 0);
+                break;
+            case "r" :
+                addReceptionist(eid, fname, lname, 0, age, sex, phoneNum, 0);
+                break;
+            case "h" :
+                addHygienist(eid, fname, lname, 0, age, sex, phoneNum, 0);
+                break;
+        }
         String salt = BCrypt.gensalt();
         String hashpass = BCrypt.hashpw(pw, salt);
         String query = "insert into login_details values (?, ?, ?, ?, ?)";
@@ -472,6 +484,54 @@ public class DBHandler {
         ps.setString(3, salt);
         ps.setString(4, type);
         ps.setInt(5, eid);
+        ps.executeUpdate();
+        conn.close();
+    }
+
+    public void addReceptionist(int eid, String fname, String lname, int salary, int age, String sex, long phoneNum, int isSupervisor) throws SQLException {
+        Connection conn = getConnection();
+        String query = "INSERT INTO Receptionist VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setInt(1, eid);
+        ps.setString(2, fname);
+        ps.setString(3, lname);
+        ps.setInt(4, salary);
+        ps.setInt(5, age);
+        ps.setString(6, sex);
+        ps.setLong(7, phoneNum);
+        ps.setInt(8, isSupervisor);
+        ps.executeUpdate();
+        conn.close();
+    }
+
+    public void addHygienist(int eid, String fname, String lname, int salary, int age, String sex, long phoneNum, int isSupervisor) throws SQLException {
+        Connection conn = getConnection();
+        String query = "INSERT INTO Hygienist VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setInt(1, eid);
+        ps.setString(2, fname);
+        ps.setString(3, lname);
+        ps.setInt(4, salary);
+        ps.setInt(5, age);
+        ps.setString(6, sex);
+        ps.setLong(7, phoneNum);
+        ps.setInt(8, isSupervisor);
+        ps.executeUpdate();
+        conn.close();
+    }
+
+    public void addDentist(int eid, String fname, String lname, int salary, int age, String sex, long phoneNum, int isSupervisor) throws SQLException {
+        Connection conn = getConnection();
+        String query = "INSERT INTO Dentist VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setInt(1, eid);
+        ps.setString(2, fname);
+        ps.setString(3, lname);
+        ps.setInt(4, salary);
+        ps.setInt(5, age);
+        ps.setString(6, sex);
+        ps.setLong(7, phoneNum);
+        ps.setInt(8, isSupervisor);
         ps.executeUpdate();
         conn.close();
     }
@@ -628,13 +688,41 @@ public class DBHandler {
         return result;
     }
 
+    // Get highest Customer ID
+    public int getHighestAppointmentNum() throws SQLException {
+        String query = "select max(num) from Appointment";
+        Connection conn = getConnection();
+        PreparedStatement stmt = conn.prepareStatement(query);
+        ResultSet rs = stmt.executeQuery();
+        int result = 0;
+        while (rs.next()) {
+            result = rs.getInt(1);
+        }
+        conn.close();
+        return result;
+    }
+
+    // Get highest Customer ID
+    public int getHighestReceptionistID() throws SQLException {
+        String query = "select max(rid) from Receptionist";
+        Connection conn = getConnection();
+        PreparedStatement stmt = conn.prepareStatement(query);
+        ResultSet rs = stmt.executeQuery();
+        int result = 0;
+        while (rs.next()) {
+            result = rs.getInt(1);
+        }
+        conn.close();
+        return result;
+    }
+
     /* ------------------------------------------------------------------------------------------------------------------------------- //
     ----------------------------------------------- Supervisor Methods -----------------------------------------------------------------
     */
 
     // Finds all supervisors who are dentists
     public List<Dentist> getDentistsWhoAreSupervisors() throws SQLException {
-        String query = "select * from employee where isSupervisor = 1";
+        String query = "select * from Dentist where isSupervisor = 1";
         List<Dentist> list = new ArrayList<>();
         Connection conn = getConnection();
         Statement stmt = conn.createStatement();
@@ -654,7 +742,7 @@ public class DBHandler {
 
     // Finds all supervisors who are dentists
     public List<Hygienist> getHygienistsWhoAreSupervisors() throws SQLException {
-        String query = "select * from employee where isSupervisor = 1";
+        String query = "select * from Hygienist where isSupervisor = 1";
         List<Hygienist> list = new ArrayList<>();
         Connection conn = getConnection();
         Statement stmt = conn.createStatement();
@@ -678,7 +766,7 @@ public class DBHandler {
 
     // Finds all supervisors who are dentists
     public List<Receptionist> getReceptionistsWhoAreSupervisors() throws SQLException {
-        String query = "select * from employee where isSupervisor = 1";
+        String query = "select * from Receptionist where isSupervisor = 1";
         List<Receptionist> list = new ArrayList<>();
         Connection conn = getConnection();
         Statement stmt = conn.createStatement();
@@ -900,6 +988,23 @@ public class DBHandler {
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
         ps.setInt(1, appID);
+        ResultSet rs = ps.executeQuery();
+        boolean valid = false;
+        if (rs.next()) {
+            valid = true;
+        }
+        conn.close();
+        return valid;
+    }
+
+    // Find out if a eid is valid or not
+    // Returns true if eid is in use
+    // False otherwise
+    public boolean isValidEmployeeID(int eid) throws SQLException {
+        String query = "select * from Employee where eid = ?";
+        Connection conn = getConnection();
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setInt(1, eid);
         ResultSet rs = ps.executeQuery();
         boolean valid = false;
         if (rs.next()) {

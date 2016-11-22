@@ -100,6 +100,10 @@ public class Menu extends JFrame {
     private JComboBox custSearchCriteria;
     private JTextField textField1;
     private JButton typeBillingPortionButton;
+    private JTextArea textArea1;
+    private JComboBox dateYear;
+    private JComboBox dateMonth;
+    private JComboBox dateDay;
     private DBHandler dbh;
 
     // row data arrays
@@ -389,17 +393,17 @@ public class Menu extends JFrame {
         createNewAppointmentButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                int year = Integer.parseInt((String) dateYear.getSelectedItem());
+                int month = Integer.parseInt((String) dateYear.getSelectedItem()) - 1;
+                int day = Integer.parseInt((String) dateDay.getSelectedItem());
+                int fromHour = Integer.parseInt((String) newAppFromBox.getSelectedItem());
+                int toHour = Integer.parseInt((String) newAppToBox.getSelectedItem());
                 //Needs editing
-
                 String type;
                 int cid = 0;
-                Timestamp from = new Timestamp(2017);
-                Timestamp t = new Timestamp(12000);
+                Timestamp from = new Timestamp(year, month, day, fromHour, 0, 0, 0);
                 //     int year, int month, int date, int hour, int minute, int second, int nano
-                Timestamp to = new Timestamp(2018, 12, 10, 1, 2, 3, 4);
-                int rid = 134;
-                int appID = 0;
+                Timestamp to = new Timestamp(year, month, day, toHour, 0, 0, 0);
 
 
                 try {
@@ -411,6 +415,8 @@ public class Menu extends JFrame {
                 type = newAppTypeComboBox.getSelectedItem().toString();
 
                 try {
+                    int rid = Rememberall.getRid();
+                    int appID = dbh.getHighestAppointmentNum() + 1;
                     if (dbh.isValidCustomerID(cid)) {
 
                         dbh.addAppointment(appID, type, from, to, rid, cid);
@@ -432,9 +438,12 @@ public class Menu extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                int appNum = Integer.parseInt(deleteAppField.getText());
+                int appNum = -1;
 
                 try {
+
+                    appNum = Integer.parseInt(deleteAppField.getText());
+
                     if (dbh.isValidAppNum(appNum)) {
 
                         dbh.removeAppointment(appNum);
@@ -447,6 +456,8 @@ public class Menu extends JFrame {
 
                 } catch (SQLException e2) {
                     e2.printStackTrace();
+                } catch (NumberFormatException e2){
+                    JOptionPane.showMessageDialog(null, "Appointment Number must be a number not string.");
                 }
 
 
@@ -460,9 +471,10 @@ public class Menu extends JFrame {
 
                 int newCid = 0;
                 long phone = 0;
-                int birthYear = Integer.parseInt(custBirthYearCBox.getSelectedItem().toString());
-                int birthMonth = Integer.parseInt(custBirthMonthCBox.getSelectedItem().toString());
-                int birthDay = Integer.parseInt(custBirthDayCBox.getSelectedItem().toString());
+                String b = (String) custBirthYearCBox.getSelectedItem();
+                int birthYear = Integer.parseInt(b) - 1900;
+                int birthMonth = Integer.parseInt(((String) custBirthMonthCBox.getSelectedItem())) - 1;
+                int birthDay = Integer.parseInt(((String) custBirthDayCBox.getSelectedItem()));
                 String fname = newCustFName.getText();
                 String lname = newCustLName.getText();
                 String address = newCustAddressField.getText();
@@ -500,21 +512,32 @@ public class Menu extends JFrame {
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int custID = Integer.parseInt(deleteCustField.getText());
+
+                int custID = 0;
 
                 try {
-                    if (dbh.isValidCustomerID(custID)) {
+                    custID = Integer.parseInt(deleteCustField.getText());
 
-                        dbh.removeCustomer(custID);
-                        populateCustomerTable(dbh.customerViewDefaultTable());
-                        JOptionPane.showMessageDialog(null, "Customer successfully deleted!");
+                    try {
 
-                    } else {
-                        JOptionPane.showMessageDialog(null, "There is no customer with that ID!");
+                        if (dbh.isValidCustomerID(custID)) {
+
+                            int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this customer?");
+                            if (result == JOptionPane.YES_OPTION) {
+                                dbh.removeEmployee(custID);
+                                JOptionPane.showMessageDialog(null, "Customer Successfully Deleted!");
+                                populateCustomerTable(dbh.customerViewDefaultTable());
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "There is no customer with that ID.");
+                        }
+
+                    } catch (SQLException e1) {
+                        e1.printStackTrace();
                     }
-
-                } catch (SQLException e2) {
-                    e2.printStackTrace();
+                } catch (NumberFormatException e1) {
+                    JOptionPane.showMessageDialog(null, "Customer ID needs to be a number!");
+                    e1.printStackTrace();
                 }
             }
         });
@@ -768,10 +791,21 @@ public class Menu extends JFrame {
                 int empID = 0;
                 try {
                     empID = Integer.parseInt(empIDField.getText());
+
                     try {
-                        dbh.removeEmployee(empID);
-                        JOptionPane.showMessageDialog(null, "Employee Successfully Deleted!");
-                        populateEmployeeTable(dbh.employeeViewDefaultTable());
+
+                        if(dbh.isValidEmployeeID(empID)) {
+
+                            int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this entity?");
+                            if (result == JOptionPane.YES_OPTION) {
+                                dbh.removeEmployee(empID);
+                                JOptionPane.showMessageDialog(null, "Employee Successfully Deleted!");
+                                populateEmployeeTable(dbh.employeeViewDefaultTable());
+                            }
+                        }else{
+                            JOptionPane.showMessageDialog(null, "There is no entity with that ID.");
+                        }
+
                     } catch (SQLException e1) {
                         e1.printStackTrace();
                     }

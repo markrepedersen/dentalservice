@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.sun.xml.internal.ws.dump.LoggingDumpTube.Position.Before;
 import static org.junit.Assert.*;
 
 /**
@@ -18,7 +19,6 @@ public class DBHandlerTest {
     Connection conn;
     DBHandler db;
     private static boolean setUpIsDone = false;
-
 
     @Before
     public void setUp() throws Exception {

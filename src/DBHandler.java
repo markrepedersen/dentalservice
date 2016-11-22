@@ -473,19 +473,20 @@ public class DBHandler {
         conn.close();
     }
 
-    public void updateEmployee(int eid, String fname, String lname, int salary, int age, String sex, long phoneNum, int isSupervisor) throws SQLException {
+    public void updateEmployee(int eid, String fname, String lname, int salary, int age, String sex) throws SQLException {
         Connection conn = getConnection();
-        String query = "UPDATE employee SET fname = ?, lname = ?, salary = ?, age = ?, sex = ?, phoneNum = ?, isSupervisor = ? WHERE eid = ?";
+        String query = "UPDATE employee SET fname = ?, lname = ?, salary = ?, age = ?, sex = ? WHERE eid = ?";
         PreparedStatement ps = conn.prepareStatement(query);
-        ps.executeQuery();
+        //  ps.executeQuery();
         ps.setString(1, fname);
         ps.setString(2, lname);
         ps.setInt(3, salary);
         ps.setInt(4, age);
         ps.setString(5, sex);
-        ps.setLong(6, phoneNum);
-        ps.setInt(7, isSupervisor);
-        ps.setInt(8, eid);
+        //     ps.setLong(6, phoneNum);
+        ps.setInt(6, eid);
+        ps.executeUpdate();
+        conn.close();
     }
 
     public void removeEmployee(int eid) throws SQLException {

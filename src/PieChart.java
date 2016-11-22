@@ -46,7 +46,6 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
-import org.jfree.ui.ApplicationFrame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -55,7 +54,7 @@ import java.awt.*;
  * A simple demonstration application showing how to create a pie chart using
  * data from a {@link DefaultPieDataset}.
  */
-public class PieChart extends ApplicationFrame {
+public class PieChart extends JFrame {
 
     private static java.util.List<CountColumn> countColumn;
 

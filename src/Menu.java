@@ -47,8 +47,6 @@ public class Menu extends JFrame {
     private JComboBox newAppToBox;
     private JTextField deleteAppField;
     private JButton deleteAppButton;
-    private JRadioButton custLNameRadioButton;
-    private JRadioButton custIDRadioButton;
     private JTextField newCustEmailField;
     private JTextField newCustPhoneField;
     private JTextField newCustAddressField;
@@ -97,7 +95,9 @@ public class Menu extends JFrame {
     private JRadioButton bySearchTermRadioButton;
     private JComboBox numPaymentsComboBox;
     private JButton pieChartButton;
-    private JButton button1;
+    private JLabel logo;
+    private JComboBox appSearchCriteria;
+    private JComboBox custSearchCriteria;
     private DBHandler dbh;
 
     // row data arrays
@@ -120,6 +120,9 @@ public class Menu extends JFrame {
         // ------>
         // added some stubs for all the tables - only have functionality for customers and appointments as of now
         // since no idea what the functionality for the others would be
+
+        ImageIcon image = new ImageIcon("images/logo.png");
+        logo = new JLabel(image);
 
         billsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         medsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -258,72 +261,49 @@ public class Menu extends JFrame {
 
         //CUSTOMER SEARCH
         searchButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String searchText = custSearchBoxField.getText();
+           @Override
+           public void actionPerformed(ActionEvent e) {
 
-                if (searchText.equals("") ||
-                        (searchText.equals("") && custIDRadioButton.isSelected()) ||
-                        (searchText.equals("") && custLNameRadioButton.isSelected())) {
-                    List<Customer> data = null;
-                    try {
-                        data = dbh.customerViewDefaultTable();
-                    } catch (SQLException e1) {
-                        e1.printStackTrace();
-                    }
-                    populateCustomerTable(data);
-                } else if (custIDRadioButton.isSelected() && custLNameRadioButton.isSelected()) {
-                    JOptionPane.showMessageDialog(null, "Please choose a single criterion for searching.");
-                } else if (custLNameRadioButton.isSelected()) {
+               String searchText = custSearchBoxField.getText();
+               int criteria = custSearchCriteria.getSelectedIndex();
+               List<Customer> data = new ArrayList<Customer>();
 
-                    List<Customer> data = null;
-                    try {
-                        data = dbh.customerSearchByLastName(searchText);
-                    } catch (SQLException e1) {
-                        e1.printStackTrace();
-                    }
+               try {
 
-                    populateCustomerTable(data);
+                   switch (criteria) {
 
-                    if (data.isEmpty())
-                        JOptionPane.showMessageDialog(null, "No records exist for that search.");
+                       //By Last Name
+                       case 0:
+                           if (searchText.equals("")) {
+                               JOptionPane.showMessageDialog(null, "Please enter text in the search box.");
+                           } else {
+                               data = dbh.customerSearchByLastName(searchText);
+                               populateCustomerTable(data);
+                           }
+                           break;
+                       //By CID
+                       case 1:
+                           int cid = Integer.parseInt(searchText);
+                           data = dbh.customerSearchByCID(cid);
+                           populateCustomerTable(data);
+                           break;
+                       //Show All
+                       case 2:
+                           data = dbh.customerViewDefaultTable();
+                           populateCustomerTable(data);
+                           break;
 
+                   }
+                   if (data != null && data.isEmpty())
+                       JOptionPane.showMessageDialog(null, "No records exist for that search.");
 
-                } else if (custIDRadioButton.isSelected()) {
+               } catch (NumberFormatException e1) {
+                   JOptionPane.showMessageDialog(null, "Customer ID has to be a number.");
 
-                    List<Customer> data = null;
-                    int cid = 0;
-                    try {
-                        try {
-                            cid = Integer.parseInt(searchText);
-                            data = dbh.customerSearchByCID(cid);
-                        } catch (NumberFormatException ex) {
-                            JOptionPane.showMessageDialog(null, "CID needs to be a number not string!");
-                        }
-
-                    } catch (SQLException e1) {
-                        e1.printStackTrace();
-                    }
-
-                    populateCustomerTable(data);
-
-                    if (data.isEmpty())
-                        JOptionPane.showMessageDialog(null, "No records exist for that search.");
-
-                }
-                //else if (custIDRadioButton.isSelected() && )
-                else {
-
-                    List<Customer> data = null;
-                    try {
-                        data = dbh.customerViewDefaultTable();
-                    } catch (SQLException e1) {
-                        e1.printStackTrace();
-                    }
-                    populateCustomerTable(data);
-                }
-
-            }
+               } catch (SQLException e2) {
+                   e2.printStackTrace();
+               }
+           }
         });
 
         //APPOINTMENT SEARCH
@@ -332,67 +312,42 @@ public class Menu extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
                 String searchText = appointmentsSearchField.getText();
+                int criteria = appSearchCriteria.getSelectedIndex();
+                List<Appointment> data = new ArrayList<Appointment>();
 
-                if (searchText.equals("") ||
-                        (searchText.equals("") && lastNameRadioButton.isSelected()) ||
-                        (searchText.equals("") && cidRadioButton.isSelected())) {
-                    List<Appointment> data = null;
-                    try {
-                        data = dbh.getUpcomingCustomerAppointments();
-                    } catch (SQLException e1) {
-                        e1.printStackTrace();
-                    }
-
-                    populateAppointmentData(data);
-                } else if (lastNameRadioButton.isSelected() && cidRadioButton.isSelected()) {
-                    JOptionPane.showMessageDialog(null, "Please choose a single criterion for searching.");
-                } else if (lastNameRadioButton.isSelected()) {
-
-                    List<Appointment> data = null;
-                    try {
-                        data = dbh.searchCustomerAppointmentByLName(searchText);
-                    } catch (SQLException e1) {
-                        e1.printStackTrace();
-                    }
-
-                    populateAppointmentData(data);
-                    if (data.isEmpty())
-                        JOptionPane.showMessageDialog(null, "No records exist for that search.");
-
-
-                } else if (cidRadioButton.isSelected()) {
-
-                    List<Appointment> data = null;
-                    try {
-
-                        try {
+                try {
+                    switch (criteria) {
+                        //By Last Name
+                        case 0:
+                            if (searchText.equals("")) {
+                                JOptionPane.showMessageDialog(null, "Please enter text in the search box.");
+                            } else {
+                                data = dbh.searchCustomerAppointmentByLName(searchText);
+                                populateAppointmentData(data);
+                            }
+                            break;
+                        //By CID
+                        case 1:
                             int cid = Integer.parseInt(searchText);
                             data = dbh.searchCustomerAppointmentByCid(cid);
                             populateAppointmentData(data);
-                            if (data.isEmpty())
-                                JOptionPane.showMessageDialog(null, "No records exist for that search.");
-                        } catch (NumberFormatException ex) {
-                            JOptionPane.showMessageDialog(null, "CID needs to be a number not string!");
-                        }
+                            break;
+                        //Show All
+                        case 2:
+                            data = dbh.getUpcomingCustomerAppointments();
+                            populateAppointmentData(data);
+                            break;
 
-                    } catch (SQLException e1) {
-                        e1.printStackTrace();
                     }
+                    if (data != null && data.isEmpty())
+                        JOptionPane.showMessageDialog(null, "No records exist for that search.");
 
-                } else {
+                } catch (NumberFormatException e1) {
+                    JOptionPane.showMessageDialog(null, "Customer ID has to be a number.");
 
-                    List<Appointment> data = null;
-                    try {
-                        data = dbh.getUpcomingCustomerAppointments();
-                    } catch (SQLException e1) {
-                        e1.printStackTrace();
-                    }
-
-                    populateAppointmentData(data);
-
+                } catch (SQLException e2) {
+                    e2.printStackTrace();
                 }
-
-
             }
         });
 
@@ -1198,7 +1153,6 @@ public class Menu extends JFrame {
         setVisible(true);
 
     }
-
 
 }
 

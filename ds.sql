@@ -371,6 +371,8 @@ insert into Uses values (0000350, 598756);
 insert into Uses values (0000350, 511111);
 insert into Uses values (0000351, 558234);
 
+
+
 --
 -- Insertions for login_details will be done dynamically as employees are
 -- registered into system

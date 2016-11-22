@@ -39,6 +39,7 @@ public class DBHandler {
     //  Returns 1 if user is dentist
     //         2 if user is hygienist
     //         3 if user is receptionist
+     //           4 if supervisor
     //        -1 if user's information is not found
     // login type can only be one of: d, r, or h
     // employee cannot be in more than one of: r, d, or h tables
@@ -61,7 +62,9 @@ public class DBHandler {
                     .equals(BCrypt.hashpw(pw, login.getSalt()))) {
                 return -1; // password does not match
             }
-
+            if (getIsSupervisor(login.getEid()) != null) {
+                return 4;
+            }
             conn.close();
             switch (login.getType()) {
                 case "d" :
@@ -75,6 +78,26 @@ public class DBHandler {
         }
         conn.close();
         return -1; // empty result set => username not found
+    }
+
+    public Employee getIsSupervisor(int eid) throws SQLException {
+String query = "select * from Employee where eid = ? and isSupervisor = 1";
+        Connection conn = getConnection();
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setInt(1, eid);
+        ResultSet rs = ps.executeQuery();
+        Employee e = null;
+        if (rs.next()) {
+            e = new Employee(
+                    rs.getInt("eid"),
+                    rs.getInt("salary"),
+                    rs.getInt("age"),
+                    rs.getString("sex"),
+                    rs.getString("fname"),
+                    rs.getString("lname")
+            );
+        }
+        return e;
     }
 
 

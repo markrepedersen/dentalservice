@@ -43,8 +43,6 @@ public class Login extends JFrame {
                 MenuR mr = new MenuR();
                 MenuD md = new MenuD();
 
-
-
                 switch (type) {
                     case 1:
                         md.init();

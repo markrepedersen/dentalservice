@@ -1,10 +1,4 @@
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by mark on 2016-11-07.
@@ -18,6 +12,7 @@ public class Customer {
     private String email;
     private String address;
     private String dentist; //Customer's currently assigned dentist - can be null if no assigned dentist at time
+
 
     public Customer(int cid, String fname, String lname, long phoneNum, String email, String address) {
         this.cid = cid;

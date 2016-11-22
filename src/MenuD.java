@@ -16,7 +16,8 @@ import java.util.List;
 /**
  * Created by liamadams on 2016-11-08.
  */
-public class Menu extends JFrame {
+public class MenuD extends JFrame {
+    private JPanel menuPane1;
     private JButton logoutButton;
     private JButton createNewAppointmentButton;
     private JButton addCustomerButton;
@@ -100,7 +101,6 @@ public class Menu extends JFrame {
     private JComboBox custSearchCriteria;
     private JTextField textField1;
     private JButton typeBillingPortionButton;
-    private JTextArea textArea1;
     private JComboBox dateYear;
     private JComboBox dateMonth;
     private JComboBox dateDay;
@@ -115,7 +115,7 @@ public class Menu extends JFrame {
     private Object[] insightsRowData;
 
 
-    public Menu() {
+    public MenuD() {
         super("Menu Dashboard");
         dbh = new DBHandler();
 
@@ -130,12 +130,12 @@ public class Menu extends JFrame {
         ImageIcon image = new ImageIcon("images/logo.png");
         logo = new JLabel(image);
 
-        billsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+     //   billsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         medsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         custTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        empTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+     //   empTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         AppointmentsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        insightsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+     //   insightsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 /*
         billsTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
@@ -373,21 +373,7 @@ public class Menu extends JFrame {
             }
         });
 
-        typeBillingPortionButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    List<CountColumn> data = dbh.getTypeBalancePortionColumnCount();
 
-                    PieChart frame = new PieChart("Type Balance Portion", data);
-                    frame.pack();
-                    RefineryUtilities.centerFrameOnScreen(frame);
-                    frame.setVisible(true);
-                } catch (SQLException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        });
 
         //CREATES NEW APPOINTMENT
         createNewAppointmentButton.addActionListener(new ActionListener() {
@@ -416,13 +402,7 @@ public class Menu extends JFrame {
 
                 try {
                     int rid = Rememberall.getRid();
-
-                    System.out.println(rid);
-
                     int appID = dbh.getHighestAppointmentNum() + 1;
-                    System.out.println(appID);
-                    System.out.println(cid);
-
                     if (dbh.isValidCustomerID(cid)) {
 
                         dbh.addAppointment(appID, type, from, to, rid, cid);
@@ -548,280 +528,6 @@ public class Menu extends JFrame {
             }
         });
 
-
-        //SEARCH EMPLOYEES
-        empSearchButton.addActionListener(new ActionListener() {
-                                              @Override
-                                              public void actionPerformed(ActionEvent e) {
-                                                  String searchText = empSearchBoxField.getText();
-
-                                                  if (searchText.equals("") ||
-                                                          (searchText.equals("") && byEmpIDRadioButton.isSelected()) ||
-                                                          (searchText.equals("") && byEmpLNameRadioButton.isSelected())) {
-                                                      List<Employee> data = null;
-                                                      try {
-                                                          data = dbh.employeeViewDefaultTable();
-                                                      } catch (SQLException e1) {
-                                                          e1.printStackTrace();
-                                                      }
-
-                                                      populateEmployeeTable(data);
-                                                  } else if (byEmpLNameRadioButton.isSelected() && byEmpIDRadioButton.isSelected()) {
-                                                      JOptionPane.showMessageDialog(null, "Please choose a single criterion for searching.");
-                                                  } else if (byEmpLNameRadioButton.isSelected()) {
-
-                                                      List<Employee> data = null;
-                                                      try {
-                                                          data = dbh.empSearchByLastName(searchText);
-                                                      } catch (SQLException e1) {
-                                                          e1.printStackTrace();
-                                                      }
-
-                                                      populateEmployeeTable(data);
-                                                      if (data.isEmpty())
-                                                          JOptionPane.showMessageDialog(null, "No records exist for that search.");
-
-
-                                                  } else if (byEmpIDRadioButton.isSelected()) {
-
-                                                      List<Employee> data = null;
-                                                      try {
-
-                                                          try {
-                                                              int eid = Integer.parseInt(searchText);
-                                                              data = dbh.empSearchByEID(eid);
-                                                              populateEmployeeTable(data);
-                                                              if (data.isEmpty())
-                                                                  JOptionPane.showMessageDialog(null, "No records exist for that search.");
-                                                          } catch (NumberFormatException ex) {
-                                                              JOptionPane.showMessageDialog(null, "Employee ID needs to be a number not string!");
-                                                          }
-
-                                                      } catch (SQLException e1) {
-                                                          e1.printStackTrace();
-                                                      }
-
-                                                  } else {
-
-                                                      List<Employee> data = null;
-                                                      try {
-                                                          data = dbh.employeeViewDefaultTable();
-                                                      } catch (SQLException e1) {
-                                                          e1.printStackTrace();
-                                                      }
-
-                                                      populateEmployeeTable(data);
-
-                                                  }
-
-
-                                              }
-                                          }
-        );
-        addEmployeeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                int newEid = 0;
-                try {
-                    newEid = dbh.getHighestCustomerID() + 1;
-
-                } catch (Exception e3) {
-                    e3.printStackTrace();
-                }
-
-                boolean flag = true;
-
-
-                String empFName = empFNameField.getText();
-                String empLName = empLNameField.getText();
-                String empSex = empSexCombo.getSelectedItem().toString();
-                int empAge = 0;
-                long empPhone = 0;
-                int empSal = 0;
-
-                try {
-                    empPhone = Long.parseLong(empPhoneField.getText());
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(null, "Phone number needs to be a number!");
-                }
-                try {
-                    empAge = Integer.parseInt(empAgeField.getText());
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(null, "Age needs to be a number!");
-                }
-                try {
-                    empSal = Integer.parseInt(empSalField.getText());
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(null, "Salary needs to be a number!");
-                }
-
-                try {
-                    dbh.addEmployee(newEid, empFName, empLName, empSal, empAge, empSex, empPhone, 0);
-                    populateEmployeeTable(dbh.employeeViewDefaultTable());
-                    JOptionPane.showMessageDialog(null, "New Employee Successfully Added!");
-                } catch (SQLException e1) {
-                    e1.printStackTrace();
-                }
-
-
-            }
-        });
-
-        //BILLING DATA RETRIEVAL BUTTON
-        retrieveBillDataButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String searchText = custIDBillingField.getText();
-                int custID = 0;
-                try {
-                    if (!searchText.equals("")) {
-                        custID = Integer.parseInt(searchText);
-                    } else {
-                        populateBillsTable(dbh.billsDefaultView());
-                        return;
-                    }
-                    int comboSelection = billingCombo.getSelectedIndex();
-                    if (comboSelection == 0) {
-                        populateBillsTable(dbh.getCustomerUnpaidBills(custID));
-                    } else if (comboSelection == 1) {
-                        //Unpaid Bills
-                        populateBillsTable(dbh.getCustomerUnpaidBills(custID));
-                    } else {
-                        //Past Payments
-                        populateBillsTableWithPastData(dbh.getCustomerPastPayments(custID));
-                    }
-                } catch (NumberFormatException nm) {
-                    JOptionPane.showMessageDialog(null, "Customer ID must be a number!");
-                } catch (SQLException exc) {
-                    exc.printStackTrace();
-                }
-
-
-            }
-        });
-        showDataButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                int selected = insightsComboBox.getSelectedIndex();
-                //JOptionPane.showMessageDialog(null, "Selected: " + selected);
-
-                try {
-                    switch (selected) {
-
-                        case 0:
-                            populateInsightsTableWithDentist(dbh.getAllDentistsAttended());
-                            break;
-                        case 1:
-                            populateInsightsTableWithEmployee(dbh.getHighestEarningEmployee());
-                            break;
-                        case 2:
-                            populateInsightsTableWithEmployee(dbh.getLowestEarningEmployee());
-                            break;
-                        case 3:
-                            populateInsightsTableWithMedicine(dbh.getCheapestMedicine());
-                            break;
-                    }
-                } catch (SQLException e1) {
-                    e1.printStackTrace();
-                }
-
-
-            }
-        });
-
-        //UPDATE EMPLOYEE
-        empUpdateButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String updateText = empUpdateField.getText();
-                int empID = 0;
-                int updateOption = empUpdateCombo.getSelectedIndex();
-                List<Employee> emps;
-
-
-                try {
-
-                    empID = Integer.parseInt(empIDField.getText()); //Determine employee ID format is valid
-                    emps = dbh.employeeViewDefaultTable();
-                    Employee target = null;
-
-                    for (Employee emp : emps){
-                        if (emp.getEid()==empID){
-                            target = emp;
-                        }
-                    }
-
-                    switch (updateOption) {
-                        //Case 0 = Fname
-                        case 0:
-                            dbh.updateEmployee(target.getEid(), updateText, target.getLname(), target.getSalary(), target.getAge(), target.getSex());
-                            break;
-                        //Case 1 = Lname
-                        case 1:
-                            dbh.updateEmployee(target.getEid(), target.getFname(), updateText, target.getSalary(), target.getAge(), target.getSex());
-                            break;
-                        //Case 2 = Salary
-                        case 2:
-                            dbh.updateEmployee(target.getEid(), target.getFname(), target.getLname(), Integer.parseInt(updateText), target.getAge(), target.getSex());
-                            break;
-                        //Case 3 = Sex
-                        case 3:
-                            dbh.updateEmployee(target.getEid(), target.getFname(), target.getLname(), target.getSalary(), target.getAge(), updateText);
-                            break;
-                        //Case 4 = Age
-                        case 4:
-                            dbh.updateEmployee(target.getEid(), target.getFname(), target.getLname(), target.getSalary(), Integer.parseInt(updateText), target.getSex());
-                            break;
-                    }
-
-                } catch (NumberFormatException e1) {
-                    JOptionPane.showMessageDialog(null, "Please check the type of your input. Employee ID, Age and Salary need to be numbers.");
-                    //   e1.printStackTrace();
-                } catch (SQLException e1){
-                    JOptionPane.showMessageDialog(null, "Database error. Please ensure sex is only either M or F.");
-                    e1.printStackTrace();
-                }
-
-
-            }
-        });
-
-        //DELETE AN EMPLOYEE
-        empDeleteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-
-                int empID = 0;
-                try {
-                    empID = Integer.parseInt(empIDField.getText());
-
-                    try {
-
-                        if(dbh.isValidEmployeeID(empID)) {
-
-                            int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this entity?");
-                            if (result == JOptionPane.YES_OPTION) {
-                                dbh.removeEmployee(empID);
-                                JOptionPane.showMessageDialog(null, "Employee Successfully Deleted!");
-                                populateEmployeeTable(dbh.employeeViewDefaultTable());
-                            }
-                        }else{
-                            JOptionPane.showMessageDialog(null, "There is no entity with that ID.");
-                        }
-
-                    } catch (SQLException e1) {
-                        e1.printStackTrace();
-                    }
-                } catch (NumberFormatException e1) {
-                    JOptionPane.showMessageDialog(null, "Employee ID needs to be a number!");
-                    e1.printStackTrace();
-                }
-
-            }
-        });
         findMedicinesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -909,44 +615,9 @@ public class Menu extends JFrame {
                 dispose();
             }
         });
-        numPaymentsComboBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
 
-            }
-        });
     }
 
-    //POPULATES INSIGHTS TABLE FROM A LIST OF EMPLOYEES Data
-    public void populateInsightsTableWithEmployee(List<Employee> data) {
-
-        DefaultTableModel dtm = new DefaultTableModel() {
-            public boolean isCellEditable(int row, int column) {
-                return false;//This causes all cells to be not editable
-            }
-        };
-
-        String[] colNames = {"Employee ID", "First Name", "Last Name", "Age", "Sex", "Salary"};
-
-        //Add Column Names
-        for (int i = 0; i < colNames.length; i++) {
-            dtm.addColumn(colNames[i]);
-        }
-
-        //Add Row Data
-        insightsRowData = new Object[100];
-        for (int i = 0; i < data.size(); i++) {
-
-            insightsRowData[0] = data.get(i).getEid();
-            insightsRowData[1] = data.get(i).getFname();
-            insightsRowData[2] = data.get(i).getLname();
-            insightsRowData[3] = data.get(i).getAge();
-            insightsRowData[4] = data.get(i).getSex();
-            insightsRowData[5] = data.get(i).getSalary();
-            dtm.addRow(insightsRowData);
-        }
-        insightsTable.setModel(dtm);
-    }
 
     //POPULATES INSIGHTS TABLE FROM A LIST OF MEDICINE DATA
     public void populateInsightsTableWithMedicine(List<Medicine> data) {
@@ -976,129 +647,6 @@ public class Menu extends JFrame {
         insightsTable.setModel(dtm);
     }
 
-    //POPULATES INSIGHTS TABLE FROM A LIST OF DENTISTS Data
-    public void populateInsightsTableWithDentist(List<Dentist> data) {
-
-        DefaultTableModel dtm = new DefaultTableModel() {
-            public boolean isCellEditable(int row, int column) {
-                return false;//This causes all cells to be not editable
-            }
-        };
-
-        String[] colNames = {"Dentist ID", "First Name", "Last Name", "Age", "Sex"};
-
-        //Add Column Names
-        for (int i = 0; i < colNames.length; i++) {
-            dtm.addColumn(colNames[i]);
-        }
-
-        //Add Row Data
-        insightsRowData = new Object[100];
-        for (int i = 0; i < data.size(); i++) {
-
-            insightsRowData[0] = data.get(i).getDid();
-            insightsRowData[1] = data.get(i).getFname();
-            insightsRowData[2] = data.get(i).getLname();
-            insightsRowData[3] = data.get(i).getAge();
-            insightsRowData[4] = data.get(i).getSex();
-            dtm.addRow(insightsRowData);
-        }
-        insightsTable.setModel(dtm);
-    }
-
-
-    //POPULATES BILLS TABLE FROM A LIST OF BILLS Data
-    public void populateBillsTable(List<Bill> data) {
-
-        DefaultTableModel dtm = new DefaultTableModel() {
-            public boolean isCellEditable(int row, int column) {
-                return false;//This causes all cells to be not editable
-            }
-        };
-
-        String[] colNames = {"Customer ID", "First Name", "Last Name", "Type", "Due", "Payment", "Balance"};
-
-        //Add Column Names
-        for (int i = 0; i < colNames.length; i++) {
-            dtm.addColumn(colNames[i]);
-        }
-
-        //Add Row Data
-        billsRowData = new Object[100];
-        for (int i = 0; i < data.size(); i++) {
-            billsRowData[0] = data.get(i).getCid();
-            billsRowData[1] = data.get(i).getCname();
-            billsRowData[2] = data.get(i).getSurname();
-            billsRowData[3] = data.get(i).getType();
-            billsRowData[4] = data.get(i).getDueDate();
-            billsRowData[5] = data.get(i).getAmountPaid();
-            billsRowData[6] = data.get(i).getBalance();
-            dtm.addRow(billsRowData);
-        }
-        billsTable.setModel(dtm);
-    }
-
-    //POPULATES BILLS TABLE FROM A LIST OF BILLS Data
-    public void populateBillsTableWithPastData(List<Bill> data) {
-
-        DefaultTableModel dtm = new DefaultTableModel() {
-            public boolean isCellEditable(int row, int column) {
-                return false;//This causes all cells to be not editable
-            }
-        };
-
-        String[] colNames = {"Customer ID", "First Name", "Last Name", "Type", "Due", "Amount"};
-
-        //Add Column Names
-        for (int i = 0; i < colNames.length; i++) {
-            dtm.addColumn(colNames[i]);
-        }
-
-        //Add Row Data
-        billsRowData = new Object[100];
-        for (int i = 0; i < data.size(); i++) {
-            billsRowData[0] = data.get(i).getCid();
-            billsRowData[1] = data.get(i).getCname();
-            billsRowData[2] = data.get(i).getSurname();
-            billsRowData[3] = data.get(i).getType();
-            billsRowData[4] = data.get(i).getDueDate();
-            billsRowData[5] = data.get(i).getAmountOwes();
-            dtm.addRow(billsRowData);
-        }
-        billsTable.setModel(dtm);
-    }
-
-
-    //POPULATES EMPLOYEE TABLE FROM A LIST OF CUSTOMERS
-    public void populateEmployeeTable(List<Employee> list) {
-
-        DefaultTableModel dtm = new DefaultTableModel() {
-            public boolean isCellEditable(int row, int column) {
-                return false;//This causes all cells to be not editable
-            }
-        };
-
-        String[] colNames = {"Employee ID", "Last Name", "First Name", "Age", "Sex", "Phone", "Salary"};
-
-        //Add Column Names
-        for (int i = 0; i < colNames.length; i++) {
-            dtm.addColumn(colNames[i]);
-        }
-
-        //Add Row Data
-        empRowData = new Object[100];
-        for (int i = 0; i < list.size(); i++) {
-            empRowData[0] = list.get(i).getEid();
-            empRowData[1] = list.get(i).getLname();
-            empRowData[2] = list.get(i).getFname();
-            empRowData[3] = list.get(i).getAge();
-            empRowData[4] = list.get(i).getSex();
-            empRowData[5] = list.get(i).getPhoneNum();
-            empRowData[6] = list.get(i).getSalary();
-            dtm.addRow(empRowData);
-        }
-        empTable.setModel(dtm);
-    }
 
     //POPULATES CUSTOMER TABLE FROM A LIST OF CUSTOMERS
     public void populateCustomerTable(List<Customer> list) {
@@ -1218,11 +766,11 @@ public class Menu extends JFrame {
 
         populateAppointmentData(apps);
         populateCustomerTable(customers);
-        populateEmployeeTable(emps);
+        //populateEmployeeTable(emps);
         populateMedicineTable(meds);
-        populateBillsTable(bills);
+        //populateBillsTable(bills);
 
-        setContentPane(menuPane);
+        setContentPane(menuPane1);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pack();
         setLocationRelativeTo(null);

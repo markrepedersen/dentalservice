@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Created by liamadams on 2016-11-08.
  */
-public class Menu extends JFrame {
+public class MenuR extends JFrame {
     private JButton logoutButton;
     private JButton createNewAppointmentButton;
     private JButton addCustomerButton;
@@ -100,7 +100,6 @@ public class Menu extends JFrame {
     private JComboBox custSearchCriteria;
     private JTextField textField1;
     private JButton typeBillingPortionButton;
-    private JTextArea textArea1;
     private JComboBox dateYear;
     private JComboBox dateMonth;
     private JComboBox dateDay;
@@ -115,7 +114,7 @@ public class Menu extends JFrame {
     private Object[] insightsRowData;
 
 
-    public Menu() {
+    public MenuR() {
         super("Menu Dashboard");
         dbh = new DBHandler();
 
@@ -131,11 +130,11 @@ public class Menu extends JFrame {
         logo = new JLabel(image);
 
         billsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        medsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+     //   medsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         custTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        empTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+     //   empTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         AppointmentsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        insightsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+     //   insightsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 /*
         billsTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
@@ -153,28 +152,6 @@ public class Menu extends JFrame {
             }
         });
 */
-
-        medsTable.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                try {
-                    if (e.getClickCount() == 2) {
-                        JTable target = (JTable) e.getSource();
-                        int code = (int) target.getValueAt(target.getSelectedRow(), 0);
-                        List<Customer> data = dbh.getCustomersWithMedicine(code);
-                        if (data.size() == 0) {
-                            JOptionPane.showMessageDialog(null, "No prescribed customers.");
-                            return;
-                        }
-                        CustForMeds frame = new CustForMeds(data);
-                        frame.setVisible(true);
-                    }
-                } catch (SQLException exception) {
-                    exception.printStackTrace();
-                }
-            }
-        });
-
-
 
         custTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
@@ -416,13 +393,7 @@ public class Menu extends JFrame {
 
                 try {
                     int rid = Rememberall.getRid();
-
-                    System.out.println(rid);
-
                     int appID = dbh.getHighestAppointmentNum() + 1;
-                    System.out.println(appID);
-                    System.out.println(cid);
-
                     if (dbh.isValidCustomerID(cid)) {
 
                         dbh.addAppointment(appID, type, from, to, rid, cid);
@@ -548,126 +519,6 @@ public class Menu extends JFrame {
             }
         });
 
-
-        //SEARCH EMPLOYEES
-        empSearchButton.addActionListener(new ActionListener() {
-                                              @Override
-                                              public void actionPerformed(ActionEvent e) {
-                                                  String searchText = empSearchBoxField.getText();
-
-                                                  if (searchText.equals("") ||
-                                                          (searchText.equals("") && byEmpIDRadioButton.isSelected()) ||
-                                                          (searchText.equals("") && byEmpLNameRadioButton.isSelected())) {
-                                                      List<Employee> data = null;
-                                                      try {
-                                                          data = dbh.employeeViewDefaultTable();
-                                                      } catch (SQLException e1) {
-                                                          e1.printStackTrace();
-                                                      }
-
-                                                      populateEmployeeTable(data);
-                                                  } else if (byEmpLNameRadioButton.isSelected() && byEmpIDRadioButton.isSelected()) {
-                                                      JOptionPane.showMessageDialog(null, "Please choose a single criterion for searching.");
-                                                  } else if (byEmpLNameRadioButton.isSelected()) {
-
-                                                      List<Employee> data = null;
-                                                      try {
-                                                          data = dbh.empSearchByLastName(searchText);
-                                                      } catch (SQLException e1) {
-                                                          e1.printStackTrace();
-                                                      }
-
-                                                      populateEmployeeTable(data);
-                                                      if (data.isEmpty())
-                                                          JOptionPane.showMessageDialog(null, "No records exist for that search.");
-
-
-                                                  } else if (byEmpIDRadioButton.isSelected()) {
-
-                                                      List<Employee> data = null;
-                                                      try {
-
-                                                          try {
-                                                              int eid = Integer.parseInt(searchText);
-                                                              data = dbh.empSearchByEID(eid);
-                                                              populateEmployeeTable(data);
-                                                              if (data.isEmpty())
-                                                                  JOptionPane.showMessageDialog(null, "No records exist for that search.");
-                                                          } catch (NumberFormatException ex) {
-                                                              JOptionPane.showMessageDialog(null, "Employee ID needs to be a number not string!");
-                                                          }
-
-                                                      } catch (SQLException e1) {
-                                                          e1.printStackTrace();
-                                                      }
-
-                                                  } else {
-
-                                                      List<Employee> data = null;
-                                                      try {
-                                                          data = dbh.employeeViewDefaultTable();
-                                                      } catch (SQLException e1) {
-                                                          e1.printStackTrace();
-                                                      }
-
-                                                      populateEmployeeTable(data);
-
-                                                  }
-
-
-                                              }
-                                          }
-        );
-        addEmployeeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                int newEid = 0;
-                try {
-                    newEid = dbh.getHighestCustomerID() + 1;
-
-                } catch (Exception e3) {
-                    e3.printStackTrace();
-                }
-
-                boolean flag = true;
-
-
-                String empFName = empFNameField.getText();
-                String empLName = empLNameField.getText();
-                String empSex = empSexCombo.getSelectedItem().toString();
-                int empAge = 0;
-                long empPhone = 0;
-                int empSal = 0;
-
-                try {
-                    empPhone = Long.parseLong(empPhoneField.getText());
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(null, "Phone number needs to be a number!");
-                }
-                try {
-                    empAge = Integer.parseInt(empAgeField.getText());
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(null, "Age needs to be a number!");
-                }
-                try {
-                    empSal = Integer.parseInt(empSalField.getText());
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(null, "Salary needs to be a number!");
-                }
-
-                try {
-                    dbh.addEmployee(newEid, empFName, empLName, empSal, empAge, empSex, empPhone, 0);
-                    populateEmployeeTable(dbh.employeeViewDefaultTable());
-                    JOptionPane.showMessageDialog(null, "New Employee Successfully Added!");
-                } catch (SQLException e1) {
-                    e1.printStackTrace();
-                }
-
-
-            }
-        });
-
         //BILLING DATA RETRIEVAL BUTTON
         retrieveBillDataButton.addActionListener(new ActionListener() {
             @Override
@@ -700,206 +551,7 @@ public class Menu extends JFrame {
 
             }
         });
-        showDataButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
 
-                int selected = insightsComboBox.getSelectedIndex();
-                //JOptionPane.showMessageDialog(null, "Selected: " + selected);
-
-                try {
-                    switch (selected) {
-
-                        case 0:
-                            populateInsightsTableWithDentist(dbh.getAllDentistsAttended());
-                            break;
-                        case 1:
-                            populateInsightsTableWithEmployee(dbh.getHighestEarningEmployee());
-                            break;
-                        case 2:
-                            populateInsightsTableWithEmployee(dbh.getLowestEarningEmployee());
-                            break;
-                        case 3:
-                            populateInsightsTableWithMedicine(dbh.getCheapestMedicine());
-                            break;
-                    }
-                } catch (SQLException e1) {
-                    e1.printStackTrace();
-                }
-
-
-            }
-        });
-
-        //UPDATE EMPLOYEE
-        empUpdateButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String updateText = empUpdateField.getText();
-                int empID = 0;
-                int updateOption = empUpdateCombo.getSelectedIndex();
-                List<Employee> emps;
-
-
-                try {
-
-                    empID = Integer.parseInt(empIDField.getText()); //Determine employee ID format is valid
-                    emps = dbh.employeeViewDefaultTable();
-                    Employee target = null;
-
-                    for (Employee emp : emps){
-                        if (emp.getEid()==empID){
-                            target = emp;
-                        }
-                    }
-
-                    switch (updateOption) {
-                        //Case 0 = Fname
-                        case 0:
-                            dbh.updateEmployee(target.getEid(), updateText, target.getLname(), target.getSalary(), target.getAge(), target.getSex());
-                            break;
-                        //Case 1 = Lname
-                        case 1:
-                            dbh.updateEmployee(target.getEid(), target.getFname(), updateText, target.getSalary(), target.getAge(), target.getSex());
-                            break;
-                        //Case 2 = Salary
-                        case 2:
-                            dbh.updateEmployee(target.getEid(), target.getFname(), target.getLname(), Integer.parseInt(updateText), target.getAge(), target.getSex());
-                            break;
-                        //Case 3 = Sex
-                        case 3:
-                            dbh.updateEmployee(target.getEid(), target.getFname(), target.getLname(), target.getSalary(), target.getAge(), updateText);
-                            break;
-                        //Case 4 = Age
-                        case 4:
-                            dbh.updateEmployee(target.getEid(), target.getFname(), target.getLname(), target.getSalary(), Integer.parseInt(updateText), target.getSex());
-                            break;
-                    }
-
-                } catch (NumberFormatException e1) {
-                    JOptionPane.showMessageDialog(null, "Please check the type of your input. Employee ID, Age and Salary need to be numbers.");
-                    //   e1.printStackTrace();
-                } catch (SQLException e1){
-                    JOptionPane.showMessageDialog(null, "Database error. Please ensure sex is only either M or F.");
-                    e1.printStackTrace();
-                }
-
-
-            }
-        });
-
-        //DELETE AN EMPLOYEE
-        empDeleteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-
-                int empID = 0;
-                try {
-                    empID = Integer.parseInt(empIDField.getText());
-
-                    try {
-
-                        if(dbh.isValidEmployeeID(empID)) {
-
-                            int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this entity?");
-                            if (result == JOptionPane.YES_OPTION) {
-                                dbh.removeEmployee(empID);
-                                JOptionPane.showMessageDialog(null, "Employee Successfully Deleted!");
-                                populateEmployeeTable(dbh.employeeViewDefaultTable());
-                            }
-                        }else{
-                            JOptionPane.showMessageDialog(null, "There is no entity with that ID.");
-                        }
-
-                    } catch (SQLException e1) {
-                        e1.printStackTrace();
-                    }
-                } catch (NumberFormatException e1) {
-                    JOptionPane.showMessageDialog(null, "Employee ID needs to be a number!");
-                    e1.printStackTrace();
-                }
-
-            }
-        });
-        findMedicinesButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String searchText = medCustIDField.getText();
-                if (searchText.equals("")) {
-                    List<Medicine> data = null;
-                    try {
-                        data = dbh.medDefaultView();
-                    } catch (SQLException e1) {
-                        e1.printStackTrace();
-                    }
-                    populateMedicineTable(data);
-                } else if (byCustIDRadioButton.isSelected() && byCustLNameRadioButton.isSelected()) {
-                    JOptionPane.showMessageDialog(null, "Please choose a single criterion for searching.");
-                } else if (byCustLNameRadioButton.isSelected()) {
-
-                    List<Medicine> data = null;
-                    try {
-                        data = dbh.getCustomerMedicines(searchText);
-                    } catch (SQLException e1) {
-                        e1.printStackTrace();
-                    }
-
-                    populateMedicineTable(data);
-
-                    if (data.isEmpty())
-                        JOptionPane.showMessageDialog(null, "No records exist for that search.");
-
-
-                } else if (byCustIDRadioButton.isSelected()) {
-
-                    List<Medicine> data = null;
-                    int cid = 0;
-                    try {
-                        try {
-                            cid = Integer.parseInt(searchText);
-                            data = dbh.getCustomerMedicines(cid);
-                        } catch (NumberFormatException ex) {
-                            JOptionPane.showMessageDialog(null, "CID needs to be a number not string!");
-                        }
-
-                    } catch (SQLException e1) {
-                        e1.printStackTrace();
-                    }
-
-                    populateMedicineTable(data);
-
-                    if (data.isEmpty())
-                        JOptionPane.showMessageDialog(null, "No records exist for that search.");
-
-                } else if (bySearchTermRadioButton.isSelected()) {
-
-                    List<Medicine> data = null;
-                    int cid = 0;
-                    try {
-                        data = dbh.medSearchByDescriptionTerm(searchText);
-
-
-                    } catch (SQLException e1) {
-                        e1.printStackTrace();
-                    }
-                    populateMedicineTable(data);
-
-                    if (data.isEmpty())
-                        JOptionPane.showMessageDialog(null, "No records exist for that search.");
-
-                } else {
-
-                    List<Medicine> data = null;
-                    try {
-                        data = dbh.medDefaultView();
-                    } catch (SQLException e1) {
-                        e1.printStackTrace();
-                    }
-                    populateMedicineTable(data);
-                }
-            }
-        });
 
         // logs out of user's view and goes back to login screen
         logoutButton.addActionListener(new ActionListener() {
@@ -1218,8 +870,8 @@ public class Menu extends JFrame {
 
         populateAppointmentData(apps);
         populateCustomerTable(customers);
-        populateEmployeeTable(emps);
-        populateMedicineTable(meds);
+      //  populateEmployeeTable(emps);
+      //  populateMedicineTable(meds);
         populateBillsTable(bills);
 
         setContentPane(menuPane);
@@ -1231,3 +883,4 @@ public class Menu extends JFrame {
     }
 
 }
+

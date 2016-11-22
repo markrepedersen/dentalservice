@@ -271,7 +271,26 @@ public class DBHandler {
         while (rs.next()) {
             CountColumn c = new CountColumn(
                     rs.getString("Type"),
-                    rs.getInt("Count")
+                    (double) rs.getInt("Count")
+            );
+            list.add(c);
+        }
+        conn.close();
+        return list;
+    }
+
+    // Finds specific appointment records for all customers
+    public List<CountColumn> getTypeBalancePortionColumnCount() throws SQLException {
+        String query = "SELECT type AS Type, SUM(amountOwes) AS Owes, SUM(amountPaid) AS Paid FROM bill GROUP BY type";
+        List<CountColumn> list = new ArrayList<>();
+        Connection conn = getConnection();
+        PreparedStatement ps = conn.prepareStatement(query);
+        ResultSet rs = ps.executeQuery();
+        Double balance = rs.getDouble("Owes") - rs.getDouble("Paid");
+        while (rs.next()) {
+            CountColumn c = new CountColumn(
+                    rs.getString("Type"),
+                    balance
             );
             list.add(c);
         }

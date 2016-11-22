@@ -4,9 +4,9 @@
 
 public class CountColumn {
     private String column;
-    private int count;
+    private double count;
 
-    public CountColumn(String column, int count) {
+    public CountColumn(String column, Double count) {
         this.column = column;
         this.count = count;
     }
@@ -15,7 +15,7 @@ public class CountColumn {
         return column;
     }
 
-    public int getCount() {
+    public double getCount() {
         return count;
     }
 }

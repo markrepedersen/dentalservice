@@ -98,6 +98,8 @@ public class Menu extends JFrame {
     private JLabel logo;
     private JComboBox appSearchCriteria;
     private JComboBox custSearchCriteria;
+    private JTextField textField1;
+    private JButton typeBillingPortionButton;
     private DBHandler dbh;
 
     // row data arrays
@@ -357,7 +359,23 @@ public class Menu extends JFrame {
                 try {
                     List<CountColumn> data = dbh.getUpcomingCustomerAppointmentTypesColumnCount();
 
-                    PieChart frame = new PieChart("Appointment Types", data);
+                    PieChart frame = new PieChart("Type Portion", data);
+                    frame.pack();
+                    RefineryUtilities.centerFrameOnScreen(frame);
+                    frame.setVisible(true);
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+        typeBillingPortionButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    List<CountColumn> data = dbh.getTypeBalancePortionColumnCount();
+
+                    PieChart frame = new PieChart("Type Balance Portion", data);
                     frame.pack();
                     RefineryUtilities.centerFrameOnScreen(frame);
                     frame.setVisible(true);

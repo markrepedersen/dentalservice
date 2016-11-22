@@ -69,7 +69,7 @@ public class DBHandler {
                 case "h" :
                     return 2;
                 case "r" :
-                    Rememberall.setDid(login.getEid());
+                    Rememberall.setRid(login.getEid());
                     return 3;
             }
         }

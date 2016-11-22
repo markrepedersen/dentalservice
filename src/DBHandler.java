@@ -286,8 +286,8 @@ public class DBHandler {
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
         ResultSet rs = ps.executeQuery();
-        Double balance = rs.getDouble("Owes") - rs.getDouble("Paid");
         while (rs.next()) {
+            double balance = rs.getDouble("Owes") - rs.getDouble("Paid");
             CountColumn c = new CountColumn(
                     rs.getString("Type"),
                     balance

@@ -40,18 +40,26 @@ public class Login extends JFrame {
                     e1.printStackTrace();
                 }
                 Menu m = new Menu();
+                MenuR mr = new MenuR();
+                MenuD md = new MenuD();
+
+
+
                 switch (type) {
                     case 1:
-                        m.init();
+                        md.init();
                         dispose();
                         break;
                     case 2:
-                        m.init();
+                        md.init();
                         dispose();
                         break;
                     case 3:
-                        m.init();
+                        mr.init();
                         dispose();
+                        break;
+                    case 4:
+                        m.init();
                         break;
                     default:
                         initRegisterDialog();

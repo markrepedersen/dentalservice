@@ -1,6 +1,4 @@
-import java.sql.Date;
-
-/**
+/***
  * Created by mark on 2016-11-07.
  */
 public class Receptionist {

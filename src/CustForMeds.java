@@ -10,7 +10,7 @@ public class CustForMeds extends JFrame {
     private JPanel menuPane;
 
     public CustForMeds(List<Customer> data) {
-        super("Customers prescribed");
+        super("Customers Prescribed");
         setContentPane(menuPane);
         pack();
         setLocationRelativeTo(null);

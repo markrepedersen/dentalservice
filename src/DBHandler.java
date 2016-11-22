@@ -991,16 +991,16 @@ public class DBHandler {
     // Search in medicine description for this term
     // returns all medicines that have searchTerm in the description
     public List<Medicine> medSearchByDescriptionTerm(String searchTerm) throws SQLException {
-        String query = "select * from Medicine where description like \'%" + searchTerm + "%\'";
+        String query = "select code AS Code, description AS Description, cost AS Cost from Medicine where description like \'%" + searchTerm + "%\'";
         List<Medicine> list = new ArrayList<>();
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             Medicine m = new Medicine(
-                    rs.getInt(1),
-                    rs.getDouble(2),
-                    rs.getString(3)
+                    rs.getInt("Code"),
+                    rs.getDouble("Cost"),
+                    rs.getString("Description")
             );
             list.add(m);
         }
@@ -1011,7 +1011,7 @@ public class DBHandler {
     // The default view that medicine table will have
     // Creates a list of medicine objects that user must iterate through to handle
     public List<Medicine> medDefaultView() throws SQLException {
-        String query = "select * from Medicine";
+        String query = "select code AS Code, description AS Description, cost AS Cost from Medicine";
 
         List<Medicine> list = new ArrayList<>();
         Connection conn = getConnection();
@@ -1020,9 +1020,9 @@ public class DBHandler {
         ResultSet rs = stmt.executeQuery(query);
         while (rs.next()) {
             Medicine m = new Medicine(
-                    rs.getInt(1),
-                    rs.getDouble(2),
-                    rs.getString(3)
+                    rs.getInt("Code"),
+                    rs.getDouble("Cost"),
+                    rs.getString("Description")
             );
             list.add(m);
         }
@@ -1062,7 +1062,7 @@ public class DBHandler {
 
     // Finds medicines for customer
     public List<Medicine> getCustomerMedicines(int cid) throws SQLException {
-        String query = "SELECT m.code AS CODE, m.cost AS COST, m.description AS Description from Treats t, Medicine m where " +
+        String query = "SELECT m.code AS Code, m.cost AS Cost, m.description AS Description from Treats t, Medicine m where " +
                 "t.code = m.code and t.cid = ?";
         List<Medicine> list = new ArrayList<>();
         Connection conn = getConnection();
@@ -1071,9 +1071,9 @@ public class DBHandler {
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             Medicine m = new Medicine(
-                    rs.getInt("CODE"),
-                    rs.getDouble("COST"),
-                    rs.getString("DESCRIPTION"));
+                    rs.getInt("Code"),
+                    rs.getDouble("Cost"),
+                    rs.getString("Description"));
             list.add(m);
         }
         return list;
@@ -1081,7 +1081,7 @@ public class DBHandler {
 
     // Finds medicines for customer by last name
     public List<Medicine> getCustomerMedicines(String lname) throws SQLException {
-        String query = "SELECT m.code AS CODE, m.cost AS COST, m.description AS Description from Treats t, Medicine m, Customer c where " +
+        String query = "SELECT m.code AS Code, m.cost AS Cost, m.description AS Description from Treats t, Medicine m, Customer c where " +
                 "t.code = m.code and t.cid = c.cid and c.lname like \'%" + lname + "%\'";
         List<Medicine> list = new ArrayList<>();
         Connection conn = getConnection();
@@ -1089,9 +1089,9 @@ public class DBHandler {
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             Medicine m = new Medicine(
-                    rs.getInt("CODE"),
-                    rs.getDouble("COST"),
-                    rs.getString("DESCRIPTION"));
+                    rs.getInt("Code"),
+                    rs.getDouble("Cost"),
+                    rs.getString("Description"));
             list.add(m);
         }
         return list;
@@ -1099,16 +1099,16 @@ public class DBHandler {
 
     // Finds cheapest medicine(s)
     public List<Medicine> getCheapestMedicine() throws SQLException {
-        String query = "select code, description, cost from medicine where cost in (select min(cost) from medicine)";
+        String query = "select code AS Code, description AS Description, cost AS Cost from medicine where cost in (select min(cost) from medicine)";
         List<Medicine> list = new ArrayList<>();
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             Medicine m = new Medicine(
-                    rs.getInt("code"),
-                    rs.getDouble("cost"),
-                    rs.getString("description")
+                    rs.getInt("Code"),
+                    rs.getDouble("Cost"),
+                    rs.getString("Description")
                     );
             list.add(m);
         }

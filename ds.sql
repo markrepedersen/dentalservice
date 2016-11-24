@@ -25,7 +25,8 @@ create table Employee(
 	age integer,
 	sex char(1),
 	phone_Num integer,
-	isSupervisor integer
+	isSupervisor integer,
+	check(age > 0)
 	);
 create table Receptionist(
 	rid integer primary key,
@@ -288,6 +289,7 @@ insert into Customer values (111542, 'Irma', 'Snowden', 4033801429, '1995-12-31'
 insert into Customer values (111682, 'Issac', 'Shropshire', 2504154651, '1995-12-31', 'shropshire99@me.com', '2311 Burdett Avenue, Victoria, BC V8W 1B2');
 insert into Customer values (111659, 'Dorie', 'Setzer', 6043135348, '1995-12-31', 'setzerdorie@me.com', '804 James Street, Vancouver, BC V5W 3C3');
 insert into Customer values (111986, 'Ranae', 'Leung', 2504965085, '1995-12-31', 'ranae4879@gmail.com', '3354 Calgary Avenue, Penticton, BC V2A 2T6');
+
 --
 -- now add in the Treats
 --

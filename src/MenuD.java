@@ -26,8 +26,6 @@ public class MenuD extends JFrame {
     private JTable AppointmentsTable;
     private JTextField appointmentsSearchField;
     private JTable custTable;
-    private JScrollPane TableScroll;
-    private JScrollPane AppointmentsScrollPane;
     private JTextField newAppCidField;
     private JTextField custSearchBoxField;
     private JButton searchButton;
@@ -85,7 +83,6 @@ public class MenuD extends JFrame {
     private JLabel custIDBillLabel;
     private JTextField medCustIDField;
     private JTable medsTable;
-    private JScrollPane medsScrollPane;
     private JButton findMedicinesButton;
     private JTextField empUpdateField;
     private JButton updateButton;
@@ -102,8 +99,12 @@ public class MenuD extends JFrame {
     private JTextField textField1;
     private JButton typeBillingPortionButton;
     private JComboBox dateYear;
-    private JComboBox dateMonth;
     private JComboBox dateDay;
+    private JPanel appointment;
+    private JScrollPane AppointmentsScrollPane;
+    private JComboBox dateMonth;
+    private JScrollPane TableScroll;
+    private JScrollPane medsScrollPane;
     private DBHandler dbh;
 
     // row data arrays

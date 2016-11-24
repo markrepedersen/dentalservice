@@ -25,8 +25,6 @@ public class MenuR extends JFrame {
     private JTable AppointmentsTable;
     private JTextField appointmentsSearchField;
     private JTable custTable;
-    private JScrollPane TableScroll;
-    private JScrollPane AppointmentsScrollPane;
     private JTextField newAppCidField;
     private JTextField custSearchBoxField;
     private JButton searchButton;
@@ -77,11 +75,9 @@ public class MenuR extends JFrame {
     private JLabel empTypeLabel;
     private JComboBox empSexCombo;
     private JTable billsTable;
-    private JScrollPane billsTableScrollPane;
     private JTextField custIDBillingField;
     private JButton retrieveBillDataButton;
     private JComboBox billingCombo;
-    private JLabel custIDBillLabel;
     private JTextField medCustIDField;
     private JTable medsTable;
     private JScrollPane medsScrollPane;
@@ -98,11 +94,17 @@ public class MenuR extends JFrame {
     private JLabel logo;
     private JComboBox appSearchCriteria;
     private JComboBox custSearchCriteria;
-    private JTextField textField1;
     private JButton typeBillingPortionButton;
     private JComboBox dateYear;
-    private JComboBox dateMonth;
     private JComboBox dateDay;
+    private JPanel appointment;
+    private JScrollPane AppointmentsScrollPane;
+    private JComboBox dateMonth;
+    private JScrollPane TableScroll;
+    private JScrollPane billsTableScrollPane;
+    private JLabel custIDBillLabel;
+    private JButton retrieveNumPaymentsButton;
+    private JTextField textField1;
     private DBHandler dbh;
 
     // row data arrays

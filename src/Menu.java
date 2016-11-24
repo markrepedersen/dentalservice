@@ -105,6 +105,7 @@ public class Menu extends JFrame {
     private JComboBox dateMonth;
     private JComboBox dateDay;
     private JButton retrieveNumPaymentsButton;
+    private JPanel appointment;
     private DBHandler dbh;
 
     // row data arrays

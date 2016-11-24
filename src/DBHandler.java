@@ -900,7 +900,7 @@ String query = "select * from Employee where eid = ? and isSupervisor = 1";
     // we do not use first or last name since results must be unique to one customer only
     public List<Customer> getCustomerWithNPayments(int num) throws SQLException {
         String query = "select * from customer where cid in (" +
-                "select cid from bill group by cid having COUNT(*) = ?)";
+                       "select cid from bill group by cid having COUNT(*) = ?)";
         List<Customer> list = new ArrayList<>();
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(query);

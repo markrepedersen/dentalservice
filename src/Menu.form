@@ -953,8 +953,8 @@
                 </constraints>
                 <properties>
                   <model>
-                    <item value="M"/>
-                    <item value="F"/>
+                    <item value="m"/>
+                    <item value="f"/>
                   </model>
                 </properties>
               </component>

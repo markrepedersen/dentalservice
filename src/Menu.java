@@ -624,7 +624,7 @@ public class Menu extends JFrame {
 
                 int newEid = 0;
                 try {
-                    newEid = dbh.getHighestCustomerID() + 1;
+                    newEid = dbh.getHighestEmployeeID() + 1;
 
                 } catch (Exception e3) {
                     e3.printStackTrace();
@@ -661,7 +661,7 @@ public class Menu extends JFrame {
                     populateEmployeeTable(dbh.employeeViewDefaultTable());
                     JOptionPane.showMessageDialog(null, "New Employee Successfully Added!");
                 } catch (SQLException e1) {
-                    e1.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Age must be positive.");
                 }
 
 
@@ -752,6 +752,10 @@ public class Menu extends JFrame {
                             target = emp;
                         }
                     }
+                    if (target == null) {
+                        JOptionPane.showMessageDialog(null, "Invalid Employee ID");
+                        return;
+                    }
 
                     switch (updateOption) {
                         //Case 0 = Fname
@@ -780,7 +784,7 @@ public class Menu extends JFrame {
                     JOptionPane.showMessageDialog(null, "Please check the type of your input. Employee ID, Age and Salary need to be numbers.");
                     //   e1.printStackTrace();
                 } catch (SQLException e1){
-                    JOptionPane.showMessageDialog(null, "Database error. Please ensure sex is only either M or F.");
+                    JOptionPane.showMessageDialog(null, "Database error. Please ensure sex is only either M or F and age is a positive integer.");
                     e1.printStackTrace();
                 }
 

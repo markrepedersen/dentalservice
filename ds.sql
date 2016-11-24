@@ -25,7 +25,8 @@ create table Employee(
 	age integer,
 	sex char(1),
 	phone_Num integer,
-	isSupervisor integer
+	isSupervisor integer,
+	check(age > 0)
 	);
 create table Receptionist(
 	rid integer primary key,

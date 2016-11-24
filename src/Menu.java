@@ -395,8 +395,9 @@ public class Menu extends JFrame {
         createNewAppointmentButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int year = Integer.parseInt((String) dateYear.getSelectedItem());
-                int month = Integer.parseInt((String) dateYear.getSelectedItem()) - 1;
+                int year = Integer.parseInt((String) dateYear.getSelectedItem()) - 1900;
+                System.out.println(year);
+                int month = Integer.parseInt((String) dateMonth.getSelectedItem()) - 1;
                 int day = Integer.parseInt((String) dateDay.getSelectedItem());
                 int fromHour = Integer.parseInt((String) newAppFromBox.getSelectedItem());
                 int toHour = Integer.parseInt((String) newAppToBox.getSelectedItem());

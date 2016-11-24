@@ -104,6 +104,7 @@ public class Menu extends JFrame {
     private JComboBox dateYear;
     private JComboBox dateMonth;
     private JComboBox dateDay;
+    private JButton retrieveNumPaymentsButton;
     private DBHandler dbh;
 
     // row data arrays
@@ -434,7 +435,7 @@ public class Menu extends JFrame {
                     }
 
                 } catch (SQLException e2) {
-                    e2.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "You do not have permission to add an appointment.");
                 }
             }
         });
@@ -531,8 +532,8 @@ public class Menu extends JFrame {
                             int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this customer?");
                             if (result == JOptionPane.YES_OPTION) {
                                 dbh.removeEmployee(custID);
-                                JOptionPane.showMessageDialog(null, "Customer Successfully Deleted!");
                                 populateCustomerTable(dbh.customerViewDefaultTable());
+                                JOptionPane.showMessageDialog(null, "Customer Successfully Deleted!");
                             }
                         } else {
                             JOptionPane.showMessageDialog(null, "There is no customer with that ID.");
@@ -543,7 +544,6 @@ public class Menu extends JFrame {
                     }
                 } catch (NumberFormatException e1) {
                     JOptionPane.showMessageDialog(null, "Customer ID needs to be a number!");
-                    e1.printStackTrace();
                 }
             }
         });
@@ -672,7 +672,7 @@ public class Menu extends JFrame {
         retrieveBillDataButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String searchText = custIDBillingField.getText();
+                String searchText = textField1.getText();
                 int custID = 0;
                 try {
                     if (!searchText.equals("")) {
@@ -909,10 +909,17 @@ public class Menu extends JFrame {
                 dispose();
             }
         });
-        numPaymentsComboBox.addActionListener(new ActionListener() {
+        retrieveNumPaymentsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                int num = Integer.parseInt((String) numPaymentsComboBox.getSelectedItem());
+                try {
+                    populateBillsTableWithCustomers(dbh.getCustomerWithNPayments(num));
+                }
+                catch (SQLException exc) {
+                    JOptionPane.showMessageDialog(null, "We're sorry, a connection error has occurred.");
+                    exc.printStackTrace();
+                }
             }
         });
     }
@@ -1039,6 +1046,38 @@ public class Menu extends JFrame {
     }
 
     //POPULATES BILLS TABLE FROM A LIST OF BILLS Data
+    public void populateBillsTableWithCustomers(List<Customer> list) {
+
+        DefaultTableModel dtm = new DefaultTableModel() {
+            public boolean isCellEditable(int row, int column) {
+                return false;//This causes all cells to be not editable
+            }
+        };
+
+        String[] colNames = {"Customer ID", "Last Name", "First Name", "Email", "Phone", "Birthday", "Address", "Dentist"};
+
+        //Add Column Names
+        for (int i = 0; i < colNames.length; i++) {
+            dtm.addColumn(colNames[i]);
+        }
+
+        //Add Row Data
+        billsRowData = new Object[100];
+        for (int i = 0; i < list.size(); i++) {
+            billsRowData[0] = list.get(i).getCID();
+            billsRowData[1] = list.get(i).getLname();
+            billsRowData[2] = list.get(i).getFname();
+            billsRowData[3] = list.get(i).getEmail();
+            billsRowData[4] = list.get(i).getPhoneNum();
+            billsRowData[5] = list.get(i).getBirthday();
+            billsRowData[6] = list.get(i).getAddress();
+            billsRowData[7] = list.get(i).getDentist();
+            dtm.addRow(billsRowData);
+        }
+        billsTable.setModel(dtm);
+    }
+
+    //POPULATES BILLS TABLE FROM A LIST OF BILLS Data
     public void populateBillsTableWithPastData(List<Bill> data) {
 
         DefaultTableModel dtm = new DefaultTableModel() {
@@ -1149,7 +1188,7 @@ public class Menu extends JFrame {
         }
 
         //Add Row Data
-        apptRowData = new Object[data.size()];
+        apptRowData = new Object[100];
         for (int i = 0; i < data.size(); i++) {
 
             apptRowData[0] = data.get(i).getNum();
@@ -1178,7 +1217,7 @@ public class Menu extends JFrame {
         }
 
         //Add Row Data
-        medRowData = new Object[3];
+        medRowData = new Object[100];
         for (int i = 0; i < data.size(); i++) {
 
             medRowData[0] = data.get(i).getCode();

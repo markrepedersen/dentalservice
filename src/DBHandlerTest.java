@@ -95,7 +95,7 @@ public class DBHandlerTest {
 
     @Test
     public void getCustomerWith2Payments() throws SQLException {
-        List<Customer> list = db.getCustomerWith2Payments();
+        List<Customer> list = db.getCustomerWithNPayments(2);
         //assertEquals(list.size(), 1);
         for (int i = 0; i < list.size();i++) {
             System.out.println(list.get(i).getCID());

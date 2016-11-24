@@ -531,7 +531,7 @@ public class Menu extends JFrame {
 
                             int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this customer?");
                             if (result == JOptionPane.YES_OPTION) {
-                                dbh.removeEmployee(custID);
+                                dbh.removeCustomer(custID);
                                 populateCustomerTable(dbh.customerViewDefaultTable());
                                 JOptionPane.showMessageDialog(null, "Customer Successfully Deleted!");
                             }
@@ -683,7 +683,7 @@ public class Menu extends JFrame {
                     }
                     int comboSelection = billingCombo.getSelectedIndex();
                     if (comboSelection == 0) {
-                        populateBillsTable(dbh.getCustomerUnpaidBills(custID));
+                        populateBillsTable(dbh.getCustomerBills(custID));
                     } else if (comboSelection == 1) {
                         //Unpaid Bills
                         populateBillsTable(dbh.getCustomerUnpaidBills(custID));

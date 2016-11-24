@@ -87,7 +87,7 @@ String query = "select * from Employee where eid = ? and isSupervisor = 1";
         ps.setInt(1, eid);
         ResultSet rs = ps.executeQuery();
         Employee e = null;
-        if (rs.next()) {
+        while (rs.next()) {
             e = new Employee(
                     rs.getInt("eid"),
                     rs.getInt("salary"),
@@ -841,7 +841,7 @@ String query = "select * from Employee where eid = ? and isSupervisor = 1";
     // cid is customer's cid
     // we do not use first or last name since results must be unique to one customer only
     public List<Bill> getCustomerBills(int cid) throws SQLException {
-        String query = "select c.fname as Name, c.lname as Surname, b.type as type, b.dueDate as Due, " +
+        String query = "select c.cid as id, c.fname as Name, c.lname as Surname, b.type as type, b.dueDate as Due, " +
                 "b.amountPaid as Payment, (b.amountOwes - b.amountPaid) as Balance" +
                 " from Customer c, Bill b where b.cid = \'" + cid + "\' and c.cid = \'" + cid + "\'";
         List<Bill> list = new ArrayList<>();
@@ -851,6 +851,7 @@ String query = "select * from Employee where eid = ? and isSupervisor = 1";
         ResultSet rs = stmt.getResultSet();
         while (rs.next()) {
             Bill b = new Bill(
+                    rs.getInt("id"),
                     rs.getString("Name"),
                     rs.getString("Surname"),
                     rs.getString("type"),

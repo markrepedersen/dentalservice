@@ -45,7 +45,7 @@ public class Login extends JFrame {
 
                 switch (type) {
                     case 1:
-                        m.init();
+                        md.init();
                         dispose();
                         break;
                     case 2:

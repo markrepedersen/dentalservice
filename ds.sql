@@ -61,15 +61,15 @@ create table WorksFor(
 	eid integer,
 	sid integer,
 	primary key(eid,sid),
-	foreign key(eid) references Employee(eid),
-	foreign key(sid) references Employee(eid)
+	foreign key(eid) references Employee(eid) ON DELETE CASCADE,
+	foreign key(sid) references Employee(eid) ON DELETE CASCADE
 	);
 create table Assists(
 	hid integer,
 	did integer,
 	primary key(hid,did),
-	foreign key(hid) references Hygienist(hid),
-	foreign key(did) references Dentist(did)
+	foreign key(hid) references Hygienist(hid) ON DELETE CASCADE,
+	foreign key(did) references Dentist(did) ON DELETE CASCADE
 	);
 create table Medicine(
 	code integer primary key,
@@ -89,16 +89,16 @@ create table Treats(
 	code integer,
 	cid integer,
 	primary key(code,cid),
-	foreign key(code) references Medicine(code),
-	foreign key(cid) references Customer(cid)
+	foreign key(code) references Medicine(code) ON DELETE CASCADE,
+	foreign key(cid) references Customer(cid) ON DELETE CASCADE
 	);
 
 create table Attends(
 	did integer,
 	cid integer,
 	primary key(did, cid),
-	foreign key(did) references Dentist,
-	foreign key(cid) references Customer
+	foreign key(did) references Dentist ON DELETE CASCADE,
+	foreign key(cid) references Customer ON DELETE CASCADE
 );
 
 create table Appointment(
@@ -108,8 +108,8 @@ create table Appointment(
 	to_Time timestamp,
 	rid integer not null,
 	cid integer not null,
-	foreign key(rid) references Receptionist(rid),
-	foreign key(cid) references Customer(cid)
+	foreign key(rid) references Receptionist(rid) ON DELETE CASCADE,
+	foreign key(cid) references Customer(cid) ON DELETE CASCADE
 	);
 create table Bill(
 	bid integer primary key,
@@ -127,8 +127,8 @@ create table Uses(
 	did integer,
 	code integer,
 	primary key(did,code),
-	foreign key(did) references Dentist(did),
-	foreign key(code) references Medicine(code)
+	foreign key(did) references Dentist(did) ON DELETE CASCADE,
+	foreign key(code) references Medicine(code) ON DELETE CASCADE
 	);
 
 	create table login_details(
@@ -137,7 +137,7 @@ create table Uses(
         salt Varchar2(255),
 		type Varchar2(10),
 		eid integer,
-		foreign key(eid) references Employee(eid),
+		foreign key(eid) references Employee(eid) ON DELETE CASCADE,
 		primary key(username)
 	);
 --
